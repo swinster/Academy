@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="../css/styles.css" />
+<title>Overview</title>
+</head>
+<body>
+<h1 id="header">Overview</h1>
+<p dir="ltr" style="text-align: left;"></p><p>The primary goal of
+this training lab guide is to walk you through how to plan a Pexip Infinity installation,
+configure and deploy different Infinity components such as the Management and Conferencing
+Nodes, and to configure Infinity services as necessary to provide the desired
+outcomes.</p>
+
+<p>In these labs, you will
+deploy and install a Pexip Management Node, two internal Pexip Conferencing
+Nodes (in the Transcoding Role) within a LAN location, and one external Pexip Conferencing
+Node (initially in the Transcoding Role, then switching to the Proxying Edge
+role) within a DMZ location. You can see the topology in the diagram below. Both
+locations will handle standards-based SIP/H.323 and WebRTC video traffic, as
+well as integrate with different ecosystems. For example, the internal Pexip
+Conferencing Nodes will be integrated with an on-premises Skype for Business
+2015 deployment, whilst the Pexip Edge Node will handle federated Microsoft
+calls via Lync or Skype for Business environments at other organisations, or
+Office 365. Additional integrations with Microsoft Teams, Google Hangouts and
+the Pexip Private Cloud will also be enabled. </p>
+
+<p>You should refer continuously
+to <a href="https://docs.pexip.com">https://docs.pexip.com</a>,
+which is our official documentation site regarding configuring Pexip. We will
+provide you with links in each section to various documentation pages where
+appropriate.</p>
+
+<p>The guide itself has
+broken into two parts:</p>
+
+<p></p><ul><li>A
+description of the desired outcomes (which you are reading now). It is intended
+that this will provide further background information to the lab exercises,
+along with how and why you might deploy and manage Infinity. This initial
+session guide also includes this introduction and guidance on accessing the
+lab.<br><br>As an additional challenge, users
+that have previous experience with Pexip could attempt to deploy and configure
+Pexip using the information in this section alone.</li></ul><p></p>
+
+<p></p><ul><li>A
+step-by-step guidance to complete the required configurations and relevant
+testing. </li></ul><p></p>
+
+<p>Each group has a name (e.g. “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">vc1</span>”, “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">vc2</span>”
+etc., and may even have a location appended such as “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">vc1-osl</span>”) and uses a shared
+domain space of <span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">pexip.net</span>.
+These are used together to give a unique domain namespace for each group’s lab
+(e.g., “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">vc20-osl.pexip.net</span>”).
+Each Node also has a hostname (e.g. “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">mgr</span>”, “<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">conf01</span>”,
+“<span class="" style="font-family: &quot;Courier New&quot;, Courier, mono;">edge</span>”),
+and we can prepend this to the group domain to give the nodes Fully Qualified
+Domain Names (FQDNs). We can then use these FQDNs to browse to the nodes (e.g.,
+<a href="https://mgr.vc20-osl.pexip.net">https://mgr.vc20-osl.pexip.net</a> or <a href="https://edge.vc20-osl.pexip.net">https://edge.vc20-osl.pexip.net</a>). </p>
+
+<p>When managing devices in this lab, please refer to the lab
+sheet for your group. Each task will refer to the relevant lab sheet section if
+required. For your information, we have tried to keep the usernames consistent
+and passwords simple, with <i>most</i> passwords set to “Pexip123”. However,
+some usernames and passwords can be different, especially for cloud services, thus
+you should consult the lab sheet.</p><img src="image.png" alt="" role="presentation" class="img-fluid"><br><p></p>
+</body>
+</html>
