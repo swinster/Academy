@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Deploy External Conferencing Node (initially in the Transcoding Role)</title>
+</head>
+
+<body>
+<h1 id="header">Deploy External Conferencing Node (initially in the Transcoding Role)</h1>
+<p>Suggested completion time: <strong>15 minutes</strong></p>
+<p><img src="../../images/trascoding_node.svg" alt="" /></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #3</strong> and <strong>section #5</strong> of the lab sheet.</p>
+<section>
+    <h2 class="main">Step-by-step - Creating the Conferencing Node configuration</h2>
+    <p>Completing these steps on the Jumpbox should make uploading the OVA file to the ESXi host much quicker.</p>
+    <p>Go to <strong>Platform --&gt; Conferencing Nodes</strong> and click <strong>Add Conferencing Node:</strong></p>
+    <ol>
+        <li>On the <strong>Add Conferencing Node</strong> page, fill in the required fields using the details provided in (Lab sheet <strong>section #5</strong>).
+            <ol>
+                <li><strong>Name</strong>: Enter the name of the node (e.g. <span class="code">edge.pexipacademy.local</span>)</li>
+                <li><strong>Role: Transcoding Conferencing Node</strong>.
+                    <ul>
+                        <li>This is not a mistake &ndash; the role will be changed in a later exercise.</li>
+                    </ul>
+                </li>
+                <li><strong>Hostname</strong>, <strong>domain,</strong> and <strong>IP</strong> details for <strong>both</strong> interfaces.<br>
+                    <strong>NOTE:</strong> the hostname and domain are labels used internally by Infinity. They do not need to reflect actual DNS records.<br>
+                </li>
+                <li>This Conferencing Node should be in the <strong>DMZ</strong> location.</li>
+                <li>Set the <strong>SIP TLS FQDN</strong>.<br>
+                 <strong>NOTE:</strong> this field <em>does</em> reflect the unique  DNS 'A' record the point to the node.</li>
+                <li>Set the <strong>IPv4 static NAT address</strong>.</li>
+                <li>Add a <strong>static route</strong> to the Management Node and LAN System Location's subnet (using the green plus).<br>
+                    <strong>NOTE:</strong> If you forget to add a route to the Management Node, you will <strong>NOT</strong> be able to add it after the node has been deployed, so will need to <strong>delete</strong> the node configuration and guest VM, then <strong>redeploy</strong>.</li>
+                <li><strong>Save</strong>.</li>
+            </ol>
+        </li>
+        <li>On the <strong>Download Conferencing Node image</strong> page:
+            <ol>
+                <li>Select <strong>Deployment type: Manual (ESXi 6.7).</strong></li>
+                <li>You can leave the vCPU and vRAM settings at the default values. <br>
+                    <strong>NOTE:</strong> for real deployments, correctly designing your VMs is a critical step in the real world. You can change these settings in OnPrem hypervisors after deployment; however, the selection is automatic for cloud platforms as the compute instance types are pre-determined.<br>
+                </li>
+                <li>Enter the SSH password, also <strong>Pexip123!</strong> to keep things simple (<strong>IMPORTANT NOTE:</strong> as of current Pexip software, we do not employ password input validation, so be careful with the password you type. You may need to redeploy the node if you lose, forget, or input the original password incorrectly).</li>
+                <li>Click the <strong>Download</strong> button.</li>
+            </ol>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Step-by-step - Deploying the OVA to the ESXi host</h2>
+    <ol>
+        <li>When the download is complete, navigate back to the ESXi host (Lab sheet <strong>section #3</strong>).</li>
+        <li>The next steps are similar to those used when deploying the Management Node, so refer back to that page for image if needed.</li>
+        <li><strong>Right Click</strong> on your host and select <strong>Create/Register VM</strong>.</li>
+        <li>Choose <strong>Deploy a virtual machine from and OVF or OVA file</strong>, then click <strong>Next</strong>.</li>
+        <li>Ensure the <strong>Name for the Virtual Machine</strong> is as specified in <strong>section #4.1</strong> of the lab sheet.</li>
+        <li>Drag &amp; drop the <strong>Conferencing Node OVA</strong> file (probably in your downloads folder) into the selection box then click <strong>Next</strong>.</li>
+        <li>Review the storage details, then click <strong>Next</strong>.</li>
+        <li>In the <strong>Deployment options</strong> page, select  (if available) <strong>DMZ Internal </strong> for the <strong>VM Network</strong> (the primary NIC) and <strong>DMZ External </strong> for the <strong>VM Network 2</strong> (the secondary NIC), and you should always use <u>Thick Provisioned vHDDs</u>, to avoid any undesirable storage issues later, then click <strong>Next</strong>.<br>
+        <strong>NOTE:</strong> When deploying a v26 or previous Conferencing Nodes, there is no option to set the <strong>VM network</strong> on the interface (unlike the Management Node). You will need to fix this once the node is deployed (see step 11).</li>
+        <li>Review the details and if you are happy, click <strong>Finish</strong>.</li>
+        <li> Once the node is deployed, it should power on automatically (assuming you kept the default "power on" option enabled). Alternatively, find the new node, then click <strong>Power On</strong>.</li>
+        <li><strong>Fix the VM Network</strong> for <strong>v26 and previous nodes</strong> (otherwise, skip this step). This is only required when deploying to an ESXi host using <strong>v26 and previous</strong>. Infinity V27 nodes fixes this issue on ESXi, and VMware  vCentre  handels the vNIC assignments correctly.<br>
+            <ol>
+                <li> <strong>Edit settings</strong> of the VM as you did previously.</li>
+                <li>Select the correct <strong>VM Networks</strong> for <strong>both</strong> vNICs, then click <strong>Save</strong>.<br>
+                    <p><img src="../../images/ESXi_host_edit_vm_network_edge.png" alt="Edit VM settings using the Action menu" title="Edit VM settings using the Action menu"/></p>
+                </li>
+            </ol>
+        </li>
+        <li><strong> Permanently delete the OVA file</strong> from the downloads folder to free up disk space on the Jumpbox. You do not need to keep OVA files as they can be easily regenerated.</li>
+        <li>Ensure the new node communicates with the Management Node once it has fully booted. On the Pexip GUI, navigate to <strong>Status --&gt; Conferencing Nodes</strong>, and ensure the <strong>Last Contacted</strong>, <strong>Last Updated</strong> and <strong>HD port</strong> count look OK. Also check <strong>Status --&gt; Locations</strong>, which should report that some transcoding resource is available.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check your Infinity deployment</h2>
+    <p>This video outlines some additional configurations you can apply to a Conferencing Node, including setting the role type. We will walk you through the exact process to change these settings in the next lab, but feel free to look now. </p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/a64f4a80-f420-4df8-b9da-867e0c23bfdc/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <p>The screenshots below should look like your Infinity system and show that you have successfully deployed your nodes into the correct locations.</p>
+    <p><strong>Live View showing DMZ node in transcoding role:</strong></p>
+    <p>As you hover over different elements in Live View, you will see information about the object. For example, if you hover over the node in the DMZ location, you will see the node's details summarised. </p>
+<p>&nbsp;<img src="../../images/Liveview_DMZ_deployed.png" alt="DMZ node after deployment" title="DMZ node after deployment"></p>
+    <p><strong>Live View showing LAN location capacity:</strong></p>
+    <p>Hovering over a location, you will see its summarised details.</p>
+<p>&nbsp;<img src="../../images/Liveview_LAN_deployed.png" alt="LAN location after deployment" title="LAN location after deployment"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+    <section>
+        <h2 class="main">Another way to deploy nodes into a location </h2>
+        <p>As with many systems, there are multiple ways you could achieve the same result. This video looks at deploying a node, location, and some system services, all in one step. </p>
+        <p><!-- copy and paste. Modify height and width if desired. -->
+<iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/24a758fa-6a63-4db3-b0fb-a7be5a2f4f76/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
+<hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Deploy_External_Conferencing_Node.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

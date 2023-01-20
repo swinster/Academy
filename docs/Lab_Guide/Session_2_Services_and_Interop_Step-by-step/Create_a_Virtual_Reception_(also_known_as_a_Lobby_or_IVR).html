@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Create a Virtual Reception (also known as a Lobby or IVR)</title>
+</head>
+
+<body>
+    <h1 id="header">Create a Virtual Reception (also known as a Lobby or IVR)</h1>
+    <p>Suggested completion time: <strong>20 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #4.2&nbsp;</strong>and <strong>#5&nbsp;</strong>of the lab sheet.</p>
+    <p>&nbsp;</p>
+    <p>To create a VR:</p>
+    <ol>
+        <li>Click <strong>Services&nbsp;</strong><strong>--&gt;</strong><strong>&nbsp;Virtual Receptions</strong>,
+        then click “<strong>Add Virtual Reception</strong>”.&nbsp;</li>
+        <li>Enter a name, such as &ldquo;General VR&rdquo;.</li>
+        <li>Add the following aliases:<ol>
+                <li>A static URI alias:&nbsp;<span class="code">lobby@&lt;<strong>Pexip infinity
+                            domain</strong>&gt;</span></li>
+                <li>An IP alias:&nbsp;<span class="code">&lt;IPv4 Static NAT IP_Address_of_Edge_Node&gt;</span></li>
+                <p><strong>NOTE:</strong> In the next session you will add an alias to capture a VoIP provider assigned
+                    telephone
+                    number.</p>
+            </ol>
+        <li>Save.</li>
+        </li>
+    </ol>
+
+    <ol>
+
+    </ol>
+    <p>&nbsp;</p>
+    <p>Add a numeric alias to a second (or more service):</p>
+    <ol>
+        <li>Click <strong>Services&nbsp;</strong><strong>--&gt;</strong><strong>&nbsp;Virtual Meeting Room</strong>,
+            then click on the service you want to modify.</li>
+        <li>Add a numeric alias (for example):&nbsp;<span class="code">1234567</span></li>
+        <li>Save.</li>
+    </ol>
+    <hr>
+
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">Testing</h3>
+
+        <p>Before you test, ensure you have waited 1 minute for the configuration changes to synchronise across all the nodes. Dial into the VR, then enter the Conference Code (either as DTMF tones if connecting from a video endpoint,
+            or
+            via the WebApp prompt if connecting via WebRTC) for the digits you configured as the numeric alias added to
+            the
+        other service. You should be transferred into the second service.</p>
+        <p>The user and admin experiences are different depending on whether you are using WebRTC or a video endpoint.
+            <u>You should try both.</u></p>
+        <ul>
+            <li>You will <strong>NEVER</strong> see a VR service instance start-up in Live view when you connect to the
+                VR
+                using WebRTC. This is because the WebRTC client is merely sending an HTTP request for the initial VR
+                connection, and no media is started until the participant connects to the VMR.</li>
+            <li>A video endpoint will connect to the VR using media, so a VR instance WILL show in Live view as it will
+                consume transcoding resources. When the user inputs the conference code as DTMF tones, Infinity
+                transfers
+                the call to a VMR service.</li>
+            <li>When analysing the conference history, you will never see a VR record for a WebRTC connection, but you
+                will
+                see a record for a video endpoint.</li>
+        </ul>
+        <hr>
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 6: Demonstrate how to successfully configure Pexip Infinity Services</h3>
+
+        <p>When you have created a VR and added a numeric alias to a VMR, and are then able to successfully transfer a
+            participant from the VR to VMR, grab a screenshot of the conference history for a video endpoint and the
+            administrator log entry that shows the participant has been transferred, for example:</p>
+        <p>&nbsp;</p>
+        <p><strong>For a video endpoint ONLY, a screenshot of the Conference History showing the connection to a VR,
+                then
+                into the VMR:</strong></p>
+        <p><strong>NOTE:</strong> you will NOT see a conference history record for a VR service when using WebRTC, as
+            this
+            is merely an HTTP request. <u>If you don&rsquo;t have access to a video endpoint, ask your trainer to create
+                a
+                call into the VR, then transfer to the VMR.</u></p>
+        <p>&nbsp;<img src="../../images/img1621816454.png" alt="image"></p>
+        <p><strong>For a video endpoint ONLY, the administrator log entry showing the participant is transferred from
+                the VR
+                to VMR:&nbsp;</strong></p>
+        <p><strong>NOTE:&nbsp;</strong>for completeness, we have shown all the administrator log entries associated with
+            the
+            call and transfer, with the actual transfer event <span class="highlight">highlighted</span>.</p>
+        <p class="code">2021-03-01T00:30:03.926+00:00 edge 2021-03-01 00:30:03,926 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant attempting to join conference.&quot;
+            ConferenceAlias=&quot;sip:lobby@vc20-osl.pexip.net;transport=tcp&quot;
+            Participant=&quot;sip:user0041@192.168.199.118&quot; Protocol=&quot;SIP&quot; Direction=&quot;in&quot;
+            Remote-address=&quot;81.100.54.99&quot; Participant-id=&quot;e5e6285b-ea31-4c49-aadf-abf5e98c367b&quot;
+            Registered=&quot;False&quot; Location=&quot;DMZ&quot;</p>
+        <p class="code2">2021-03-01T00:30:03.972+00:00 conf01 2021-03-01 00:30:03,972 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Conference has been created.&quot;
+            Conference=&quot;General VR&quot; Service-tag=&quot;&quot; Service-type=&quot;two_stage_dialing&quot;
+            Conference-ID=&quot;3deb24d1-ca56-451b-801c-a5cfb4706fc3&quot;</p>
+        <p class="code">2021-03-01T00:30:04.815+00:00 conf01 2021-03-01 00:30:04,815 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant has joined.&quot;
+            Conference=&quot;General
+            VR&quot; Service-tag=&quot;&quot; Service-type=&quot;two_stage_dialing&quot;
+            ConferenceAlias=&quot;sip:lobby@vc20-osl.pexip.net;transport=tcp&quot; &nbsp;
+            Participant=&quot;sip:user0041@192.168.199.118&quot; DisplayName=&quot;Chris RPD&quot;
+            Protocol=&quot;SIP&quot;
+            Direction=&quot;in&quot; Vendor=&quot;Polycom RealPresence Desktop for Windows (3.10.4.72927)&quot;
+            Call-id=&quot;e0cfb169-5f417646-963dd6ff@192.168.199.118&quot;
+            Conversation-id=&quot;45807c58-246e-4128-a402-07b8ba1a7a32&quot;
+            Participant-id=&quot;e5e6285b-ea31-4c49-aadf-abf5e98c367b&quot; Remote-address=&quot;81.100.54.99&quot;
+            Location=&quot;LAN&quot; Licenses=&quot;1&quot; Signaling-node=&quot;91.90.42.120&quot;
+            Signaling-location=&quot;DMZ&quot; Media-node=&quot;10.247.180.201&quot;
+            Conference-ID=&quot;3deb24d1-ca56-451b-801c-a5cfb4706fc3&quot; Proxy-node=&quot;91.90.42.120&quot;
+            Proxy-location=&quot;DMZ&quot;</p>
+        <p class="highlight">2021-03-01T00:30:20.740+00:00 conf01 2021-03-01 00:30:20,740 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant transferred&quot;
+            Alias=&quot;12345&quot;
+            Conference=&quot;Main VMR&quot; Service-tag=&quot;&quot;
+            Participant=&quot;sip:user0041@192.168.199.118&quot;
+            Call-id=&quot;e0cfb169-5f417646-963dd6ff@192.168.199.118&quot;</p>
+        <p class="code">2021-03-01T00:30:23.381+00:00 edge 2021-03-01 00:30:23,380 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant attempting to join conference.&quot;
+            ConferenceAlias=&quot;12345&quot; Participant=&quot;sip:user0041@192.168.199.118&quot;
+            Protocol=&quot;SIP&quot;
+            Direction=&quot;in&quot; Remote-address=&quot;81.100.54.99&quot;
+            Participant-id=&quot;b5fabf84-5055-42d2-8a37-9da9b672784e&quot; Registered=&quot;False&quot;
+            Location=&quot;DMZ&quot;</p>
+        <p class="code2">2021-03-01T00:30:23.419+00:00 conf02 2021-03-01 00:30:23,419 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Conference has been created.&quot;
+            Conference=&quot;Main
+            VMR&quot; Service-tag=&quot;&quot; Service-type=&quot;conference&quot;
+            Conference-ID=&quot;88d59689-de62-4c04-b7de-8985e85b0de0&quot;</p>
+        <p class="code">2021-03-01T00:30:23.658+00:00 conf01 2021-03-01 00:30:23,658 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant has disconnected.&quot;
+            Conference=&quot;General VR&quot; Service-tag=&quot;&quot; Service-type=&quot;two_stage_dialing&quot;
+            ConferenceAlias=&quot;sip:lobby@vc20-osl.pexip.net;transport=tcp&quot; &nbsp;
+            Participant=&quot;sip:user0041@192.168.199.118&quot; DisplayName=&quot;Chris RPD&quot;
+            Protocol=&quot;SIP&quot;
+            Direction=&quot;in&quot; Vendor=&quot;Polycom RealPresence Desktop for Windows (3.10.4.72927)&quot;
+            Call-id=&quot;e0cfb169-5f417646-963dd6ff@192.168.199.118&quot;
+            Conversation-id=&quot;45807c58-246e-4128-a402-07b8ba1a7a32&quot;
+            Participant-id=&quot;e5e6285b-ea31-4c49-aadf-abf5e98c367b&quot; Remote-address=&quot;81.100.54.99&quot;
+            Location=&quot;LAN&quot; Licenses=&quot;1&quot; License-type=&quot;port&quot;
+            Signaling-node=&quot;91.90.42.120&quot; Signaling-location=&quot;DMZ&quot;
+            Media-node=&quot;10.247.180.201&quot;
+            Conference-ID=&quot;3deb24d1-ca56-451b-801c-a5cfb4706fc3&quot; Proxy-node=&quot;91.90.42.120&quot;
+            Proxy-location=&quot;DMZ&quot; Duration=&quot;18.844&quot; Detail=&quot;None&quot;</p>
+        <p class="code2">2021-03-01T00:30:23.718+00:00 conf02 2021-03-01 00:30:23,718 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant has joined.&quot; Conference=&quot;Main
+            VMR&quot; Service-tag=&quot;&quot; Service-type=&quot;conference&quot;
+            ConferenceAlias=&quot;sip:lobby@vc20-osl.pexip.net;transport=tcp&quot;
+            &nbsp;Participant=&quot;sip:user0041@192.168.199.118&quot; DisplayName=&quot;Chris RPD&quot;
+            Protocol=&quot;SIP&quot; Direction=&quot;in&quot; Vendor=&quot;Polycom RealPresence Desktop for Windows
+            (3.10.4.72927)&quot; Call-id=&quot;e0cfb169-5f417646-963dd6ff@192.168.199.118&quot;
+            Conversation-id=&quot;45807c58-246e-4128-a402-07b8ba1a7a32&quot;
+            Participant-id=&quot;b5fabf84-5055-42d2-8a37-9da9b672784e&quot; Remote-address=&quot;81.100.54.99&quot;
+            Location=&quot;LAN&quot; Licenses=&quot;1&quot; Signaling-node=&quot;91.90.42.120&quot;
+            Signaling-location=&quot;DMZ&quot; Media-node=&quot;10.247.180.202&quot;
+            Conference-ID=&quot;88d59689-de62-4c04-b7de-8985e85b0de0&quot; Proxy-node=&quot;91.90.42.120&quot;
+            Proxy-location=&quot;DMZ&quot;</p>
+        <p class="code">2021-03-01T00:30:23.823+00:00 conf01 2021-03-01 00:30:23,823 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Conference has been stopped.&quot;
+            Conference=&quot;General VR&quot; Service-tag=&quot;&quot; Service-type=&quot;two_stage_dialing&quot;
+            Duration=&quot;19.852&quot; Conference-ID=&quot;3deb24d1-ca56-451b-801c-a5cfb4706fc3&quot;</p>
+        <p class="code2">2021-03-01T00:30:36.153+00:00 conf02 2021-03-01 00:30:36,153 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant has disconnected.&quot;
+            Conference=&quot;Main VMR&quot; Service-tag=&quot;&quot; Service-type=&quot;conference&quot;
+            ConferenceAlias=&quot;sip:lobby@vc20-osl.pexip.net;transport=tcp&quot;
+            &nbsp;Participant=&quot;sip:user0041@192.168.199.118&quot; DisplayName=&quot;Chris RPD&quot;
+            Protocol=&quot;SIP&quot; Direction=&quot;in&quot; Vendor=&quot;Polycom RealPresence Desktop for Windows
+            (3.10.4.72927)&quot; Call-id=&quot;e0cfb169-5f417646-963dd6ff@192.168.199.118&quot;
+            Conversation-id=&quot;45807c58-246e-4128-a402-07b8ba1a7a32&quot;
+            Participant-id=&quot;b5fabf84-5055-42d2-8a37-9da9b672784e&quot; Remote-address=&quot;81.100.54.99&quot;
+            Location=&quot;LAN&quot; Licenses=&quot;1&quot; License-type=&quot;port&quot;
+            Signaling-node=&quot;91.90.42.120&quot; Signaling-location=&quot;DMZ&quot;
+            Media-node=&quot;10.247.180.202&quot;
+            Conference-ID=&quot;88d59689-de62-4c04-b7de-8985e85b0de0&quot; Proxy-node=&quot;91.90.42.120&quot;
+            Proxy-location=&quot;DMZ&quot; Duration=&quot;12.435&quot; Detail=&quot;Remote disconnect&quot;</p>
+        <p class="code">2021-03-01T00:30:36.290+00:00 conf02 2021-03-01 00:30:36,290 Level=&quot;INFO&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Conference has been
+            stopped.&quot;&nbsp;Conference=&quot;Main VMR&quot; Service-tag=&quot;&quot;
+            Service-type=&quot;conference&quot;
+            Duration=&quot;12.871&quot; Conference-ID=&quot;88d59689-de62-4c04-b7de-8985e85b0de0&quot;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Create_a_Virtual_Reception_(also_known_as_a_Lobby_or_IVR).html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

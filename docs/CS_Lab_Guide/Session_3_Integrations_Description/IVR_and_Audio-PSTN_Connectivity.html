@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>IVR and Audio / PSTN Connectivity</title>
+</head>
+
+<body>
+<h1 id="header">IVR and Audio / PSTN Connectivity</h1>
+<p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+<p>Use <strong>section #5</strong> of the lab sheet.</p>
+<section>
+    <p>Refer to <a class="general" href="https://docs.pexip.com/admin/about_h323_sip.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/about_h323_sip.htm</a> and <a class="general" href="https://docs.pexip.com/admin/integrate_pstn.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/integrate_pstn.htm</a>.</p>
+    <p>Use the &quot;General VR&quot;, which you configured in a previous lab, and extend its operation to handle PSTN calls. This Virtual Reception should currently have an alias of <span class="code">lobby@&lt;your Pexip Infinity domain&gt;</span> (hopefully, you know where to go by now) and possibly the IP address of the edge  node. To handle PSTN calls, you will need to add a new alias to the VR. This alias will need to match the PSTN number provided, which will allow calls to route to your VR (via a Twilio VoIP SIP trunk). Your trainer will provide you with the  PSTN number for your location.</p>
+    <p>You can then try to dial into a VMR using a phone.</p>
+    <p>The destination VMR must have one alias that is purely  numeric so that users can enter it as touch-tones (DTMF) via the phone's  keypad. You can then dial into the VR and transfer by tapping the VMRs numeric  alias. The Virtual Reception phone number and VMR conference code would typically  be included in a calendar invite, for example, as provided by the Pexip  Scheduling solution.</p>
+    <p>An example use case could be to provide many customised Virtual  Receptions with different voice prompts in other languages that would allow  users to connect using alternate aliases.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

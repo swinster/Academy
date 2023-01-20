@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Enable LDAP management login authentication</title>
+</head>
+
+<body>
+<h1 id="header">Enable LDAP management login authentication</h1>
+<section>
+    <h2 class="main">Overview</h2>
+    <p>Use <strong>section #2</strong> and <strong>section #9</strong> of the lab sheet.</p>
+    <p>Adding additional administrators to Pexip Infinity requires integration with an LDAP directory service, allowing these users to log in with their directory credentials, generally a Windows Active Directory domain. <strong>Infinity only has a single local administrator account</strong>, so integration with LDAP allows multiple users to administer the platform, allowing better auditing of changes and more control. You can assign specific groups of users' different privileges.</p>
+    <p>You need to complete three sections to set up LDAP for administrator authentication:</p>
+    <ul>
+        <li><strong> Set the actual connection to the LDAP server:</strong> This includes the paths and filters used to search the LDAP database for users looking to authenticate and the security groups used to assign specific privileges.</li>
+        <li><strong> Set the administrator roles for Pexip Infinity:</strong> Two roles are defined out of the box (full admin read/write and a read-only role), although you can define custom roles depending on your needs.</li>
+        <li><strong> Map the administrator role to a security group:</strong> Users within specific security groups can log into the Infinity system with a given privilege.</li>
+    </ul>
+    <p>The local admin account login can be disabled for web access by ensuring the <strong>authentication source</strong> is the LDAP database only for more secure systems. If you have set this, then be aware that if Pexip Infinity cannot reach the LDAP database, web admin logins will NOT work. Resetting the authentication source can then only be reset via the SSH admin login. Currently, <strong>only one admin account is available to log in using SSH or the console</strong>, and you cannot add additional accounts. </p>
+    <p>It is also possible to force administrators to authenticate using client certificates as an additional security measure. These client certificates would typically be distributed via group policy (or similar). However, it is not something you will be using for this lab.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Procedure</h2>
+    <p>First, you will need to set the LDAP server (the Domain Controller in your lab) and connection credentials that will bind to the LDAP database (the latter usually being some service account). Next, you will set the base Distinguished Name (DN) to form the starting point of any query against the LDAP service. Finally, you will append additional paths to narrow the search to a specific Organisational Unit (OU) for group and user lookup. You will usually use additional filters if you have an extensive directory structure. </p>
+    <p>&nbsp;Remember, you also have access to the Domain Controller so that you can look at the Active Directory User's and Computer's snapin for more details.</p>
+    <p>You will use the default administrator roles and map them to the predefined security groups.</p>
+    <p>Once you have enabled LDAP in your lab, you should use the user account with read/write privileges to administer the system from now on. Again, check out your deployment against our screenshots to ensure you get the same results. </p>
+    <p>Please refer to <a href="https://docs.pexip.com/admin/managing_users.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/managing_users.htm</a>. In addition, LDAP syntax can be quirky, so referring to our LDAP troubleshooting guide can be a lifesaver (see <a href="https://docs.pexip.com/admin/integrate_ldap_troubleshooting.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/integrate_ldap_troubleshooting.htm</a>).</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

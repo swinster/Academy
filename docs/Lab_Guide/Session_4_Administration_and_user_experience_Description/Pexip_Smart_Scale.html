@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Pexip Smart Scale</title>
+</head>
+
+<body>
+    <h1 id="header">Pexip Smart Scale</h1>
+    <p>Use <strong>section #13&nbsp;</strong>of the lab sheet.</p>
+    <p>Pexip Smart Scale (PSS) allows your Infinity deployment to use transcoding nodes in the Pexip Private Cloud
+        (PPC). The nodes are managed by Pexip on your behalf, but they are dedicated to the use of your deployment
+        alone. Setting things up today requires a conversation with your Pexip representative, so that we can capture
+        details regarding your Infinity networks that would need to connect to the PSS nodes, and your required
+        capacity. A network needs to be defined between your Infinity deployment and the Pexip Private Cloud hosted in
+        the Google Cloud Platform (GCP), specifically, you will require a Virtual Private Network (VPN) connection
+        allowing your Infinity deployment to route to the PPC. This VPN will either be an IPsec tunnel (if your Infinity
+        deployment is <u>not</u> hosted in GCP) or a VPC Peering connection (if your Infinity deployment <em>is</em>
+        hosted in GCP). The Infinity Proxying Edge nodes need to route directly to the PSS nodes without any NAT in
+        between, often requiring the definition of an additional static route, which is the same rule for deploying any
+        Infinity nodes. In other words, Infinity nodes and PSS nodes need to see a flat network to each other.</p>
+    <p>For this training lab, we have already created this site-to-site VPN using an IPsec tunnel between the training
+        lab network and the Virtual Private Cloud (VPC) in GCP where the PSS nodes will be located. However, as the Edge
+        nodes use a dual NIC configuration, you will need to define a static route in the Infinity configuration between
+        the Edge node and the PSS network to enable the Edge node to create an Infinity IPsec connection to the PSS
+        nodes, allowing for the routing of media and other management traffic. Essentially, there is the Infinity IPsec
+        connection encapsulated within the site-to-site IPsec tunnel (a double IPsec encapsulation), thus the MTU in
+        each of the System Locations needs to be adjusted to ensure there is no fragmentation of packets.</p>
+    <p>There is no direct route from the PSS nodes to the Internet either, so things like external DNS and NTP may not
+        be reachable from the PSS nodes if configured incorrectly on the PSS System Location.</p>
+    <p>Next, you will need to enable Pexip Smart Scale in the Global settings.
+        Use<strong>&nbsp;section #13&nbsp;</strong>of the lab sheet to fill in the correct information for your
+        deployment.&nbsp;Once enabled, ensure that the Management Node icon (top left of Live View shows as green (<img src="../../images/Mgt_node_live_view_icon.png" alt="image">), indicating that the Management node can connect to the PSS gateway and that
+        there are no alarms.</p>
+    <p>You can then create a System Location (just as you did for the LAN and DMZ System Locations), which will be used
+        to contain the PSS nodes. Make sure the DNS and NTP servers you configure are reachable by the PSS nodes, the
+        default route is via the VPN. It&rsquo;s worth noting that the MTU setting on this location should be set to
+        1460 bytes, to ensure that you have no fragmentation through the VPN. The MTU is capped in GCP automatically,
+        but we think it&apos;s good practice to set it in this location. Further, all other locations that will contain
+        nodes that connect to the PSS nodes (i.e. ANY location that contains transcoding nodes, or a Proxying Edge
+        location that uses PSS for transcoding/overflow), should also be configured with an MTU of 1460.</p>
+    <p>Now you can create your PSS location. Assuming your Management Node can connect and authenticate to the PSS
+        Gateway (that you defined in the global settings), you will be able to select the GCP region that you want to
+        use for the PSS nodes. Which regions you see will depend on your subscription. Use<strong>&nbsp;section
+            #13&nbsp;</strong>of the lab sheet to define the correct region and the maximum HD calls that you want to
+        handle, then&nbsp;associate it with the System location you have just created. <strong>Once saved, don&rsquo;t
+            forget to enable the PSS location</strong>.</p>
+    <p>Now you need to wait a while as the PSS nodes are automatically deployed (this could be 20 mins). You will
+        eventually see a large green circle in Live View, and double-clicking into the circle will display the nodes
+        that have been deployed for you and their status. Note, that there are three nodes in a PSS location; one node
+        will be always on while the others are in a suspended state, waiting to be activated when capacity requirements
+        increase.</p>
+    <p>The last thing you need to do is define how the DMZ and LAN System Locations will use the PSS transcoding
+        resources. We suggest that initially, you set the primary overflow location of your DMZ and LAN System Locations
+        to use PSS. When calls are directed toward the Proxying Edge node or Internal Transcoding nodes, if the LAN
+        transcoding resources are full, then Infinity will overflow and use the transcoding resources of the PSS nodes.
+        Of course, you could always use PSS as the ONLY transcoding location (although you should think about what that
+        might mean for the LAN location and nodes).</p>
+    <p>For more information, please read the documentation page at <a
+            href="https://docs.pexip.com/admin/smart_scale.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/smart_scale.htm</a>.</p>
+</body>
+
+</html>

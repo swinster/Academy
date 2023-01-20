@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+<title>OTJ Additional Material</title>
+</head>
+
+<body>
+	<p><h1 id="header">Additional Material</h1></p>
+	<p>To support your OTJ Exchange integration, below are some useful PowerShell command snippets you can use:</p>
+	<p><strong>Upgrade of packages for PowerShell</strong><br>
+	<a href="https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-7">https://docs.microsoft.com/en-us/powershell/scripting/gallery/installing-psget?view=powershell-7</a></p><br>
+	<p><strong>Updating PowerShell TLS Version 32 bit version:</strong><br>
+	<div class="code">Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord</div></p><br>
+	<p><strong>Updating PowerShell TLS Version 64 bit version:</strong><br>
+	<div class="code">Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NetFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Value '1' -Type DWord</div></p><br>
+	<p><strong>Checking PowerShell TLS version:</strong><br>
+	<div class="code">[Net.ServicePointManager]::SecurityProtocol</div></p>
+</body>
+</html>

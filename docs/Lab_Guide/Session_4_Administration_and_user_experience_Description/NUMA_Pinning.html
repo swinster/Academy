@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Extra Credit: NUMA Pinning</title>
+</head>
+
+<body>
+    <h1 id="header">NUMA Pinning</h1>
+    <p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+    <p>Use <strong>section #3&nbsp;</strong>of the lab sheet.</p>
+    <p>Go to <a class="general" href="https://docs.pexip.com" target="_blank" title="Pexip Docs">https://docs.pexip.com</a> <strong>--&gt;
+            Installation&nbsp;</strong><strong>--&gt; VMware Installation&nbsp;</strong><strong>--&gt; VMware NUMA
+            Affinity</strong> (or just search <strong>NUMA pinning</strong> in the docs, you should be fluent at this by
+        now).</p>
+    <p>Follow the instructions but be sure to adjust for the number of actual physical cores for your allocated NUMA
+        node on your server. See Lab sheet <strong>section #3</strong> &ndash; if no NUMA node is specified, you have
+        the whole server for your group. If you require further clarification, ask your trainer.</p>
+    <p>As your Management Node is on the same server (perhaps even a single NUMA node), ensure you take account of its
+        requirements too.</p>
+    <p>Make a CPU budget of how you plan to deploy. Consult your trainer if you would like some confirmation that you
+        are on the right path (HINT: our docs say that you should only configure this with one node per socket, however,
+        in the lab we will take some artistic licence as there will be multiple nodes per socket, so the goal here is to
+        see if you can get the procedure correct).</p>
+    <p>&nbsp;</p>
+</body>
+
+</html>

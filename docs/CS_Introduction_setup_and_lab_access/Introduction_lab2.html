@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../js/jquery-3.4.1.min.js"></script> 
+<script src="../js/popper.min.js"></script> 
+<script src="../js/bootstrap-4.4.1.js"></script>
+<title>Introduction</title>
+</head>
+
+<body>
+<h1 id="header">Introduction</h1>
+<section>
+    <p>Congratulations on making it this far &#128079;. By now, you will have completed the essential steps required to plan, design, deploy and configure a basic Infinity system. However, we left a couple of things out of the previous lab that will stop your deployment from fully functioning. </p>
+    <p>This lab is the second of two in the CTA Level 1 path. The primary goal of this lab is to show you the next few steps to complete your Infinity deployment and, at the same time, look a little deeper at some of the other fundamental Infinity services. To get your deployment fully functioning and prepped for what lies ahead, you will need to secure the platform with TLS certificates and enable an enterprise-friendly administration login through LDAP.</p>
+    <p>We have modified the topology diagram to add a public CA certificate server, which will be used to issue the TLS certificate applied to the edge node, and show that devices will register to and call into the Infinity deployment. In addition, you will create internal TLS certificates using the pre-existing Windows Domain Controller that includes Active Directory Certificate Services (ADCS). Also, note the inclusion of a Skype for Business federated client added to the public internet. You will be able to place a call from any external Skype for Business system that supports open federation once your external TLS certificate is in place and correctly configured.</p>
+    <p><img src="../images/Infinity_Lab_2_Topology.png" alt="High-level Topology" title="High-level Topology"/></p>
+    <p>As before, this <strong>lab guide</strong> is broken into tasks, and each task has two main components (most of the time):</p>
+    <ul>
+        <li>
+            <p>Each task has a “step-by-step” set of instructions to help you complete the required configurations and testing. This tells you “<em>What</em>" to do, but not "<em>Why</em>" you are doing it.</p>
+        </li>
+        <li>
+            <p>At the top of each page, there is usually a “<strong>More Info</strong>” button. You should take time to read this descriptive text that pops up when you click this button as it provides background information to the lab exercises, along with why you might deploy, configure and administer Infinity in the way we suggest.</p>
+            <p>As an additional challenge, users that have previous experience with Pexip could attempt to deploy and configure Pexip using the information in this section alone (i.e. do NOT follow the step-by-step guide 😱).</p>
+        </li>
+    </ul>
+    <p>As an accompaniment to the lab guide, there is a <strong>lab sheet</strong> containing all the necessary details (such as IP addresses, FQDNs, etc.) that you will use to configure your deployment. At the top of each task in the lab guide, there is usually a paragraph outlining the lab sheet section that relates to the task.</p>
+    <p>Each task  refers to the relevant lab sheet section if required. For your information, we have tried to keep the usernames consistent and passwords simple, with <em>most</em> passwords set to a common value that you can see in the lab sheet.</p>
+    <p>Please refer continuously to <a href="https://docs.pexip.com" title="Pexip Infinity Technical Documentation" target="_blank">https://docs.pexip.com</a>, our official technical documentation site for Pexip Infinity. In addition, we will provide you with links in each section to various documentation pages where appropriate.</p>
+</section>
+</body>
+</html>

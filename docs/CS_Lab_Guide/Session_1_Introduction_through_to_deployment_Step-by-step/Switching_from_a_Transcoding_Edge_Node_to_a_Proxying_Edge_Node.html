@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Switching from a Transcoding Edge Node to a Proxying Edge Node</title>
+</head>
+
+<body>
+<h1 id="header">Switching from a Transcoding Edge Node to a Proxying Edge Node</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<img src="../../images/transcoding_to_proxy.png" width="150" height="101" alt=""/>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>No specific lab sheet section.</p>
+<section>
+    <p>Before we switch the role type on this node, let's re-look  at the firewall configuration required to allow these nodes to talk to each  other in the first place. </p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/75975199-7d5f-4448-90ef-fc1482b7d510/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<p><strong>NOTE:</strong> the reason for deploying the edge node initially in the Transcoding role, then changing it to a Proxying Edge role, is to help <em>you</em> understand the underlying Infinity components and their operation. You are in this lab to learn Infinity after all 😊. Therefore, it would be best not to consider this a typical deployment scenario; instead, you would deploy your edge nodes directly in the proxying role and configure their location appropriately.</p>
+<p>Before starting, place a single call into your VMR via the Edge node from your laptop (outside the Jumpbox session). In Live View, you should see something similar to the image below:</p>
+<p>&nbsp;<img src="../../images/Liveview_VMR_trascoding_edge.png" alt="Live View showing a single user connecting to a VMR service with the edge node in the Transcoding role" title="Live View showing a single user connecting to a VMR service with the edge node in the Transcoding role"/></p>
+<p>And if you drill down into the VMR service, you should see:</p>
+<p>&nbsp;<img src="../../images/Liveview_VMR_drilldown_transcoding_edge.png" alt="Conferencing graph showing a single user connected to a VMR service with the edge node in the Transcoding role" title="Conferencing graph showing a single user connected to a VMR service with the edge node in the Transcoding role"/></p>
+<p>Note that a single line connects the VMR service (or participant) to the Conferencing Node and that the node shows a high media load of 25% (as transcoding is resource intensive). This node is currently transcoding media from the external participant, and the internal Conferencing Node resources in the LAN are idle.</p>
+<section>
+    <p>Change the  Transcoding Edge Node into a Proxying Edge Node:</p>
+    <ol>
+        <li>Navigate to <strong>Platform --&gt; Conferencing Nodes</strong>, then click on your <strong>Edge node</strong>.</li>
+        <li>Change the <strong>Role</strong> to a <strong>Proxying Edge Node</strong> and <strong>Save</strong> the configuration.</li>
+    </ol>
+    <p>Note the warning saying that the DMZ location now contains no transcoding resource (also note that Infinity doesn't yet raise a system-level alarm regarding this issue, but you can see the problem when navigating to <strong>Status --&gt; Locations</strong>). Of course, this is true, so we need to update this location to use resources elsewhere.</p>
+    <p>&nbsp;</p>
+    <p>Change the DMZ Location to use the transcoding resource of the LAN Location:</p>
+    <ol>
+        <li>Navigate to <strong>Platform --&gt; Locations</strong> (note the problem in the <strong>Transcoding resources</strong> column, then click on the <strong>DMZ</strong> location.</li>
+        <li>Change the <strong>Transcoding location</strong> to <strong>LAN</strong> and <strong>Save</strong> the configuration.</li>
+        <li>Wait 1 minute for the changes to replicate.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Re-run the test call into the VMR service via the edge node as outlined above. Note the difference between the current Live View and conference graph, and the previous results. </p>
+    <p>Connect a second call via an internal node using a browser bookmark within the Jumpbox session. You should note that the user experience is identical to what was seen previously.</p>
+    <p>You can connect another device into the same VMR service via the edge node.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check the re-configuration of Pexip Infinity system</h2>
+    <p>Check your system against the screenshots below that show the location's updated Live View and status pages. These show the change in the role and operation of the edge node.</p>
+    <h3 class="main">Screenshot of the main Live View showing a single participant connecting to a VMR service via the edge node:</h3>
+    <p>Note that the blue circle representing the VMR service has a line connecting it to both internal and external nodes. These lines indicate that resources are being used from the LAN and DMZ locations. The call from the external participant lands on the edge node, and its media is proxied to the internal LAN transcoding location.</p>
+    <p>&nbsp;<img src="../../images/Liveview_VMR_proxying_edge.png" alt="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role" title="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role"></p>
+    <h3 class="main">Screenshot of the main Conferencing graph showing a single participant connecting to a VMR service via the edge node:</h3>
+    <p>Note that a line now connects the participant to the edge and internal nodes. The resources used by the edge are much lower (1%) as the node is mainly switching packets and directing them to another transcoding locations. This media redirection allows you to target multiple resource pools (known as overflow locations), which provides a great deal of flexibility in your system design. We will cover configuring overflow locations in a later lab. However, the ability to target transcoding resources in specific areas means that you can now simplfy your compute requirements when thinking about your system design. </p>
+    <p>You will not see any media information if you hover over the line that connects the proxying node to a transcoding node, as Infinity does not show media information on a proxied link today. A proxied link is currently not considered a true backplane, although this may change in a later Infinity release. The backplane that we saw previously, connects two independent transcoding locations.</p>
+    <p>&nbsp;<img src="../../images/Liveview_VMR_drilldown_proxying_edge.png" alt="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role" title="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role"></p>
+    <h3 class="main">Screenshot of the main Conferencing graph showing two participants connecting to a VMR service via the edge node:</h3>
+    <p>When you add another participant to the same VMR service (directly via the internal node), you will see the media load increase in the LAN location. However, the user experience is the same as when both locations were providing transcoding resources. This flexibility allows Infinity to be deployed in many different configurations to suit your requirements.</p>
+    <p>&nbsp;<img src="../../images/Liveview_VMR_drilldown_proxy_edge_two_participants.png" alt="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role" title="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role"></p>
+    <h3 class="main">Screenshot of the main Conferencing graph showing three participants connecting to a VMR service via the edge node:</h3>
+    <p>When you add a third participant to the same VMR service via the edge node, you will see the media load increase further in the LAN location. The graph now becomes more challenging to understand as the media from this third participant is also proxied to the LAN location. Each participant's media sent to a proxying edge node is redirected to the transcoding location and does <strong>NOT</strong> affect other media legs. The proxying edge node does <strong>NOT</strong> proxy media directly between participants and their endpoints.</p>
+    <p>&nbsp;<img src="../../images/Liveview_VMR_drilldown_proxy_edge_three_participants.png" alt="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role" title="Live View showing a single user connected to a VMR service with the edge node in the Proxying Edge role"></p>
+    <h3 class="main">Screenshot of the main Live View showing the updated DMZ node in the Proxying Edge role:</h3>
+    <p>&nbsp;<img src="../../images/Liveview_proxying_edge.png" alt="Updated Proxying Edge Node showing in Live View" title="Updated Proxying Edge Node showing in Live View"></p>
+    <h3 class="main">Screenshot of the System Locations status page showing the transcoding resources defined for each location:</h3>
+    <p><img src="../../images/System_location_status.png" alt="Updated System Location status" title="Updated System Location status"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_1_Introduction_through_to_deployment_Description/Switching_from_a_Transcoding_Edge_Node_to_a_Proxying_Edge_Node.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

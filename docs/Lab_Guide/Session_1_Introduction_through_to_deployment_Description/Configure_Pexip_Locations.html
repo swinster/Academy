@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Configure Pexip System Locations</title>
+</head>
+
+<body>
+    <h1 id="header">Configure Pexip System Locations</h1>
+
+    <p>Use <strong>section #4.1&nbsp;</strong>and<strong>&nbsp;section #5&nbsp;</strong>of the lab sheet.</p>
+    <p>As described in the overview section, you will install two internal Pexip Conferencing Nodes and one externally exposed Pexip Edge Node. These components need to be added to separate Pexip Infinity System Locations. A system location is a way to group nodes in different logical configurations, such as by data centres or (as we will do in our lab) networks segments like LAN and DMZ. Each Pexip system location can have a specific configuration for preferred management services (such as DNS, NTP etc), and individual call control services. This is also where you configure <u>DSCP (QoS)</u> settings and <u>MTU</u>, which means that this configuration applies to all nodes within the System Locaion and you do not specify it per node.</p>
+    <p>The internal system location transcoding resources will be set to &ldquo;<strong>This Location</strong>&rdquo;.
+        The conferencing nodes deployed in this system location will be set up using the &ldquo;<strong>Transcoding
+            Role</strong>&rdquo;. See lab sheet <strong>section #4.1</strong>.</p>
+    <p>For the edge system location (see <strong>section #5</strong>), for this lab it too will be configured with the
+        Transcoding location as “<strong>This Location</strong>&rdquo;. We will initially configure the Edge node
+        in the <u>transcoding role</u>. Later, we will manually change the role of this node and the transcoding
+        resource for the external system location. <strong>NOTE:</strong> You would probably NOT do this in the real
+        world, however for this lab, the process provides a few useful learning points:</p>
+    <ol>
+        <li><u>Pexip Infinity is a fully transcoding solution</u> (as of today). You MUST have a transcoding system
+            location containing transcoding nodes, yet Proxying system locations are optional.</li>
+        <li>Having an external system location setup with Transcoding Nodes is still a valid configuration option. Some
+            customers (for whatever reason) wish to deploy Pexip Infinity in this way. Of course, it would mean more
+            compute resource for the Edge nodes, as transcoding is more compute-intensive. Other deployment types (such
+            as geographically dispersed Service Providers), may only have transcoding locations.</li>
+        <li>We can see that the Conferencing Node software used for the Transcoding Role and the Proxying Edge role is
+            the same. We will simply flip a switch to define how the node behaves.</li>
+        <li>This also outlines that it is possible to switch between transcoding role/system location and proxying
+            role/system location relatively simply, but that the changes need to be performed both on the node (by
+            changing the role) and on the system location (by changing the transcoding resource).&nbsp;</li>
+    </ol>
+    <p>Once the System Locations have been created, you will see some red warning text in the transcoding resources
+        column saying that there are &ldquo;<span class="red">No transcoding resource available</span>&rdquo;. When we add Conferencing Nodes in
+        the Transcoding Role into these locations, these warnings will disappear. It provides useful feedback if you
+        have configured the nodes and locations incorrectly.&nbsp;</p>
+    <p>Please refer to&nbsp;<a
+            href="https://docs.pexip.com/admin/system_locations.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/system_locations.htm</a>.&nbsp;
+    </p>
+    <p><strong>Note:</strong> As you go through the deployment guide and use the Pexip GUI, make a note of the Green
+        Plus icons next to some configuration items (see the image below as an example). These allow you to add
+        additional configurations without having to stop the current configuration. For example, when you deploy Nodes
+        in the next section, you could have added a System Location during that process, and Infinity will pop up the
+        additional configuration options.&nbsp;</p>
+    <p><img src="../../images/img1622032547.png" alt="image"></p>
+    
+</body>
+
+</html>

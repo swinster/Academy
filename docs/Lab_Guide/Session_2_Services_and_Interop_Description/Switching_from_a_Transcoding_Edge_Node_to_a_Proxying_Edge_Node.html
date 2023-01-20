@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Switching from a Transcoding Edge Node to a Proxying Edge Node</title>
+</head>
+
+<body>
+    <h1 id="header">Switching from a Transcoding Edge Node to a Proxying Edge Node</h1>
+    <img src="../../images/transcoding_to_proxy.png" width="150" height="101" alt="" />
+    <p>No specific lab sheet section.</p>
+    <p>In the previous session, you deployed nodes in the LAN and the DMZ, and all were Transcoding Nodes (meaning that
+        all Nodes decode incoming media and encode outgoing media). This is useful in some deployments (such as
+        geographically distributed systems or a Service Provider model) as users can join the transcoding location that
+        is closest to them, and Infinity automatically figures out if other users in another location have joined the
+        same conference, so will form a &ldquo;<strong>backplane</strong>&rdquo; between the nodes. The
+        <strong>backplanes</strong> are an important concept in the world of Pexip as they carry media and signalling
+        between the Nodes that are being used to host the same conference, and this is far more efficient on bandwidth
+        than if all users had to connect to a specific location. Multiple transcoding locations are often deployed
+        across geographically dispersed sites and data centres.</p>
+    <p>Ensure you have run a test connection into a VMR using multiple endpoints connecting to the Edge node. Note how
+        the calls are handled by this node in Live View.</p>
+    <p>However, transcoding is compute-intensive and for this traditional LAN/DMZ scenario, it might be more efficient
+        to concentrate compute resources in one location and simply &ldquo;proxy&rdquo; media via the DMZ location
+        toward the LAN Nodes. We outlined that Pexip is a fully transcoding environment, so the proxying edge role in
+        Pexip (as of today) is all about getting media from a remote device to a Pexip transcoding node. It is important
+        to understand that the Proxying Edge role is not about proxying one remote users&rsquo; media <u>directly</u> to
+        another, instead it MUST be directed initially to a transcoding location.</p>
+    <p>To switch to a proxying solution, you need to complete two steps:</p>
+    <ul>
+        <li>The role of the node needs to be changed (from a Transcoding Role to a Proxying Edge role).</li>
+        <li>Then the transcoding resource of the location needs to be updated (to target a location that contains
+            Transcoding Nodes instead of &ldquo;This Location&rdquo;, which will now only contain Proxy node(s).</li>
+    </ul>
+    <p>That&rsquo;s it!</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/edge_guidelines.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/edge_guidelines.htm</a>.
+    </p>
+    <p>You can convert any node and location very simply as the underlying software for each role type is identical,
+        however, each node role has very different compute and host requirements. You should plan for these changes and
+        understand what you might need to alter on the guest VM (such as vCPUs and vRAM within the hypervisor) and
+        understand the knock-on effects it can have on the host. <u>Proxying nodes still require dedicated host
+            resources</u>, we are still dealing with real-time media and overcommitting host resources will end up
+        delivering poor quality and performance. Also, be aware that you cannot mix and match different Conferencing
+        Node role types (Transcoding and Proxying Edge) in the same System Location. Please refer to <a
+            href="https://docs.pexip.com/admin/admin_planning.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/admin_planning.htm</a>
+        and <a class="general" href="https://docs.pexip.com/admin/server_design.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/server_design.htm</a>.
+    </p>
+</body>
+
+</html>

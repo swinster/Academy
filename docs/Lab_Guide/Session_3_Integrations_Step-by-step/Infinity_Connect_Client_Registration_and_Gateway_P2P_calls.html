@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+
+    <title>Infinity Connect Client Registration and Gateway P2P calls</title>
+</head>
+
+<body>
+    <h1 id="header">Infinity Connect Client Registration and Gateway P2P calls</h1>
+	<p>Suggested completion time: <strong>40 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #4.2&nbsp;</strong>of the lab sheet.</p>
+    <p>To register a device to Infinity:</p>
+    <p>Configure Infinity to accept the registration:</p>
+    <ol>
+        <li>Setup a Device Alias, click <strong>Users &amp; Devices&nbsp;</strong><strong>--&gt; Device
+                Aliases</strong>, then click <strong>Add Device Alias</strong>.</li>
+        <li>Add the following Information:<ol>
+                <li>Device alias (mandatory): add an alias that would usually look like a URI, for
+                    example:<br>&nbsp;<span class="code">&lt;name&gt;@<strong>&lt;Pexip infinity
+                            domain&gt;</strong></span><strong> <br>&nbsp;<br>&nbsp;</strong>Ensure it does not clash
+                    with any other alias already configured on your system.</li>
+                <li>Enable Infinity Connect registration (non-SSO): <strong>Checked</strong>.</li>
+                <li>If you would like other devices using alternative protocols to register to Infinity, then select as
+                    appropriate. <strong>NOTE:</strong> if you would like an H.323 device to register, you will likely
+                    need to configure two aliases per device; the <strong>H.323 ID</strong> and <strong>E.164</strong>
+                    number. BOTH these aliases need to match what is configured on the endpoint to allow the device to
+                    register successfully.</li>
+                <li>Add a <strong>username</strong> and <strong>password</strong>. For consistency, the username is
+                    often the same as the alias of the device (although could be just the user part, for example).</li>
+            </ol>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure the Connect client to register to Infinity:</p>
+    <ol>
+        <li><a class="general" href="https://www.pexip.com/apps#hs_cos_wrapper_widget_1560411911667_" target="_blank"
+                title="Infinity Connect client download">Download and install</a> the <strong><u>Connect</u></strong>
+            client for Infinity on <u>your</u> computer (not the RDP server, and not the MMV client used by the Pexip
+            Service).</li>
+        <li>Once installed, open the <strong>Settings</strong> (click the three dots &middot;&middot;&middot;), then
+            click <strong>Registrations</strong>.</li>
+        <li>Registration Host: <strong class="code">&lt;Pexip infinity domain&gt;</strong> (this works due to PexApp SRV
+            records inserted in the DNS namespace that resolve to your Edge node, and of course you could have multiple
+            Edge nodes for redundancy, so multiple SRVs).</li>
+        <li><strong>Alias</strong>, <strong>username,</strong> and <strong>password</strong>: configured as above in
+            Infinity.</li>
+    </ol>
+    <p>If you would like to register other devices to Pexip, you can use the same alias or create other aliases as you
+        wish.</p>
+    <p>&nbsp;</p>
+    <p>To allow calls <strong>to</strong> registered devices (<u>where options are <strong>not</strong> listed below,
+            defaults given in the rule should be used</u>):</p>
+    <ol>
+        <li>Add a Routing Rule, click <strong>Services&nbsp;</strong><strong>--&gt; Call Routing</strong>, then click
+            <strong>Add Call Routing Rule</strong>.</li>
+        <li>Add the following Information:<ol>
+                <li>Name: <strong>Calls toward Registered Devices</strong>.</li>
+                <li>Priority: <strong>100</strong>.</li>
+                <li>Outgoing calls from a conference: <strong>Checked</strong> (this allows devices to be called
+                    directly from a VMR).</li>
+                <li>Destination alias regex match: <strong class="code">.+@&lt;Pexip infinity
+                        domain&gt;</strong><br>(don&rsquo;t forget to <span class="highlight">escape</span> any periods
+                    in your domain in the RegEx pattern, e.g. .<span class="code">+@example</span><span
+                        class="highlight">\.</span><span class="code">com </span>)</li>
+                <li>Call target: <strong>Registered devices only</strong>.</li>
+            </ol>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>To dial <strong>from</strong> registered devices and VMRs to any external H.323 devices (<u>where options are
+            <strong>not</strong> listed below, defaults given in the rule should be used</u>):</p>
+    <ol>
+        <li>Add a Routing Rule, click <strong>Services&nbsp;</strong><strong>--&gt; Call Routing</strong>, then click
+            <strong>Add Call Routing Rule</strong>.</li>
+        <li>Add the following Information:<ol>
+                <li>Name: <strong>Calls from registered devices and VMRs to external H.323 systems via the DMZ</strong>.
+                </li>
+                <li>Priority: <strong>190</strong>.</li>
+                <li>Outgoing calls from a conference: <strong>Checked</strong> (this allows devices to be called
+                    directly from a VMR).</li>
+                <li>Match incoming calls from registered devices only: <strong>Checked</strong>.</li>
+                <li>Destination alias regex match:<br>
+                    <span
+                        class="code">^([1-9][0-9]?|1[0-9]{2}|2[01][0-9]|22[0-3])(\.([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])){3}$</span>
+                </li>
+                <li>Call target: <strong>Registered devices or external systems</strong>.</li>
+                <li>Outgoing location: <strong>DMZ</strong>.</li>
+                <li>Protocol: <strong>H.323</strong>.</li>
+            </ol>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>To dial from registered devices and VMRs, to any external SIP devices (<u>where options are <strong>not</strong>
+            listed below, defaults given in the rule should be used</u>):</p>
+    <ol>
+        <li>Add a Routing Rule, click <strong>Services --&gt; Call Routing</strong>, then click <strong>Add Call Routing
+                Rule</strong>.</li>
+        <li>Add the following Information:<ol>
+                <li>Name: <strong>Calls from registered devices and VMRs to external SIP systems via the DMZ</strong>.
+                </li>
+                <li>Priority: <strong>200</strong>.</li>
+                <li>Outgoing calls from a conference: <strong>Checked</strong> (this allows devices to be called
+                    directly from a VMR).</li>
+                <li>Match incoming calls from registered devices only: <strong>Checked</strong>.</li>
+                <li>Destination alias regex match: <strong class="code">(?!.*@&lt;Pexip infinity domain&gt;$).*</strong>
+                </li>
+                <li>Call target: <strong>Registered devices or external systems</strong>.</li>
+                <li>Outgoing location: <strong>DMZ</strong>.</li>
+            </ol>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+    </ol>
+    <hr>
+
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">Testing</h3>
+
+        <p>Before you test, ensure you have waited 1 minute for the configuration changes to synchronise across all the nodes. To test, create call flows that match each of the Routing Rules you have configured. <u>HINT</u>, when a
+            Routing Rule is matched, a Gateway service instance is created, and the name of the service will take on the
+            name of the Routing Rule plus an appended Globally Unique Identifier (GUID). This ensures that each gateway
+            instance can be identified from the other. You can see this in the screenshots below.</p>
+        <p>For outbound SIP and H.323 test sites, try testing against the trainier deployment, VC20.</p>
+        <ul class="decimal_type">
+            <li>SIP &ndash; <a class="general" href="sip:loopback@ciscotac.net">sip:loopback@ciscotac.net</a> (or <a class="general" href="sip:loopback1@ciscotac.net">sip:loopback1@ciscotac.net</a>, or <a class="general" href="sip:loopback2@ciscotac.net">sip:loopback2@ciscotac.net</a>, or <a class="general" href="sip:loopback3@ciscotac.net">sip:loopback3@ciscotac.net</a>).</li>
+            <li>H.323 IP dialing - 71.14.2.157</li>
+            <li><strong>NOTE</strong> - sometimes, these do NOT work as expected, check out the blog post below.&nbsp;</li>
+        </ul>
+        <p>Also check out <a
+                href="https://community.cisco.com/t5/collaboration-voice-and-video/loopback-testing-for-telepresence/ta-p/3156607" target="_blank" title="Cisco Loopback Tests">https://community.cisco.com/t5/collaboration-voice-and-video/loopback-testing-for-telepresence/ta-p/3156607</a>
+            (beware, some addresses may no longer work, although during the previous testing, <a
+                href="sip:loopback@ciscotac.net">sip:loopback@ciscotac.net</a>, 64.102.241.236, and
+            71.14.2.157 worked).</p>
+		<hr>
+		<p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshots 1 and 2: Demonstrate how to successfully configure Pexip Infinity Services</h3>
+
+        <p>There are two tasks to complete here.</p>
+
+        <h4 class="main">Screenshot 1</h4>
+
+        <p>Show the registration of an Infinity Connect desktop application (or external SIP/H.323 system). Grab some
+            screenshots of the registered devices and status in Infinity, for example:</p>
+        <p><strong>A screenshot showing the Pexip Connect desktop client registered successfully to an Infinity platform
+                (notice that the boxes are greyed out, and the button at the bottom says
+                &ldquo;Unregister&rdquo;):</strong></p>
+        <p>&nbsp;<img src="../../images/img1621817142.png" alt="image"></p>
+        <p><strong>A screenshot showing the Registration status on Infinity, indicating that a client has successfully
+                registered:</strong></p>
+        <p><img src="../../images/img162181714273.png" alt="image"></p>
+
+
+        <h4 class="main">Screenshot 2</h4>
+
+        <p>Show call flows that match each of the 3 routing rules you have configured. When a routing rule is matched, a
+            gateway service instance will be created that will inherit the name of the routing rule and append a GUID.
+            Grab some screenshots of the calls as you see them in Live View, don&rsquo;t forget to drill down into the
+            gateway service instance to analyse the participants.</p>
+        <p><strong>A screenshot of the main Live View for an inbound call to a Registered Device:</strong></p>
+        <p><img src="../../images/img162181714239.png" alt="image"></p>
+        <p><strong>A screenshot of the conference graph for an inbound call to a Registered Device:</strong></p>
+        <p><img src="../../images/img162181714292.png" alt="image"></p>
+        <p><strong>A screenshot of the main Live View for a call from a registered device to an external H.323
+                system:</strong></p>
+        <p><img src="../../images/img162181714242.png" alt="image"></p>
+        <p><strong>A screenshot of the conference graph for a call from a registered device to an external H.323
+                system:</strong></p>
+        <p><img src="../../images/img162181714280.png" alt="image"></p>
+        <p><strong>A screenshot of the main Live View for a call from a registered device to an external SIP
+                system:</strong></p>
+        <p><img src="../../images/img162181714222.png" alt="image"></p>
+        <p><strong>A screenshot of the conference graph for a call from a registered device to an external SIP
+                system:</strong></p>
+        <p><img src="../../images/img162181714268.png" alt="image"></p>
+        <p>&nbsp;</p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_3_Integrations_Description/Infinity_Connect_Client_Registration_and_Gateway_P2P_calls.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Enable LDAP management login authentication</title>
+</head>
+
+<body>
+<h1 id="header">Enable LDAP management login authentication</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #2</strong> and <strong>section #9</strong> of the lab sheet.</p>
+<section>
+    <h2 class="main">To configure LDAP Authentication:</h2>
+    <p>Setup the LDAP server connection:</p>
+    <ol>
+        <li>Go to <strong>Users &amp; Devices --&gt; Administrator Authentication</strong>. </li>
+        <li><strong>Authentication source: LDAP database and local database</strong>.</li>
+        <li><strong>Require client certificate: Not required</strong>.</li>
+        <li>Set the <strong>LDAP server address.</strong></li>
+        <li>Leave&nbsp; <strong>Allow insecure transport</strong> <em>unchecked</em> (we like security, and we have just added some trusted TLS certs 😉).</li>
+        <li>Set the <strong>LDAP bind username.</strong><br>
+            <strong>NOTE:</strong> LDAP can be difficult. The bind username should be in the format <span class="code">LDAPServiceAccount@pexipacademy.local</span>. If this fails, try the format <span class="code">pexipacademy\LDAPServiceAccount</span>.</li>
+        <li>Set the <strong>LDAP bind password</strong>.</li>
+        <li>Set the <strong>LDAP base DN.</strong></li>
+        <li>In the <strong>Advanced LDAP configuration</strong> panel, set the <strong>LDAP user search DN</strong> to filter user searching starting from a specific Organisational Unit.</li>
+        <li>In the <strong>Advanced LDAP configuration</strong> panel, set the <strong>LDAP group search DN</strong> to filter secuity group searching starting from a specific Organisational Unit.</li>
+        <li>Click <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Check the LDAP authentication roles (no need to edit):</p>
+    <ol>
+        <li>Go to <strong>Users &amp; Devices --&gt; Administrator Roles</strong>.</li>
+        <li>Two common roles are already defined by default, <strong>read-only</strong> and <strong>read-write</strong>.<br>
+            <strong>NOTE:</strong> You do not need to change anything here but could add different roles to allow more granular permissions.<br>
+        </li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Setup the LDAP role mapping against an AD group:</p>
+    <ol>
+        <li>Go to <strong>Users &amp; Devices --&gt; LDAP Role Mappings</strong>.</li>
+        <li>Configure <strong>two</strong> role mappings (using names like <span class="code">Read/Write Admins</span>, and <span class="code">Read Only Admins</span>).</li>
+        <li>Select the correct <strong>LDAP group DN</strong> &nbsp;from the filtered list for each mapping.</li>
+        <li>Select the <strong>role to map</strong> for each mapping (there are two default administrator roles you can use, "Read-write", and "Read-only").</li>
+        <li><strong>Save</strong>.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>When you have configured the LDAP authentication, it's time to test these privileges. First, log out from the admin account, then log in as each AD user outlined in <strong>section #9</strong>. Ensure you do <strong>NOT</strong> use the domain part in the user name. Next, check your environment against our screenshots (see below).&nbsp;</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Checking your LDAP configuration</h2>
+    <h3 class="main">A screenshot of the LDAP Role Mappings:</h3>
+    <p>&nbsp;<img src="../../images/img1621813184.png" alt="Custom LDAP role mappings" title="Custom LDAP role mappings"></p>
+    <h3 class="main">Screenshots showing the different users logged in:</h3>
+    <p><img src="../../images/img1621813183.png" alt="AD User 1 logged in" title="AD User 1 logged in"><img src="../../images/img162181318455.png" alt="Admin User logged in" title="Admin User logged in"><img src="../../images/img162181318395.png" alt="AD User 2 logged in" title="AD User 2 logged in"></p>
+    <h3 class="main">A screenshot showing  that the logged-in user has read-only privileges:</h3>
+    <p>Note that this user (vc20user2) is unable to edit the properties of the VMR service.</p>
+    <p><img src="../../images/img162181318478.png" alt="Read-only admin rights" title="Read-only admin rights"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Enable_LDAP_management_login_authentication.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

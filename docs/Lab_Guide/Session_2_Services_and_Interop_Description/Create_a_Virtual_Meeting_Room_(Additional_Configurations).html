@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Create a Virtual Meeting Room (Additional Configurations)</title>
+</head>
+
+<body>
+    <h1 id="header">Create a Virtual Meeting Room (Additional Configurations)</h1>
+    <p>Use <strong>section #4.2&nbsp;</strong>of the lab sheet.</p>
+    <p>In this step, you will create more VMRs and re-test the conferences. Again, work with one user connected to the
+        edge node and one to the internal node and remember to check out <strong>Live View</strong> to see how things
+        are different this time around.</p>
+    <p>Please also refer to <a
+            href="https://docs.pexip.com/admin/about_aliases.htm">https://docs.pexip.com/admin/about_aliases.htm</a>,
+        which outline many of the ways Pexip can match incoming calls.</p>
+    <p>&nbsp;</p>
+    <p>Create 5 different VMRs with different options.</p>
+    <ul>
+        <li>Create a secure VMR to allow some users to manage the conference.
+            <ul>
+                <li>One team member enters the host pin, and another the guest pin.</li>
+                <li>See what the differences are for each users&rsquo; in-conference capabilities.</li>
+            </ul>
+        </li>
+        <li>Create a semi-secure VMR allowing easy access for guests.
+            <ul>
+                <li>The first user (guest) joins the conference, enters the lobby, and waits.</li>
+                <li>The next user (host) connects to the VMR, enters the lobby and enters the host pin to start the
+                    meeting.</li>
+            </ul>
+        </li>
+        <li>Create a secure VMR only for C level users.
+            <ul>
+                <li>One user enters the host pin, then the next user enters the host pin as well.</li>
+                <li><u>Both</u> users are now connected to the VMR with the same rights.</li>
+            </ul>
+        </li>
+        <li>Create a VMR to show two main speakers but do not allow presentation.
+            <ul>
+                <li>When the two users are connected to the VMR you will see a different layout.</li>
+                <li>Add more friends (PexEps) to test the layout with more people.</li>
+                <li>Now try to share your screen.</li>
+            </ul>
+        </li>
+        <li>Create a VMR to show participant names and limit the room capacity to 3.
+            <ul>
+                <li>When the two users are connected to the VMR, the name of the participant is displayed below each of
+                    their video feeds.</li>
+                <li>Try to bring in your PexEp friends from earlier.</li>
+            </ul>
+        </li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>Make sure you also test different layouts (such as Adaptive Composition) in different VMRs. These are set per
+        VMR, so all users receive the same layout. You can set the default layout by configuring the
+        “<strong>View</strong>” option.&nbsp;</p>
+    <p><strong>NOTE:</strong> in a later task, we will customise the WebApp branding and add a plugin that allows a host to change this default layout from the controls in the client.</p>
+<p>&nbsp;</p>
+</body>
+
+</html>

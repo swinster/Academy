@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Edit and Use a Test Call Service</title>
+</head>
+
+<body>
+<h1 id="header">Edit and use a Test Call service</h1>
+<p>Suggested completion time: <strong>15 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>To edit the pre-existing Test Call Service, go to <strong>Services </strong><strong>--&gt;</strong><strong> Test Call Service:</strong></p>
+    <ol>
+        <li>Click the already existing test call service, part of the default out-of-box Pexip deployment.</li>
+        <li>Edit the first alias to be "<span class="code">testcall</span>”.</li>
+        <li>Add a second alias of "<span class="code">testcall@<strong>&lt;Pexip Infinity domain&gt;</strong></span>", using the lab sheet <strong>section #4.2</strong> to find your Pexip domain.<br>
+         <strong>NOTE: </strong>This lab uses different internal and external domain namespaces. The internal domain namespace is <span class="code">pexipacademy.local</span>, and the external domain used is unique for your specific lab environment (as noted in <strong>section #4.2</strong> of the lab sheet). You only need to use the <em>external</em> <span class="code">Pexip Infinity domain</span> for aliases applied to the configured services (such as this Test Call service). This is because even internally connected devices are likely to call one domain alias, and it is often easier for users to remember the external domain used by an organisation. Internal calls will work perfectly fine with the correct call control configuration and device registration.</li>
+        <li>Click <strong>Save.</strong></li>
+        <li>Remember to wait 1 minute for the change to replicate to all nodes (certainly in versions up to v26, v27 and above should be quicker).<br>
+            <br>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing the test call service</h2>
+    <p>Connect to the Test Call Service by dialling <span class="code">testcall@<strong>&lt;Pexip Infinity domain</strong></span> &nbsp;from an endpoint, or simply <span class="code">testcall</span> from a WebRTC client.</p>
+    <ol>
+        <li><strong>To place an internal call:</strong> For webRTC, browse to an internal Conferencing Node using a browser bookmark  within the Jumpbox session.<br>
+            <strong>NOTE:</strong> you will need to accept the browser security warning as the nodes will only have a self-signed certificate assigned (we will fix this in a later task).<br>
+            <strong> NOTE2:</strong> the Jumpbox server has a virtual camera installed, allowing you to send a test video stream.</li>
+        <li><strong>To place an external call:</strong> From an external endpoint (if available to you) <em>or</em> another webRTC client <strong>outside of the Jumpbox</strong> session by browsing to the FQDN of the DMZ node <u>from your own laptop</u>.<br>
+            <br>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check your working Pexip Infinity deployment</h2>
+    <p>Place calls into the Test Call service from different endpoints. For example, ensure you place at least one call through the LAN location and another call into the same service is through the DMZ location. If you can do this simultaneously, brilliant, but you only have 30 seconds to place both calls and view the results in Live View.</p>
+    <ul>
+        <li>You can connect to an internal node using a browser bookmark within the Jumpbox session  (you will have to accept the warning for now).</li>
+        <li>Connect to the DMZ node outside  the Jumpbox session from <em><u>your</u></em> laptop or mobile device.</li>
+    </ul>
+    <p>Check the screenshots below to see if your deployment shows similar results. Then, in Live View, drill down into the Test Call services, but you need to be quick as these calls only last a short while. However, even if you miss the calls showing in Live View in real-time, you can use the <strong>timeline</strong> feature (at the bottom of Live View) to go back in time. Also, check out how things look from the end user's point of view.</p>
+    <h3 class="main">Screenshot of the main Live View showing a Test Call service, with users connected to the DMZ and LAN
+        nodes:</h3>
+    <p>Try to understand what the Live View graph shows. For example, two users have connected to a single Test Call service. Each user will NOT see each other, but Infinity recognises that both users connect using an alias defined in the service. In this case, one user has connected to the edge node, and another has connected to an internal node. It is not clear from this image which user has connected to where, so we can drill down into the service ball to see what is happening  (see next image).</p>
+<p><img src="../../images/Liveview_Testcall.png" alt="Live View showing two participants in a Test Call service" title="Live View showing two participants in a Test Call service"></p>
+    <h3 class="main">Screenshot of the conference graph of the Test Call service showing individual participants connected in different locations (notice how the participants are split across locations even though there is a single service instance in operation):</h3>
+    <p>This Live View graph shows the individual users connected to the Test Call service simultaneously, and the Conferencing Nodes used to handle their media. Try hovering over different elements on the graph, such as the line connecting the participant to the Conferencing Node, which shows perceived call quality and packet loss overview. You can drill down further by double-clicking on a participant to see more detail about this specific call leg. In addition, clicking on the Participants tab shows more information about all participants connected to the service, where you can also drill down into individual call details.</p>
+<p><img src="../../images/Liveview_Testcall_drilldown.png" alt="Live View conference graph showing two participants in a Test Call service with the edge node in the Transcoding role. " title="Live View conference graph showing two participants in a Test Call service with the edge node in the Transcoding role. "></p>
+    <h3 class="main">Screenshots of the user experience in the Test Call Service:</h3>
+    <p><img src="../../images/img162178807820.png" alt="End-user experience for a participant in a Test Call service - 1" title="End-user experience for a participant in a Test Call service - 1"><img src="../../images/img162178807831.png" alt="End-user experience for a participant in a Test Call service - 2" title="End-user experience for a participant in a Test Call service - 2"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_1_Introduction_through_to_deployment_Description/Edit_and_Use_a_Test_Call_Service.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

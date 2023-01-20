@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>NUMA Affinity</title>
+</head>
+
+<body>
+<h1 id="header">NUMA Affinity</h1>
+<p>Step-by-step page – None (you are on your own now &#128522;).
+<section>
+    <p>Use <strong>section #3 </strong>of the lab sheet.</p>
+    <p>Go to <a class="general" href="https://docs.pexip.com" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com</a><strong> --&gt; Installation --&gt; VMware Installation --&gt; VMware NUMA Affinity</strong> (or just search <strong>NUMA pinning</strong> in the docs, you should be fluent at this by now).</p>
+    <p>Follow the instructions but be aware that the ESXi host doesn't  support hyperthreading in this lab, so this is more about understanding the  procedure involved. See Lab sheet <strong>section #3</strong>. If you require further  clarification, ask your trainer.</p>
+    <p>As your Management Node is on the same server, ensure you  take account of its requirements too.</p>
+    <p>Make a CPU budget of how you plan to redeploy your VM nodes.  Then, consult your trainer if you would like confirmation that you are on the  right path. </p>
+    <p><strong>HINT:</strong> our docs say you should only configure affinity  with one node per socket. However, in the lab and due to restrictions on the  ESXi host, we will take some &quot;artistic licence&quot; as there will be  multiple nodes per socket, so the goal here is to see if you can get the  procedure correct.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

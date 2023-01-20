@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Microsoft Teams Integration</title>
+</head>
+
+<body>
+<h1 id="header">Microsoft Teams Integration</h1>
+<p>Suggested completion time: <strong>40 minutes</strong></p>
+<img src="../../images/Microsoft_Teams_Logo_and_Conector.png" width="337" height="91" alt="" />
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #13</strong> of the lab sheet.</p>
+<section>
+    <h2 class="main">Initial setup of the Pexip Infinity deployment</h2>
+    <p>First, configure your Pexip Infinity deployment with the  integration details of the Teams connector:</p>
+    <ol>
+        <li>Install the Teams license (<strong>Platform&nbsp;--&gt; Licenses</strong>). Depending  on the license keys used, you may not need to do this.</li>
+        <li>Configure your Microsoft Teams Tenant (<strong>Call Control</strong> --&gt; <strong>Microsoft Teams Tenant</strong>)
+            <ol>
+                <li><strong>MS Teams Tenant Name</strong>: Pexip.net Training Teams Tenant</li>
+                <li><strong>MS Teams Tenant ID</strong>: <span class="code">7312139c-2192-4492-bdf2-7222daec4108</span></li>
+            </ol>
+        </li>
+        <li>Add a Teams Connector (<strong>Call Control --&gt; Microsoft Teams
+            Connectors</strong>):
+            <ol>
+                <li><strong>Teams Connector Name: </strong>Training Teams Connector</li>
+                <li><strong>Teams Connector FQDN</strong>: <span class="code">pexip-teamsconn.teams.pexip.net</span></li>
+                <li><strong>Teams Connector Port</strong>: <span class="code">443</span><br>
+                    <p><strong>NOTE:</strong> In an actual deployment, you should check the <strong>Enable  Azure Event Hub</strong> property and fill in the <strong>Azure Event Hub connection  string</strong> to provide enhanced   monitoring and scheduled control of the  Teams Connector VMSS instances. However, leave this setting alone in this lab as  multiple Infinity deployments are pointing to the same Teams Connector, and  there should only be one deployment in charge.</p>
+                </li>
+            </ol>
+        </li>
+        <li>Assign the Teams Connector to a Location (<strong>Platform --&gt; Locations</strong> and
+            select
+            the required location).</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Setting up Pexip to act as a gateway to Teams</h2>
+    <h3 class="main">Creating the Virtual Reception (lobby) for indirect dialling into a Teams meeting:</h3>
+    <p>To configure the&nbsp;Virtual Reception:</p>
+    <ol>
+        <li>Add a Teams Virtual Reception (<strong>Services --&gt; Virtual Receptions</strong>).</li>
+        <li>Then enter the <strong>Name</strong>, &quot;Teams VR&quot;.</li>
+        <li>Select the correct <strong>Virtual reception type</strong>: <span class="code">Microsoft Teams</span>.</li>
+        <li>Select the <strong>Teams Connector</strong> you have just created.</li>
+        <li>Set the <strong>Lookup Location</strong> to be your <strong>DMZ</strong> location.</li>
+        <li>Set the <strong>Post-lookup RegEx match</strong> to <span class="code">(.*)</span>.</li>
+        <li>Set the <strong>Post lookup RegEx replace string</strong> to <span class="code">teams.\1@&lt;your Pexip
+            Infinity domain&gt;</span>. </li>
+        <li>Add the <strong>Aliases</strong> you wish to use for the VR.<br>
+            <p><strong>NOTE:</strong> You would typically create an alias that matches the Teams Invite IVR URI, set when you create the CVI provider as part  of the <span class="code">New-CsVideoInteropServiceProvider</span> Cmdlet (in the <span class="code">TenantKey</span> and <span class="code">InstructionUri</span> parameters) during the Teams Connector installation. There can be only one Pexip  CVI provider per Microsoft 365 subscription, which means only one IVR can be defined. Given that the MS365 subscription is shared in this lab, this IVR URI points to  the trainer's deployment (<span class="code">teams@vc20-osl.pexip.net</span>) and cannot be altered. However, the VR alias you will use for your lab should match <em>your</em> deployment (e.g. <span class="code"><strong>teams@&lt;Pexip_Infinity_Domain&gt;</strong></span>). We will explain more implications of this when we get to the Testing section.</p>
+            <strong></strong></li>
+        <li><strong>Save.</strong></li>
+    </ol>
+    <p>&nbsp;</p>
+    <h3 class="main">Teams call Routing Rules for direct and indirect routing</h3>
+    <p>Rule 1 &ndash; Trusted Gateway to Teams from the internal network:</p>
+    <p>Options not listed can remain as-is:</p>
+    <ol>
+        <li><strong>Name</strong>: &quot;To Teams from LAN (trusted)&quot;.</li>
+        <li>Select a <strong>Priority</strong> that is NOT currently in use, for example, &quot;20&quot;.</li>
+        <li>Ensure <strong>Incoming gateway calls</strong> is <strong>Selected</strong>.</li>
+        <li>Set <strong>Calls being handled in location</strong> to your <strong>LAN</strong> location. </li>
+        <li><strong>Match incoming calls from registered devices only</strong>: <strong>Unselected</strong>.</li>
+        <li>Select <strong>protocol</strong> matches as appropriate.</li>
+        <li><strong>Destination alias RegEx match</strong>:</li>
+        <p class="code">teams\.(\d{9,12})(@&lt;your Pexip Infinity domain&gt;)?</p>
+        <li><strong>Destination alias RegEx replace string</strong>: <span class="code">\1</span>.</li>
+        <li><strong>Call target</strong>: Microsoft Teams meeting.</li>
+        <li><strong>Outgoing location</strong>: Your Edge Location.</li>
+        <li><strong>Teams Connector</strong>: either<strong>&nbsp;Your Teams Connector&nbsp;</strong>or<strong>&nbsp;leave
+            unselected</strong> (why?).</li>
+        <li><strong>Treat as trusted</strong> is <strong>selected</strong>.</li>
+        <li>Then <strong>Save.</strong></li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Rule 2 &ndash; Trusted gateway to Teams from any network for registered devices:</p>
+    <p>Options not listed can remain as-is:</p>
+    <ol>
+        <li><strong>Name</strong>: &quot;To Teams from Registered devices (trusted)&quot;.</li>
+        <li>Select a <strong>Priority</strong> that is NOT currently in use, for example, &quot;30&quot;.</li>
+        <li>Ensure <strong>Incoming gateway calls</strong> is <strong>Selected</strong>.</li>
+        <li>Set <strong>Calls being handled in location</strong> to <strong>Any</strong> location.</li>
+        <li><strong>Match incoming calls from registered devices only</strong>: <strong>Selected</strong>.</li>
+        <li>Select <strong>protocol</strong> matches as appropriate.</li>
+        <li><strong>Destination alias RegEx match</strong>:</li>
+        <p class="code">teams\.(\d{9,12})(@vcX-osl\.pexip\.net)?</p>
+        <li><strong>Destination alias RegEx replace string</strong>: <span class="code">\1</span>.</li>
+        <li><strong>Call target:</strong> Microsoft Teams meeting.</li>
+        <li><strong>Outgoing location</strong>: Your Edge Location.</li>
+        <li><strong>Teams Connector</strong>: either<strong>&nbsp;Your Teams Connector&nbsp;</strong>or<strong>&nbsp;leave
+            unselected</strong> (why?)</li>
+        <li><strong>Treat as trusted</strong> is <strong>selected</strong>.</li>
+        <li>Then <strong>Save.</strong></li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Rule 3 &ndash; Untrusted gateway to Teams from the External network:</p>
+    <ol>
+        <li><strong>Name</strong>: &quot;To Teams from External (untrusted)&quot;.</li>
+        <li>Select a lower <strong>priority</strong> than the previous rules, that is NOT currently in use, for example,
+            &quot;40&quot;.</li>
+        <li>Ensure <strong>Incoming gateway calls</strong> is <strong>Selected</strong>.</li>
+        <li>Set <strong>Calls being handled in location</strong> to your &quot;<strong>DMZ</strong>&quot; location. </li>
+        <li>Select <strong>protocol</strong> matches as appropriate.</li>
+        <li><strong>Destination alias RegEx match</strong>:</li>
+        <p class="code">teams\.(\d{9,12})(@vcX-osl\.pexip\.net)?</p>
+        <li><strong>Destination alias RegEx replace string</strong>: <span class="code">\1</span><strong>.</strong></li>
+        <li><strong>Call target</strong>: Microsoft Teams meeting</li>
+        <li><strong>Outgoing location</strong>: Your Edge Location</li>
+        <li><strong>Teams Connector</strong>: either<strong>&nbsp;Your Teams Connector&nbsp;</strong>or<strong>&nbsp;leave
+            unselected</strong> (why?)</li>
+        <li><strong>Treat as trusted</strong> is <strong><u>un</u>selected</strong>.</li>
+        <li>Then <strong>Save.</strong></li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p><strong>NOTE:</strong> there is a limitation in this lab exercise as we are using a single Azure tenant and MS365 subscription for all trainees. Ideally, we would use a single tenant for each Infinity deployment, but we have yet to find a practical way to achieve this ☹. This limitation means we can only add one CVI setting, which points to just one Infinity deployment. This deployment is our trainer's demo Infinity system (using the domain <span class="code">vc20-osl.pexip.net</span>). Therefore, all trainees will see Teams Invites targeting this domain rather than your Pexip Infinity Domain. To work around this problem, you can substitute the trainer's domain for your Pexip Infinity domain. For example, the Teams meeting Invite will link to the Virtual Reception <span class="code">teams@vc20-osl.pexip.net</span>, so if you were using the domain <span class="code">big-dog.pexipacademy.cloud</span>, you would use <span class="code highlight">teams@big-dog.pexipacademy.cloud</span>. The alias on your Teams VR should also match this URI.</p>
+    <p>To create a Teams meeting, you need to log in using a Teams client (on your <strong>OWN</strong> laptop/PC, <strong>NOT</strong> in the Jumpbox session) using the credentials outlined in <strong>Section #13</strong> in the lab sheet (ask your trainer for your  VC number). You can do this in several ways. </p>
+    <ul>
+        <li>If you already use a Teams desktop client for your organisation, you could log out of the Teams client and use the lab login details.</li>
+        <li>Use the Teams WebApp (potentially, you may need an incognito browser session) <a href="https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/group-chat-software" title="Microsoft Teams WebApp" target="_blank">https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/group-chat-software</a>. </li>
+        <li><strong>Use the awesome free Portals app</strong> from MyTeams Lab that allows you to set up and test multiple Teams user logins (see <a href="https://www.myteamslab.com/2020/01/portals-for-office-365.html" title="Portals by MyTeams Lab" target="_blank">https://www.myteamslab.com/2020/01/portals-for-office-365.html</a>). If you use this app, I'm sure he would appreciate a  donation.</li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>You can set up a Teams meeting in a couple of ways via the calendar:</p>
+    <h3 class="main">1. Using New Meeting:</h3>
+    <p>Click the <strong>Calendar</strong> Tab, then &quot;<strong>New Meeting</strong>&quot;</p>
+    <p>&nbsp;<img src="../../images/Teams_calendar_new_meeting.png" alt="Create a new Team meeting via the Calendar" title="Create a new Team meeting via the Calendar"></p>
+    <p>You MUST ensure that you add an attendee (such as <em>your</em> email address) otherwise the Teams Meeting invite details will not be added. Even so, these details will not appear until you have saved the invite and re-opened it:</p>
+    <h4 class="main">Initial Meeting invite with no Join instructions:</h4>
+    <p><img src="../../images/Teams_invite_no_join_instructions.png" alt="New Teams meeting invite with no join instructions" title="New Teams meeting invite with no join instructions"></p>
+    <h4 class="main">Meeting Invite re-opened once it has been &quot;Sent&quot;:</h4>
+    <p><img src="../../images/Teams_invite_with_join_instructions.png" alt="Teams meeting invite with join instructions" title="Teams meeting invite with join instructions"></p>
+    <p>E.g, you now see in the body of the message:</p>
+    <blockquote> <strong>Join with a video conferencing device</strong><br>
+        <span class="code">teams@vc20.pexip.net</span><br>
+        Video Conference ID:&nbsp;127 557 862 4<br>
+        <a href="https://edge.vc20-osl.pexip.net/teams/?conf=1275578624&ivr=teams&d=vc20-osl.pexip.net&test=test&prefix=teams.&w">Alternative
+        VTC dialling instructions</a><br>
+        <a class="general" href="" target="_blank">Learn more</a> | <a href="" target="_blank">Meeting options</a> </blockquote>
+    <p><strong>NOTE:</strong> The information seen in the invite is configured  as part of the CVI setup when you run the <span class="code">New-CsVideoInteropServiceProvider</span> CmdLet.  Specifically, the parameters used within this CmdLet that define this information  are (also see <a href="https://docs.pexip.com/admin/teams_connector.htm#interop_service_provider" title="Infinity Technical Docs" target="_blank">https://docs.pexip.com/admin/teams_connector.htm#interop_service_provider</a>):</p>
+    <ul>
+        <li><span class="code"><strong>TenantKey</strong></span><strong> parameter:</strong> This maps to the URI <span class="code">teams@vc20.pexip.net</span> seen under the &quot;<strong>Join  with a video conferencing device</strong>&quot; label.</li>
+        <li><span class="code"><strong>InstructionUri</strong></span><strong> parameter:</strong> This maps to  the <strong>Alternate VTC dialling instructions</strong> link, which targets the trainer's  demo deployment edge node.</li>
+    </ul>
+    <p>As mentioned, there can be only one of these &quot;Pexip&quot; CVI providers per MS365 subscription. <strong><u>So, please ignore the <span class="code">vc20.pexip.net</span> domain you see in the invite and instead use <em>your</em> Pexip Infinity domain.</u></strong>Dialling <em>your</em> domain will, therefore,  route the calls through <em>your</em> Infinity deployment, and if you have set things up correctly, all will work  just fine.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">2. Using Meet Now:</h3>
+    <p>This method is a little clunky, and it may be that Microsoft  will continue to work on this (it has changed a few times recently), but at the  time of writing, you should be able to follow these steps:</p>
+    <p>Click the <strong>Calendar</strong> tab, then <strong>Meet Now</strong>, then <strong>Start
+        Meeting</strong>:</p>
+    <p><img src="../../images/Teams_meet_now_join.png" alt="Team join via Meet now" title="Team join via Meet now"></p>
+    <p>Click <strong>Join Now</strong> (there is a link that says &quot;Other join options&quot;, but
+        it
+        simply seems to turn from purple to white and nothing else). Once in the meeting, Click <strong>More
+        actions</strong> (the three dots in the action bar), then select <strong>Show meeting details</strong>:</p>
+    <p><img src="../../images/Teams_meet_now_additional_steps.png" alt="Team join via Meet now additional steps" title="Team join via Meet now additional steps"></p>
+    <p><strong><u>NOTE:</u></strong> As before, the domain seen will be <span class="code">vc20-osl.pexip.net</span>, and
+        the <strong>Alternate VTC dialling instructions</strong> link will also point to the trainer's demo deployment edge node. <strong><u>Please ignore this and use <em>your</em> Pexip Infinity domain.</u></strong> Dialling <em>your</em> domain will, therefore,  route the calls through <em>your</em> Infinity deployment, and if you have set things up correctly, all will work  just fine.</p>
+    <p>&nbsp;</p>
+    <p>Once the Teams meeting has been created, you can  connect to it in a couple of ways:</p>
+    <h3 class="main">1. Using the indirect Pexip Infinity Virtual Reception to Teams gateway service:</h3>
+    <p>After the Virtual Reception and Call Routing Rules have been  configured, third-party systems and devices can now dial into your Infinity  deployment (e.g. <span class="code">teams@&lt;your Pexip Infinity domain&gt;</span>). When prompted by  the IVR service, enter the meeting code of the Teams conference they want to  join. The Pexip Infinity distributed gateway&nbsp;will then route the call into  the appropriate Teams conference.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">2. Using the direct gateway service:</h3>
+    <p>After the Call Routing Rules have been configured,  third-party systems and devices can dial an alias that matches your specified  pattern (e.g. <span class="code">teams.1234567890@&lt;your Pexip Infinity domain&gt;</span>). Calls  will be routed directly into the appropriate Teams conference (in this example,  the conference with a meeting code of <span class="code">1234567890</span>). </p>
+    <p>In both cases, try dialling from a registered device or  internal client, and an external client to ensure that lobby bypass is working as expected.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check you Pexip Infinity system with a working Microsoft Teams integration.</h2>
+    <p>To ensure you have the Microsoft Teams integration working correctly, check your calls against the screenshots below that show gateway calls in operation in Live View, using the trusted and untrusted connection methods. You should join the same Microsoft Teams meeting for these different devices. Remember to drill down into the gateway call instance in Live View to  see the participant graph.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">A screenshot of the main Live View for an untrusted Gateway instance to Microsoft Teams:</h3>
+    <p><img src="../../images/Liveview_Teams_untrusted.png" alt="Live View showing a Gateway instance for a Microsoft Teams untrusted caller" title="Live View showing a Gateway instance for a Microsoft Teams untrusted caller"></p>
+    <h3 class="main">A screenshot of the graph view of participants in an untrusted Gateway instance to Microsoft Teams:</h3>
+    <p><img src="../../images/Liveview_Teams_untrusted_drilldown.png" alt="Conference graph showing the call from the untrusted gateway instance point-of-view" title="Conference graph showing the call from the untrusted gateway instance point-of-view"></p>
+    <h3 class="main">A screenshot of the main Live View for a trusted Gateway instance to Microsoft Teams:</h3>
+    <p><img src="../../images/Liveview_Teams_trusted.png" alt="Live View showing a Gateway instance for a Microsoft Teams trusted caller" title="Live View showing a Gateway instance for a Microsoft Teams trusted caller"></p>
+    <h3 class="main">A screenshot of the graph view of participants in a trusted Gateway instance to Microsoft Teams:</h3>
+    <p><img src="../../images/Liveview_Teams_trusted_drilldown.png" alt="Conference graph showing the call from the trusted gateway instance point-of-view" title="Conference graph showing the call from the trusted gateway instance point-of-view"></p>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_3_Integrations_Description/Microsoft_Teams_Integration.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

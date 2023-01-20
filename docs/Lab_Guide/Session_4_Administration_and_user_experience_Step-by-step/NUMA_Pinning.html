@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>NUMA Pinning</title>
+</head>
+
+<body>
+    <h1 id="header">NUMA Pinning</h1>
+	<p>Suggested completion time: <strong>20 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #3</strong> of the lab sheet.</p>
+    <p>No step-by-step instructions for this section. –  click the  "<strong>More Info</strong>" button.</p>
+	<p> You will need to take screenshots to evidence the following tasks, see the <strong>Testing</strong> section, below, for full instructions.</p>
+	<p>However, you should think about the following points:</p>
+	<ul>
+	   <li><strong>Concerning the host hardware:</strong>
+	   <ul>
+       <li>What host  are you using?</li>
+          <li>What CPUs are installed?
+            <ul>
+              <li>How many cores do they have?</li>
+              <li>How many logical threads do they have?</li>
+              <li>How many memory channels can they support?<br>
+                You can find this information by Googling the  CPU model, e.g. E5-2620 v4, which should lead you to the Intel Ark database.</li>
+            </ul>
+          </li>
+          <li>How much physical memory is installed? 
+            <ul>
+              <li>What memory channels are populated with DIMMs?<br>
+              </li>
+            </ul>
+          </li>
+        </ul>
+  	  <p>You can find most of this information by looking at the  hosts Summary View in vCentre (see below), TAKE A SCREENSHOT, however, you cannot see the memory  channels that are populated with DIMMs from this view. Your hosts <strong>MUST</strong> have DIMMs in each memory channel otherwise your  Infinity nodes could encounter performance issues (memory "channels" are not the same thing as memory "banks" as multiple banks of DIMMs can form a single channel, and often you will only want one DIMM per channel to give the best performance).  DIMM population can usually be identified by looking at the BIOS of the host, or you  may be able to determine this from a terminal (SSH) session to your host (see the following VMware technical documentation  - <a href="https://kb.vmware.com/s/article/1003587" title="VMware Technical Docs" target="_blank">Determining how much RAM is installed in each slot on an ESX/ESXi host</a>).</p>
+	  <p><img src="../../images/host hardware.png" width="1000" height="821" alt=""/> <br>
+		<br>
+	  </p>
+      </li>
+      <li><strong>Concerning the VM Guests:</strong>
+	  <ul>
+      <li>What VM Guests are running on this host? In this lab, they will all be Pexip nodes, but you might have other VMs running on the same hardware (this is not recommended by Pexip as Infinity nodes should be allocated to dedicated hardware).</li>
+          <li>How many vCPUs are assigned to each guest?</li>
+          <li>How much vRAM has been allocated to each guest?<br>
+			  <p>Again, this information can be found from vCentre by looking at the Summary View of each VM Guest running on the host (see below). For Infinity nodes, you can also find this Infomation via the Management Node GUI (<strong>Status --&gt; Conferencing Nodes</strong>, then click on each <strong>Conferencing Node</strong> to see its status). However, it is often simpler to view this information from vCentre (or whatever Management platform you are using to manage the hypervisors).</p>
+			  <img src="../../images/vm guest hardware.png" width="1000" height="820" alt=""/><br>
+			  <br>
+          </li>
+        </ul>
+	  </li>
+    </ul>
+	<p>Once you have gathered all necessary information, you should be able to determine how the Transcoding Nodes could be resized to take advantage of simultaneous multithreading (hyperthreading) on the CPU. Nodes in the Transcoding role are the compute-intensive nodes, whereas nodes in the Proxing Edge role are concerned with packet switching. Proxying Edge nodes are therefore sized normally with 4 vCPUs and 4GB vRAM (although in larger deployments may be sized to use 8 vCPUs and 8GB vRAM). The Management Nodes should be sized according to your deployment so compute and vRAM may need to be increased as you add more Conferencing Nodes to a deployment (speak with your Pexip representative as you scale up).</p>
+<p>&nbsp;</p>
+    <h3>The current deployment status of this lab:</h3>
+	<ul>
+	    <li>Assuming you have deployed the nodes with the default settings for vCPU and vRAM allocation, each node should have 4 vCPUs and 4GB vRAM.</li>
+	    <li>You should find that the nodes in this state have consumed all the cores of  both sockets on the host.</li>
+    </ul>
+    <p>&nbsp;</p>
+    <h3>To configure NUMA Affinity for this lab:</h3>
+<ul>
+	<li>Transcoding Node 1 and the Management Node should have affinity set to NUMA node 0.</li>
+		<li>Transcoding Node 2 and the Proxying Edge Node should have affinity set to NUMA node 1.</li>
+		<li>Both the Management Node and the Proxying Edge Node should be left at their default 4 vCPU and 4 GB vRAM values.</li>
+		<li>Both Transcoding Nodes should have their vCPU count increased to consume the rest of the threads available to that NUMA node (or CPU socket). <br> 
+        <u><strong>What should this be?</strong></u></li>
+		<li>Both Transcoding Nodes should have their vRAM amount as per out documentation.. <br>
+		    <u><strong>What should this be?</strong></u></li>
+    </ul>
+    <p>&nbsp;</p>
+	<h3>Testing</h3>
+	<p>Note the media capacity of the Transcoding Nodes (in the Management Node GUI) before the change, then note the media capacity of the nodes after the change.</p>
+	<h3 class="main">Screenshot 4: Demonstrate your ability to identify and modify the media capacity of the deployment.</h3>
+	<ul>
+		<li><strong>Take screenshots to demonstrate your ability to identify the media capacity of the Transcoding Nodes (in the vCenter Summary View AND Management Node GUI) before the  change.</strong></li>
+		<li><strong>Take screenshots to demonstrate your ability to identify the media capacity of the Transcoding Nodes (in the vCenter Summary View AND Management Node GUI) after the  change.</strong></li>
+	</ul>
+	
+	<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/NUMA_Pinning.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

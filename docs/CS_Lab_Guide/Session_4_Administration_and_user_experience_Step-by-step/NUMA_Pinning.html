@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>NUMA Pinning</title>
+</head>
+
+<body>
+<h1 id="header">NUMA Affinity</h1>
+<p>Suggested completion time: <strong>20 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #3</strong> of the lab sheet.</p>
+<p>No step-by-step instructions for this section –  click the  "<strong>More Info</strong>" button.</p>
+<section>
+    <p>You previously covered virtualisation and server design in  the Level 1 eLearning, so let's recap those videos before getting stuck into  the practical application setting NUMA Affinity for a virtual machine.</p>
+    <p><strong>Virtualisation Introduction</strong></p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/668105d8-b5fd-4027-ba63-9c9e51ed8d58/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <p><strong>Virtualisation Part 1</strong></p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/668105d8-b5fd-4027-ba63-9c9e51ed8d58/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <p><strong>Virtualization Part 2</strong></p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/d89a981e-354a-4e68-a045-c38a06a5e2d4/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <p>In this task, you will practise the steps required to apply  NUMA affinity to VM guests. We do this to gain more computing power through the  better utilisation of hyperthreading from the host's CPUs. Unfortunately, the  ESXi host used in the lab doesn't reflect a production environment, so there is  no hyperthreading available, but that shouldn't stop you from practising. </p>
+    <p>When attempting to configure your VM guests to gain the most  compute, you should think about the following points:</p>
+    <h3 class="main">Thinking about the host hardware:</h3>
+    <ul>
+        <li>What host  are you using?</li>
+        <li>What CPUs are installed?
+            <ul>
+                <li>How many cores do they have?</li>
+                <li>How many logical threads do they have?</li>
+                <li>How many memory channels can they support?<br>
+                    You can find this information by Googling the  CPU model, e.g. E5-2620 v4, which should lead you to the Intel Ark database.</li>
+            </ul>
+        </li>
+        <li>How much physical memory is installed?
+            <ul>
+                <li>What memory channels are populated with DIMMs?</li>
+            </ul>
+        </li>
+    </ul>
+    <p>You  can find most of this information by looking at the hosts Summary View in  vCentre (see below). However, from this view, you cannot see how the memory  channels are populated with DIMMs. Remember, your hosts <strong>MUST</strong> have DIMMs in each  memory channel; otherwise, your Infinity nodes could encounter performance  issues. Also, remember that memory &quot;channels&quot; are not the same thing  as memory &quot;banks&quot; - multiple banks of DIMMs can form a single  channel, and often you will only want one DIMM per channel to give the best  performance. Checking which DIMMs are populated can usually be done by examining  the BIOS of the host. Alternatively, you may be able to determine this from a  terminal (SSH) session to your host (see the following VMware technical  documentation - <a href="https://kb.vmware.com/s/article/1003587" title="VMware Technical Docs" target="_blank">Determining how much RAM is installed in each slot on an ESX/ESXi host</a>).</p>
+    <p>&nbsp;<img src="../../images/host hardware.png" width="1000" height="821" alt=""/> <br>
+        <br>
+    </p>
+    <h3 class="main">Think about the VM Guests:</h3>
+    <ul>
+        <li>What VM Guests are running on this host? All guest VMs are  Infinity nodes in this lab, but you might have other VMs running on the same  hardware. Pexip does not recommend this as Infinity nodes should be allocated  to dedicated hardware.</li>
+        <li>How many vCPUs are assigned to each guest?</li>
+        <li>How much vRAM has been allocated to each guest?<br>
+        </li>
+    </ul>
+    <p>Again, you can find this information from vCentre by looking  at the Summary View of each VM Guest running on the host (see below). For  Infinity nodes, you can also find this Infomation via the Management Node GUI  (<strong>Status --&gt; Conferencing Nodes</strong>, then click on each <strong>Conferencing Node</strong> to see  its status). However, it is often simpler to view this information from vCentre  (or whatever Management platform you are using to manage the hypervisors).</p>
+    <img src="../../images/vm guest hardware.png" width="1000" height="820" alt=""/><br>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">The current deployment status of this lab:</h2>
+    <ul>
+        <li>An Infinity node deployed with default settings will use  4 vCPUs and 4 GB vRAM.</li>
+        <li>Remember, this lab is about practising the procedures behind  applying NUMA pinning. Unfortunately, the ESXi host doesn&rsquo;t reflect a  production environment as no hyperthreading is enabled.</li>
+        <li>For the sake of this exercise, let's pretend that  hyperthreading is available on this lab ESXi host. You can see that the host  has two sockets and eight cores on each socket. If hyperthreading were available,  you would see a total of 16 vCPUs per socket or a total of 32 vCPUs.</li>
+    </ul>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">To configure NUMA Affinity for this lab:</h2>
+    <ul>
+        <li>Transcoding Node 1 and the Management Node should have affinity set to NUMA node 0.</li>
+        <li>Transcoding Node 2 and the Proxying Edge Node should have affinity set to NUMA node 1.</li>
+        <li>Both the Management Node and the Proxying Edge Node should be left at their default 4 vCPU and 4 GB vRAM values.</li>
+        <li><strong>Now, assume there is a total of 16 vCPUs available per socket.</strong></li>
+        <li>Both Transcoding Nodes should have their vCPU count increased to consume the rest of the threads available to that NUMA node (or CPU socket).<br>
+            <u><strong>What should this vCPU count be?</strong></u></li>
+        <li>Both Transcoding Nodes should have their vRAM amount as per our documentation (1 Gb per vCPU).<br>
+            <u><strong>What should this vRAM amount be?</strong></u></li>
+    </ul>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Please  remember that the ESXi host is NOT a production server in this lab. Therefore,  it is unrealistic to see any additional port count increase on the nodes. In an  actual deployment, you would typically gain 50% in your port count on a node  compared with the same node with no NUMA affinity set.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/NUMA_Pinning.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../js/jquery-3.4.1.min.js"></script> 
+<script src="../js/popper.min.js"></script> 
+<script src="../js/bootstrap-4.4.1.js"></script>
+<title>Introduction</title>
+</head>
+
+<body>
+<h1 id="header">Introduction</h1>
+<section>
+    <p>Well done, everybody. By now, you will have gained all the fundamental skills needed to deploy and configure a Pexip Infinity system, including securing the platform with trusted TLS certificates and enabling multiple administrators to manage the system with different roles. Along the way, you have looked at setting up some of the essential Pexip Infinity services, such as VMRs, VAs and VRs, along with allowing device registrations. You have also reviewed the DNS records required by an endpoint to dial these services and register to the platform.</p>
+    <p>This lab is the first of two in the CTE Level 2 path, but we continue from where we left off in the previous lab. The primary goal of this lab is to understand Infinity's Routing Rules, which not only allow our registered devices to place point-to-point calls but are also at the heart of all typical integrations with third-party services, such as Microsoft Teams, Microsoft Skype for Business, Google Meet and Epic Telehealth.</p>
+    <p>As an administrator, you configure these Routing Rules to enable Infinity to be used as a Gateway, linking an incoming calling device to another endpoint or the third party system. It's essential to mention that Infinity today is a fully transcoding environment, meaning that all calls that pass through Infinity are decoded and re-encoded. Transcoding provides the broadest possible interoperability between all systems. However, the media is still transcoded if two like endpoints connect as a point-to-point call. Should this use case be typical in your proposed design, we recommend using additional third-party call control, such as Cisco's Expressway or Poly's DMA.</p>
+    <p>In the topology diagram, we add third-party systems and show the call flow as devices connect through Infinity to other devices and systems.</p>
+    <p><img src="../images/Infinity_Lab_3_Topology.png" alt="High-level Topology" title="High-level Topology"/></p>
+    <p>As before, this <strong>lab guide</strong> is broken into tasks, and each task has two main components (most of the time):</p>
+    <ul>
+        <li>
+            <p>Each task has a “step-by-step” set of instructions to help you complete the required configurations and testing. This tells you “<em>What</em>" to do, but not "<em>Why</em>" you are doing it.</p>
+        </li>
+        <li>
+            <p>At the top of each page, there is usually a “<strong>More Info</strong>” button. You should take time to read this descriptive text that pops up when you click this button as it provides background information to the lab exercises, along with why you might deploy, configure and administer Infinity in the way we suggest.</p>
+            <p>As an additional challenge, users that have previous experience with Pexip could attempt to deploy and configure Pexip using the information in this section alone (i.e. do NOT follow the step-by-step guide 😱).</p>
+        </li>
+    </ul>
+    <p>As an accompaniment to the lab guide, there is a <strong>lab sheet</strong> containing all the necessary details (such as IP addresses, FQDNs, etc.) that you will use to configure your deployment. At the top of each task in the lab guide, there is usually a paragraph outlining the lab sheet section that relates to the task.</p>
+    <p>Each task  refers to the relevant lab sheet section if required. For your information, we have tried to keep the usernames consistent and passwords simple, with <em>most</em> passwords set to a common value that you can see in the lab sheet.</p>
+    <p>Please refer continuously to <a href="https://docs.pexip.com" title="Pexip Infinity Technical Documentation" target="_blank">https://docs.pexip.com</a>, our official technical documentation site for Pexip Infinity. In addition, we will provide you with links in each section to various documentation pages where appropriate.</p>
+</section>
+</body>
+</html>

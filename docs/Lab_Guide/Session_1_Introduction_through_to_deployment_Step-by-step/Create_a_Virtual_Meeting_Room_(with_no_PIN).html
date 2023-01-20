@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Create a Virtual Meeting Room (with no PIN)</title>
+</head>
+
+<body>
+    <h1 id="header">Create a Virtual Meeting Room (with no PIN)</h1>
+    <p>Suggested completion time: <strong>15 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+    <ol>
+        <li>Navigate to <strong>Sevices --&gt; Virtual Meeting Room</strong>, then click <strong>Add VMR</strong>. </li>
+        <li>Select a <strong>name</strong> and <strong>description</strong>. The name and description are visible if a
+            Skype client adds the VMR to the buddy list/roster. Construct your VMR name and description with this
+            potential exposure in mind.</li>
+<li>Leave <strong>host pin</strong> blank, <strong>allow guests</strong> as <strong>no</strong>, and
+        <strong>guest pin</strong> blank.</li>
+        <li>Leave all other fields as default.</li>
+        <li>On the alias section, create one alias called <span class="code">vmr@<strong>&lt;Pexip Infinity
+                    domain&gt;</strong></span> (see lab sheet <strong>section #4.2</strong> to
+            figure out
+            your domain). Create another alias using only <span class="code">vmr</span> and no domain.</li>
+        <li>Click <strong>Save</strong>.</li>
+        <li>Wait <strong>1 minute</strong> for the changes to be replicated to all the nodes.<br>
+            <br>
+        </li>
+    </ol>
+    <h3 class="main">Screenshot 4: Demonstrate your working Pexip Infinity deployment</h3>
+
+    <p>Each person in the group places a call into the VMR service. Ensure that at least one person calls into the
+        service through the LAN location, and one person calls into the same service through the external location at
+        the same time.</p>
+    <ul>
+        <li>You can connect to an internal node using a browser within the RDP session and the URL of a LAN nodes FQDN
+            or IP address (you will have to accept the warning for now), e.g.
+            <strong class="code">https://conf02.&lt;your_Infinity_domain&gt;</strong></li>
+        <li>Connect to the DMZ node outside of the RDP session, from <em><u>your</u></em> laptop or mobile device, e.g.
+            <strong class="code">https://edge.&lt;your_Infinity_domain&gt;</strong>.</li>
+    </ul>
+    <p>Grab some screenshots of the calls in operation at the same time. Show Live View from the Management Node, and
+        drill down into the VMR call service. It&rsquo;s also good to show a screenshot of the actual call from the end
+        user&rsquo;s point of view, for example:<br>
+        <br>
+    </p>
+    <p><strong>Screenshot of the main Live View showing a VMR service, with users connected to the DMZ and LAN
+            nodes:</strong></p>
+    <p>&nbsp;<img src="../../images/img1621795467.png" alt="image"></p>
+    <p><strong>Screenshot of the conference graph of the VMR service showing individual
+            participants connected in different locations (notice how a
+backplane connects the locations where the same VMR instance is in operation):</strong></p>
+    <p><img src="../../images/img162179546754.png" alt="image"></p>
+    <p><strong>Screenshot of the user experience (for the first user) connecting to the VMR Service:</strong></p>
+    <p><img src="../../images/img1621795468.png" alt="image"></p>
+    <p><strong>Screenshot of the user experience (for the second user) connecting to the VMR Service:</strong></p>
+    <p><img src="../../images/img1621795469.png" alt="image"></p>
+    <h2 style="text-align: center"><u>At this point (after session 1), please STOP, and pat yourselves on the back.</u>
+    </h2>
+    <p>However, if you have finished early, have a look around at your classmates. How are they doing? Can you
+help? It&rsquo;s good to share, and if you help, it will also help cement your knowledge.</p>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Create_a_Virtual_Meeting_Room_(with_no_PIN).html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

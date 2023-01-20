@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Infinity Connect Client Registration and Gateway P2P calls</title>
+</head>
+
+<body>
+<h1 id="header">Infinity Connect Client Registration</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>You covered the fundamentals of DNS in the level 1 eLearning. It's a great time to recover this topic as DNS provides the mechanism for call signalling and registration.</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/14af2891-da6f-4985-a262-20bfb826191e/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <p>To register a device to Infinity:</p>
+    <p>Configure Infinity to accept the registration:</p>
+    <ol>
+        <li>Setup a Device Alias, click <strong>Users &amp; Devices&nbsp;</strong><strong>--&gt; Device Aliases</strong>, then click <strong>Add Device Alias</strong>.</li>
+        <li>Add the following Information:
+            <ol>
+                <li>Device alias (mandatory): add an alias that would usually look like a URI, for example:<br>
+                    <span class="code">user1.fulladmin@<strong>&lt;Pexip <strong>Infinity</strong> domain&gt;</strong></span><br>
+                    Ensure it does not clash with any other alias already configured on your system.</li>
+                <li>Enable Infinity Connect registration (non-SSO): <strong>Checked</strong>. <br>
+                    <strong>NOTE:</strong> we will cover SSO another time.</li>
+                <li>If you would like other devices using alternative protocols to register to Infinity, then select as appropriate. <strong><br>
+                    NOTE:</strong> if you would like an H.323 device to register, you will  need to configure two aliases per device; the <strong>H.323 ID</strong> and <strong>E.164</strong> number. BOTH these aliases need to match what is configured on the endpoint to allow the device to register successfully.</li>
+                <li>Add a <strong>username</strong> and <strong>password</strong>. For consistency, the username is often the same as the alias of the device (although could be just the user part, for example), and use the default password <span class="code">Pexip123!</span>.</li>
+            </ol>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+        <li>
+            <p>Add another device alias, <span class="code">user2.readonlyadmin@<strong>&lt;Pexip  Infinity domain&gt;</strong></span>, and allow <strong>SIP</strong> registrations. Use the same username and  default password.</p>
+        </li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure an <strong>external</strong> Infinity Connect desktop client (installed  onto <em><strong>YOUR</strong></em> laptop) to register toward your deployment:</p>
+    <ol>
+        <li><a class="general" href="https://www.pexip.com/apps" target="_blank" title="Infinity Connect client download">Download and install</a> the <strong><u>Infinity Connect</u></strong> desktop client  (<strong>not</strong> the MMV client used by the Pexip Service) onto <u><strong>your</strong></u> computer (<strong>not</strong> the Jumpbox).</li>
+        <li>Once installed, open the <strong>Settings</strong> (click the three dots &middot;&middot;&middot;), then click <strong>Registrations</strong>.</li>
+        <li>Registration Host: <strong class="code">&lt;Pexip Infinity domain&gt;</strong> <br>
+            <strong>NOTE:</strong> this works due to PexApp SRV record added to the <strong>external</strong> DNS namespace that resolves to your Edge node. </li>
+        <li>Add the <strong>Alias</strong>, <strong>username,</strong> and <strong>password</strong>: configured as above in Infinity.</li>
+    </ol>
+    <p>If you would like to register other devices to Pexip, you can use the same alias or create other aliases as you wish. </p>
+    <p>&nbsp;</p>
+    <p>Configure an <strong>internal</strong> Infinity Connect desktop client (pre-installed onto the Jumpbox) to register toward your deployment:</p>
+    <p><strong>NOTE:</strong> The Infinity Connect desktop client does not work perfectly in the lab environment as the virtual camera is not recognised. You can still register the client and receive video, but you cannot send a video stream.</p>
+    <ol>
+        <li>The internal <strong>Infinity Connect</strong> desktop client is pre-installed onto  the Jumpbox.</li>
+        <li>As before, open the <strong>Settings</strong> (click the three dots &middot;&middot;&middot;), then click <strong>Registrations</strong>.</li>
+        <li>Registration Host: <strong class="code">pexipacademy.local</strong> <br>
+            <p>&nbsp;</p>
+        </li>
+        <li>Add the <strong>Alias</strong>, <strong>username,</strong> and <strong>password</strong>: configured as above in Infinity.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure an <strong>internal</strong> Poly RealPresence Desktop (RPD) client  (pre-installed onto the Jumpbox) to register toward your deployment using SIP TLS:</p>
+    <ol>
+        <li>The internal <strong>Poly RealPresence Desktop</strong> (RPD) client   is pre-installed onto  the Jumpbox. <br>
+            <p><strong>NOTE:</strong> Your remote session to the Jumpbox needs to be a  high enough resolution for RPD to work correctly. Sometimes, your local computer  settings can cause the remote desktop session resolution to be reduced; for  example, setting the font size high on your local machine can cause the remote  desktop session resolution to be forced low.  </p>
+        </li>
+        <li>Click the <strong>Settings cog</strong> (bottom right) <strong>--&gt; SIP</strong>, the check <strong>SIP registratio</strong>n.</li>
+        <li>Set:
+            <ol>
+                <li>SIP Proxy Server: <span class="code">pexipacademy.local</span><br>
+                    <strong>NOTE:</strong> As with the 
+                    Infinity Connect desktop client, there are SIP SRV records added to internal DNS, which allows the RPD client to discover the correct nodes.</li>
+                <li>SIP Domain: <strong class="code">&lt;Pexip Infinity domain&gt;</strong></li>
+                <li>SIP User Name: <span class="code">user2.readonlyadmin@<strong>&lt;Pexip <strong>Infinity</strong> domain&gt;</strong></span></li>
+                <li>Authorisation Name: <span class="code">user2.readonlyadmin@<strong>&lt;Pexip <strong>Infinity</strong> domain&gt;</strong></span></li>
+                <li>Password: <span class="code">Pexip123!</span></li>
+                <li>Transport Protocol: <strong>TLS</strong></li>
+            </ol>
+        </li>
+    </ol>
+    <p>&nbsp;</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Before you test, ensure you have waited 1 minute for the  configuration changes to synchronise across all the nodes.</p>
+    <p>Once a device is registered, it can dial into your  configured Infinity services. Registered devices can use both short and full URI  aliases to connect to the services. In addition, the Pexip Infinity Connect desktop  client will show phonebook entries as you type an alias to dial.</p>
+    <p>For the moment, you will be unable to place point-to-point  calls between registered devices. Due to the distributed design of Infinity, there  is no concept of a &quot;local zone&quot;, unlike that of other video infrastructure  (such as a Cisco VCS or Expressway). Therefore, point-to-point calls placed through  Infinity require <strong>Routing Rules</strong> that create <strong>Gateway</strong> service instances. We will  look at Routing Rules and Gateways in the next lab. </p>
+    <p>Ensure  you can place a call into your configured services from the registered devices  using the short alias, e.g. <span class="code">vmr</span>. </p>
+    <p>We have also outlined some addition detial in the More Info button at the top of the page </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check the  configuration of your Pexip Infinity Endpoint Registration</h2>
+    <p>Ensure your system and clients looks similar to the  screenshots below showing the registered devices and status in Infinity.</p>
+    <h3 class="main">A screenshot showing the Pexip Connect desktop client registered successfully to an Infinity platform (notice that the boxes are greyed out, and the button at the bottom says "Unregister"):</h3>
+    <p>&nbsp;<img src="../../images/img1621817142.png" alt="image"></p>
+    <h3 class="main">A screenshot showing the Registration status on Infinity, indicating that a client has successfully registered:</h3>
+    <p><img src="../../images/img162181714273.png" alt="image"></p>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Infinity_Connect_Client_Registration.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

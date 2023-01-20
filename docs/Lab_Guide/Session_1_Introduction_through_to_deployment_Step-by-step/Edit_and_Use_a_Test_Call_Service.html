@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Edit and Use a Test Call Service</title>
+</head>
+
+<body>
+    <h1 id="header">Edit and Use a Test Call Service</h1>
+    <p>Suggested completion time: <strong>15 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <p>Use <strong>section #4.2&nbsp;</strong>of the lab sheet.</p>
+    <p>To edit the pre-existing Test Call Service, go to
+        <strong>Services&nbsp;</strong><strong>--&gt;</strong><strong>&nbsp;Test Call Service:</strong></p>
+    <ol>
+        <li>Click the already existing test call service, part of the default out-of-box Pexip deployment.</li>
+        <li>Edit the first alias to be &ldquo;<span class="code">testcall</span>&rdquo;.</li>
+        <li>Add a second alias of &ldquo;<span class="code">testcall@<strong>&lt;Pexip Infinity domain&gt;</strong></span>&rdquo;, using the lab
+            sheet <strong>section #4.2</strong> to find your Pexip domain.</li>
+        <li>Click <strong>Save.</strong></li>
+        <li>Wait 1 minute for the change to replicate to all nodes.&nbsp;<br>
+            <br>
+        </li>
+    </ol>
+    <h3 class="main">Testing the test call service</h3>
+
+    <p>Connect to the Test Call Service by dialling <span class="code">testcall@<strong>&lt;Pexip Infinity domain&gt;</strong></span></p>
+    <ol>
+        <li><strong>To place an internal call:</strong> For webRTC, browse to an internal Conferencing Node using one of the FQDNs from within the RDP session.&nbsp;&nbsp; <br>
+            <strong>NOTE:</strong> you will
+            need to accept the browser security warning at this stage to get to the WebApp, as the nodes will only have
+            a self-signed certificate assigned (we will fix this in a later step).<br>
+            <strong> NOTE2:</strong> the RDP server has a
+            virtual camera installed allowing you to send a test video stream, however, it seems to flicker when
+            multiple people use it at the same time ☹.</li>
+        <li><strong>To place an external call:</strong> From a hardware endpoint (if available in your lab, or externally controllable from your corporate
+            deployment), <em>or</em> another webRTC endpoint <strong>outside of the RDP</strong> session by browsing to the FQDN of the DMZ node from your own laptop.<br>
+            <br>
+        </li>
+    </ol>
+    <h3 class="main">Screenshot 3: Demonstrate your working Pexip Infinity deployment</h3>
+
+    <p>Each person in the group places a call into the Test Call service. Ensure that at least one person calls into the
+        service through the LAN location, and one person calls into the same service through the external location at
+        the same time.&nbsp;</p>
+    <ul>
+        <li>You can connect to an internal node using a browser within the RDP session and the URL of a LAN nodes FQDN
+            or IP address (you will have to accept the warning for now).&nbsp;</li>
+        <li>Connect to the DMZ node outside of the RDP session, from <em><u>your</u></em> laptop or mobile device.&nbsp;
+        </li>
+    </ul>
+    <p>Grab some screenshots of the calls in operation at the same time. Show Live View from the Management Node, and
+        drill down into the Test call service (but you need to be quick as these calls only last a short while).
+        It&rsquo;s also good to show a screenshot of the actual call from the end user&rsquo;s point of view, for
+        example:<strong><br>
+            <br>
+        </strong> </p>
+    <p><strong>Screenshot of the main Live View showing a Test Call service, with users connected to the DMZ and LAN
+            nodes:</strong></p>
+    <p><img src="../../images/img1621788078.png" alt="image"></p>
+    <p><strong>Screenshot of the conference graph of the Test Call service showing individual
+            participants</strong><strong>&nbsp;connected in&nbsp;different</strong><strong>&nbsp;locations (notice how
+            the participants are split across locations even though there is a single service instance in
+            operation):</strong></p>
+    <p><img src="../../images/img162178807824.png" alt="image"></p>
+    <p><strong>Screenshots of the user experience in the Test Call Service:</strong></p>
+    <p><img src="../../images/img162178807820.png" alt="image"><img src="../../images/img162178807831.png" alt="image"></p>
+    <p>&nbsp;</p>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_1_Introduction_through_to_deployment_Description/Edit_and_Use_a_Test_Call_Service.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script></body>
+
+</html>

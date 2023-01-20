@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Freestyle &ndash; Create a Virtual Auditorium</title>
+</head>
+
+<body>
+<h1 id="header">Freestyle &ndash; Create a Virtual Auditorium</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>No specific lab sheet section.</p>
+<section>
+    <p>For this task, we are not going to outline any steps &#128561;. Instead, you should refer to <a class="general" href="https://docs.pexip.com/admin/creating_editing_lectures.htm" title="Infinity Technical Docs" target="_blank">https://docs.pexip.com/admin/creating_editing_lectures.htm</a> to complete the task. The point of this exercise is that you will refer to our documentation.</p>
+    <p>So, go and create your Virtual Auditorium!</p>
+    <p>Most of the time you when you create a Virtual Auditorium, you will do so to allow both hosts and guests, so you
+        will want to ensure that you have <strong>set a Host PIN</strong> and "<strong>Allow
+        guests</strong>" is set to "<strong>Yes</strong>".</p>
+    <p>What we will say is that you should use the following  information:</p>
+    <ul>
+        <li><strong>Auditorium name</strong> = Lecture Room</li>
+        <li><strong>Host Pin</strong> = 5678</li>
+        <li><strong>Aliases</strong> = <span class="code">lecture</span> and <span class="code">lecture@&lt;Pexip_Infinity_doamin&gt;</span>.</li>
+    </ul>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Create some calls into the Virtual Auditorium. </p>
+    <ul>
+        <li>Create a call into an internal node using the  browser within the Jumpbox session. Join as a <strong>host</strong>.</li>
+        <li>Then, create another call using the browser on  your laptop to connect to the edge node. Join as a <strong>guest</strong>. </li>
+    </ul>
+    <p>Perhaps a lecture is a little lonely with just two calls, so invite some friends in the form of <strong>PexEPs</strong> (Pexip EndPoints). The  PexEPs are a separately deployable VM that generate video calls to help you  test an Infinity system, and we have already set some up for you in the lab.</p>
+<p><strong>NOTE:</strong> When you get back to your day job in your  organisation (i.e., outside of these labs), you can use our PexEPs to test your  corporate Infinity deployments. If you want to set these up in <em>your</em> networks, you should  ensure that you deploy the PexEP VM on your <strong>internal corporate network</strong> only. Be aware that these VMs use ancient code, and no security patches have  been applied in a long time. In addition, they should <strong>NOT</strong> be publicly  accessible as SPAMers could access them to generate calls. Check out the <strong>Additional  tools</strong> resource in the course material for more information.</p>
+    <p>Use the following link to <u>place calls into your <strong>LAN</strong> system location <strong>from the Jumpbox session only</strong></u>. Then, you can use the bookmarks in the browsers via the Jumpbox session:</p>
+    <ul>
+        <li><a class="general" href="http://pexep-int1.pexipacademy.local/" target="_blank" title="PexEP Internal SD">http://pexep-int1.pexipacademy.local/</a> (SD)</li>
+    </ul>
+    <p>For the <strong>Meeting room URI</strong>, add the URI alias you have just created for your VA. You can use just the user part of the hostname, e.g. <span class="code">lecture</span>.</p>
+    <p>For the <strong>Conferencing Node IP or hostname</strong>,  the host FQDN of one of your <strong><u>internal</u></strong> nodes is already  populated (<span class="code">conf01.pexipacademy.local</span>, also see <strong>Section #4</strong>).</p>
+    <p>&nbsp;</p>
+    <p>Use the following link to <u>place calls into your <strong>DMZ</strong> system location <strong>from the Jumpbox session only</strong></u> (remember, there are bookmarks in the browsers via the Jumpbox session):</p>
+    <ol>
+        <li><a class="general" href="http://pexep-ext.pexipacademy.local/" target="_blank" title="PexEP Internal SD">http://pexep-ext.pexipacademy.local/</a> (HD)</li>
+    </ol>
+    <p><strong>NOTE:</strong> as mentioned, the PexEPs are based on a VERY old code and can fail from time to time. If you see an error, please  to <strong>reset</strong> them from the <strong>VM list </strong>in the left panel. </p>
+    <p>For the <strong>Meeting room URI</strong>, add the URI alias you have just created for your VA. You can use just the user part of the hostname, e.g. <span class="code">lecture</span>.</p>
+    <p>For the <strong>Conferencing Node IP or hostname</strong>, <em>edit</em> the host FQDN  of to match your <strong><u>edge</u></strong> nodes <strong>SIP TLS FQDN</strong> (see <strong>Section #5</strong>).</p>
+    <p>&nbsp;</p>
+    <p><strong>Warning:</strong> Don't Play too long; there is a lot more to get  through yet &#128521;.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check the  configuration of your Pexip Infinity VA service</h2>
+    <p>When you have added multiple calls into a Virtual  Auditorium, check your deployment's Live View against the below screenshots. Ensure  you have joined some clients as both a host and guest to see the different user  experiences, checking the screenshots as you go. Note that the VIrtual  Auditorium service circle in Live View shows up as a different colour than a  VMR and the Test Call services you have seen previously. </p>
+<h3 class="main">A screenshot showing a Virtual Auditorium service with lots of PexEPs joined:</h3>
+    <p>&nbsp;<img src="../../images/img1621814356.png" alt="Live View showing a Virtual Auditorium with multiple participants connected" title="Live View showing a Virtual Auditorium with multiple participants connected"></p>
+    <h3 class="main">A screenshot showing the graph view of the Virtual Auditorium, with all the PexEPs joined:</h3>
+    <p><img src="../../images/img162181435665.png" alt="Conference graph showing many callers connected to a VA" title="Conference graph showing many callers connected to a VA"></p>
+    <h3 class="main">A screenshot showing the user experience of the <u>Host</u> when in the Virtual Auditorium (notice the view of the host, in this case, uses to 1+7 layout, and they see the names of all participants in the roster list):</h3>
+    <p><img src="../../images/img1621814357.png" alt="Host experience within a VA" title="Host experience within a VA"></p>
+    <h3 class="main">A screenshot showing the user experience of the <u>Guest</u> when in the Virtual Auditorium:</h3>
+    <p><img src="../../images/img162181435796.png" alt="Guest experience within a VA" title="Guest experience within a VA"></p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_2_Services_and_Interop_Description/Freestyle_-_Create_a_Virtual_Auditorium.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

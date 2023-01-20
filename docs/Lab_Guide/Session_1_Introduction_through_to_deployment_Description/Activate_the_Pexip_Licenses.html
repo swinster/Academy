@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Activate the Pexip Licenses</title>
+</head>
+
+<body>
+    <h1 id="header">Activate the Pexip Licenses</h1>
+    <p>Use <strong>section #8&nbsp;</strong>of the lab sheet.</p>
+    <p>To start using any Pexip Infinity deployment, you need to activate a license. We will add different licenses as
+        we go, but at a minimum, you need capacity, either &ldquo;port licenses&rdquo; (video connections) or
+        &ldquo;audio licenses&rdquo; (audio connections). This will allow you to make gateway calls through Pexip. To
+        use VMRs you will also need a VMR license. Scheduling is not currently used in these lab exercises but
+        would allow Pexip to connect to an Exchange server so that we could schedule a meeting for a VMR using Exchange
+        and Outlook. Many features can be enabled by just one license key. &nbsp;</p>
+    <p>You should also note that whilst you need a license to make a call, you can continue to configure and even
+        partially test the deployment <strong>without</strong> a license. When a call connects to Pexip without a
+        license installed, you will see and hear a video message saying that no valid license is installed. This proves
+        signalling and media paths are open and available. &nbsp;</p>
+    <p>Please refer to <a
+            href="https://docs.pexip.com/admin/licenses.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/licenses.htm</a>.</p>
+    <p><strong>NOTE:</strong> <u>The license is your paid subscription to use Pexip.</u> If for any reason you need to
+        move the Management Node, say to a different host or change its IP address, you <strong><u>MUST</u></strong>
+        return the license before decommissioning the node. If you destroy the Management Node with the license still
+        active, you will not be able to reuse the license. Pexip may then charge you to get up and running again. This
+        procedure is also outlined and highlighted in the licensing email that you receive containing the license key.
+    </p>
+    <p>The same is true of a lab or pre-production setup you may have. <u>Do NOT destroy the lab without first returning
+            the license!</u></p>
+    <p>We do not spend time in this lab on moving the Management Node, however, such a change is quite a disruption to
+        the system. You should refer to <a
+            href="https://docs.pexip.com/admin/management_node_move.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/management_node_move.htm</a>
+        if you need to do this. &nbsp;</p>
+    <p>&nbsp;</p>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Planning your Infinity deployment</title>
+</head>
+
+<body>
+<h1 id="header">Planning your Infinity deployment</h1>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Everything you have completed in the Level 1 path to this point has been about giving you the foundational knowledge that we believe is required to architect, administer, and support a Pexip Infinity solution. Now it's time to put this information together and build your deployment. However, this is still a lab environment. Many of the pre-requisites have been completed for you, such as adding the correct DNS records (both internally and externally), setting correct firewall rules and configurations, and even providing certain TLS certificates. Once you have mastered this lab, we encourage you to look deeper and build out your labs in your environments to appreciate what is required fully. </p>
+<p>You may be thinking, "<em>well, all this pre-requisite planning and implementation is taken care of by other teams</em>", correct? However, we firmly believe that as a Pexip Infinity architect, administrator, or support personnel, your job involves understanding all these items so that you can communicate effectively with these teams and, importantly, understand when things are not as they should be. Furthermore, much of this information is generic and is used across many kinds of IT infrastructure and understanding these concepts will put you in a much better place.</p>
+<p>Let's recap some of the significant points covered in the Level 1 training so far and think about what would be required to build out your lab or customers' environments from scratch.</p>
+<section>
+    <h2 = class="main">Virtualisation and Server Design</h2>
+    <ol>
+        <li>Ensure you understand how Pexip VM nodes are deployed and map to the underlying physical hardware.</li>
+        <li> <strong> Take your time designing the virtual infrastructure and specifying servers in your customers' environments. </strong>This is one of the most critical steps in an Infinity deployment. If you get this wrong, the rest of the system to not function as you might hope. &nbsp;<br>
+            <strong> NOTE: </strong>We have designed this <strong>LAB</strong> environment to aid your <strong>learning</strong> and <strong>understanding</strong> of Pexip Infinity, and that it can be delivered to hundreds of trainees. As such, there are restrictions regarding the available resources. Please refer to our documentation when designing your systems rather than look at the design of these labs.</li>
+    </ol>
+</section>
+<section>
+    <h2 = class="main">DNS Records</h2>
+    <ol>
+        <li>DNS <em>records</em> have already been added for you, and exist internally (to the Windows Active Directory domain) and externally in public DNS.</li>
+        <li>Your lab uses an <strong>internal</strong> domain space of "<span class="code">pexipacademy.local</span>". 
+            Each internal node  has a hostname (e.g. "<span class="code">mgr</span>", "<span class="code">conf01</span>", and "<span class="code">conf02</span>"), and we can prepend these to the internal domain to give the nodes Fully Qualified Domain Names (FQDNs), for example "<span class="code">mgr.pexipacademy.local</span>" or "<span class="code">conf01.pexipacademy.local</span>".  We can then use these FQDNs to browse to
+            the nodes (e.g., <a href="https://mgr.pexipacademy.local" title="Management Node" target="_blank" class="general">https://mgr.pexipacademy.local</a> or <a href="https://conf01.pexipacademy.local" title="Conf Node 1" target="_blank" class="general">https://conf01.pexipacademy.local</a>), using the Jumpbox sessions.</li>
+        <li>Your <strong>external</strong> domain space will be automatically generated for you when you environment is created to avoid overlapping domains with other user's labs. It should look something like "big-cat.pexipacademy.cloud". The external node uses a hostname "<span class="code">edge</span>". You will be able to make external calls into your deployment either by browsing to the edge node using its external FQDN (e.g. <a href="https://edge.big-cat.pexipacademey.cloud" title="Edge Node" target="_blank">https://edge.big-cat.pexipacademey.cloud</a>), or a URI such as <a href="sip:vmr@big-cat.pexipacademey.cloud" target="_blank">sip:vmr@big-cat.pexipacademey.cloud</a>. </li>
+        <li>You can discover the external DNS records for your lab deployment by using our DNS checker tool: <a href="https://dns.pexip.com/" title="Pexip DNS Checker" target="_blank">https://dns.pexip.com/.</a></li>
+    </ol>
+</section>
+<section>
+    <h2 = class="main">IP Networking</h2>
+    <ol>
+        <li>Your nodes in the lab have a mixture of single and dual NICs, plus static NAT addresses. These interfaces exist in different virtual networks and subnets. Routing has been preconfigured.</li>
+        <li>It would be best if you had an excellent grasp of IP networking, such as VLANs, IP addressing, subnetting and routing. This forms the core of any modern IP infrastructure project. </li>
+        <li>You should also ensure you have an excellent grasp of networking theory and the TCP/IP suite of protocols.</li>
+    </ol>
+</section>
+<section>
+    <h2 = class="main">Data Traffic Flow and Firewalls</h2>
+    <ol>
+        <li>The firewall rules, NAT’ing and Application Layer Gateways (ALGs) have been pre-configured for this lab environment.</li>
+        <li>Be aware of what traffic needs to flow to and from each node and location.</li>
+        <li>When you set up your customers' environments, ensure that you have configured all the firewall rules and settings correctly and understand what issues might occur if they have not been configured as per our documentation.</li>
+    </ol>
+</section>
+<section>
+    <h2 = class="main">TLS Certificates</h2>
+    <ol>
+        <li>You will create a TLS certificate that can be applied to the <strong>internal</strong> nodes using Active Directory Certificate Services (ADCS).</li>
+        <li>The TLS certificate for the <strong>external</strong> node has been generated for you and will be referenced from the lab sheet.</li>
+        <li>It would help understand TLS certificates and Public Key Infrastructure (PKI), how TLS certificates are generated, and how the "chain of trust" works.</li>
+    </ol>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Planning_your_deployment.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

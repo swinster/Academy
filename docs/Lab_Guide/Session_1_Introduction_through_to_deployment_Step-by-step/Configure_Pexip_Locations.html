@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Configure Pexip Locations</title>
+</head>
+
+<body>
+    <h1 id="header">Configure Pexip Locations </h1>
+    <p>Suggested completion time: <strong>15 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #4.1&nbsp;</strong>and<strong>&nbsp;section #5&nbsp;</strong>of the lab sheet.</p>
+    <ol>
+        <li>Browse to the Management Node URL using its DNS name or IP address (accept the security warning, we will fix
+            this later).</li>
+        <li>Log in with username <strong>admin</strong> and the <strong>Pexip123&nbsp;</strong>password.</li>
+        <li>Go to <strong>Platform&nbsp;</strong><strong>--&gt; Locations</strong> and create a System Location for the
+            <u>internal nodes</u>, as per <strong>section #4.1</strong></li>
+        <li>Configure DNS and NTP Servers as per <strong>section #4.1</strong>. If you need to add additional servers,
+            click the green plus to add this configuration on the fly.<ol>
+                <li>You will need to grab a screenshot of all the DNS and NTP settings (see <a class="general" href="#Screenshot_1" title="Screenshot 1">Screenshot 1</a>).</li>
+            </ol>
+        </li>
+        <li>Most other settings can be left as defaults. Note that the <strong>Transcoding Location</strong> is set to <strong>This location</strong>. Also note that this is where you would configure <u>DSCP (QoS)</u> settings and <u>MTU</u> size, meaning that all nodes within this location will inherit these settings.</li>
+        <li><strong>Save</strong>.</li>
+        <li><u>Repeat</u> to create another System Location for the <u>edge nodes</u> (see <strong>section #5</strong>) and keep <strong>Transcoding Location:</strong> <strong>This Location</strong> (<strong>Note:</strong> Yes, this is initially going to be a Transcoding location!! We will change this later. Add public DNS and NTP Servers (<strong>Note:</strong> look for the <u>green add button</u> by the side of property boxes that allow you to add configurations on the fly. You can also navigate to <strong>System --&gt; DNS Servers</strong> and add servers there).</li>
+        <li><strong>Save</strong>.<br>
+            <br>
+        </li>
+    </ol>
+    <h3 id="Screenshot_1">Screenshot 1: Demonstrate your working Pexip Infinity deployment</h3>
+
+    <p>On the Pexip Academy portal, you will find this exercise. You will use the document within the question and
+        gather screenshots of different views of your deployment and configuration pages as you work through the labs.
+        You will be working in groups and only need to upload one document per group.</p>
+    <p>Gather some screenshots showing your DNS and NTP configurations from the <strong>Systems menu</strong>, and how
+        you have applied them to the Management Node and Locations via the <strong>Platform menu</strong>.</p>
+    <p><strong>Screenshot of ALL the DNS servers configured on the system:</strong></p>
+    <p>&nbsp;<img src="../../images/img162178121520.png" alt="image"></p>
+    <p><strong>Screenshot of ALL the NTP servers configured on the system:</strong></p>
+    <p><img src="../../images/img162178121592.png" alt="image"></p>
+    <p><strong>Screenshot of the DNS and NTP servers applied to the Management node:</strong></p>
+    <p><img src="../../images/img162178121634.png" alt="image"><strong></strong></p>
+    <p><strong>&nbsp;</strong><strong>Screenshot of the DNS and NTP servers applied to the LAN location:</strong></p>
+    <p><img src="../../images/img1621781215.png" alt="image"></p>
+    <p><strong>Screenshot of the DNS and NTP servers applied to the DMZ location:</strong></p>
+    <p><img src="../../images/img1621781216.png" alt="image"></p>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Configure_Pexip_Locations.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

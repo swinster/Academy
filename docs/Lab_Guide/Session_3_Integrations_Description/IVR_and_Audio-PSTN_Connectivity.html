@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>IVR and Audio / PSTN Connectivity</title>
+</head>
+
+<body>
+    <h1 id="header">IVR and Audio / PSTN Connectivity</h1>
+    <p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+    <p>Use <strong>section #5&nbsp;</strong>of the lab sheet.</p>
+    <p>Refer to&nbsp;<a class="general" href="https://docs.pexip.com/admin/about_h323_sip.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/about_h323_sip.htm</a>
+        and&nbsp;<a class="general" href="https://docs.pexip.com/admin/integrate_pstn.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/integrate_pstn.htm</a>.&nbsp;
+    </p>
+    <p>Use the Pexip Infinity general Virtual Reception (VR) setup in session 2. This should have an alias of
+        <span class="code">lobby@&lt;your Pexip Infinity domain&gt;</span> (hopefully you know where to go by now). You
+        will also want to
+        handle a PSTN number as a separate alias in the VR. The PSTN number will depend on your trainer and location.
+        Your trainer should be able to provide you with a PSTN number that will route to your VR (via Twilio VoIP).</p>
+    <p>You can then try to dial into a VMR using a phone.</p>
+    <p>The destination VMR must have one alias that is purely numeric so that users can enter it as touch-tones (DTMF)
+        via the phone keypad. This will allow you to dial into the VR, then tap the numeric alias of the VMR to be
+        transferred. This information would normally be distributed in a calendar invite, such as through using the
+        Pexip Scheduling option.</p>
+</body>
+
+</html>

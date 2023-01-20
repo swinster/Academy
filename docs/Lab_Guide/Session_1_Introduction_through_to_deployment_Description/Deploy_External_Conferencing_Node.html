@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Deploy External Conferencing Node (initially in the Transcoding Role)</title>
+</head>
+
+<body>
+    <h1 id="header">Deploy External Conferencing Node (initially in the Transcoding Role)</h1>
+    <p><img src="../../images/trascoding_node.svg" alt="" /></p>
+
+    <p>Use <strong>section #3</strong> and <strong>section #5</strong> of the lab sheet.</p>
+    <p>For this step, we are going to install the Edge node in the <strong><u>transcoding role</u></strong>, so the
+        procedure is all but identical to the previous step (although you should use the details outlined in
+        <strong>section #5</strong>). We have already discussed that Conferencing Nodes in the Transcoding Role or
+        Proxying Edge Role is the same software (if you remeber back to the Level 1 Fundamentals videos regarding Infinity Basics), so we will change its operation later just to show you how this can be
+        done (we will do this in lab 2). Also, note how the node looks in live view, and we can compare this to how
+        it might look later. <strong>NOTE:</strong> You would probably NOT do this in the real world, this is just a
+        learning exercise 😉.</p>
+    <p>The Edge nodes will use a dual NIC setup. The primary NIC talks to other Pexip nodes (the Management node and
+        nodes that are required for Transcoding). The secondary NIC in this case will face the Internet. As the
+        secondary NIC faces the largest number of unknown networks (i.e., potentially any network routable via the
+        Internet, so the default gateway should reside in the subnet associated with this interface. A static 1:1 NAT has
+        also been pre-defined for this external interface. As the primary NIC is in a different subnet to the Management
+        Node and other transcoding nodes, a static route will need to be defined that allows traffic to be routed out of
+        this interface and to the other subnets. As additional transcoding locations are defined that will be used by
+        the Edge, such as when Pexip Smart Scale is deployed in a later session, so further static routes will need to
+        be defined.</p>
+    <p><strong>NOTE:</strong> <u>When creating a dual NIC node that requires a static route to the management
+        node’s subnet, this <strong><u>MUST</u></strong> be added at step 4 in the node creation process</u>. If it is
+        not added and the node is deployed, do not attempt to add the route manually as the configuration will be
+        overwritten on reboot and the node will eventually lose communication with the Management Node. You should
+        instead delete the node and recreate it with the correct static route in place. Other static routes can be added
+        later with no issue.&nbsp;</p>
+<p>You might want to ensure you set the SIP TLS FQDN of the node at this point. This field is used by the node in
+        its signalling with other remote devices. Without this field set, Pexip Infinity will not be able to talk to
+        Skype for Business deployments and you will see an error in the support log to this effect when a Skype for
+        Business call is received by the node. It must also match the details in the TLS certificate applied to the
+        node, which will be added later.</p>
+    <p>Each node has a self-signed certificate applied on creation. We will create and upload a public certificate for
+        this node later (session 2).</p>
+    
+</body>
+
+</html>

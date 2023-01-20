@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Deploy Internal Pexip Transcoding Conferencing Nodes</title>
+</head>
+
+<body>
+<h1 id="header">Deploy Internal Pexip Transcoding Conferencing Nodes </h1>
+<p><img src="../../images/transcoding_nodes.svg" alt="" /></p>
+<p>Use <strong>section #3</strong> and <strong>section #4.1</strong> of the lab sheet.</p>
+<section>
+    <p>Conferencing Nodes in the Transcoding Role are the workers in Infinity. Pexip Infinity (as of today) is a fully transcoding environment, meaning that ALL call legs that pass through an Infinity deployment are decoded, mixed and recorded. Transcoding allows Infinity to maintain the best possible interop between all connected devices and provide server-side processing, such as intelligent framing. A future version of Infinity may include additional media server processing such as noise cancellation or centralised close captions. Transcoding means that Infinity will still transcode in some specific use cases, such as point-to-point calls using the same CODEC (i.e. SIP using H.264). In the future, Pexip may introduce non-transcoded media switching for specific use-cases, such as point-to-point WebRTC calls to provide end-to-end encryption.</p>
+    <p>The transcoding process is compute-intensive. These nodes require <strong>dedicated</strong> host resources and consume an entire socket on a host. Therefore, in a real-world deployment, the vCPU count should fully utilise the hardware without sharing resources, and the node VM sized according to the desired call capacity. However, you can leave the vCPU and vRAM settings at the default values for this lab. For OnPrem deployments (such as VMware's infrastructure), the VM administrator can alter the virtual hardware for a node after deployment via the VM properties in vCenter.&nbsp;</p>
+    <p>You should set the unique <strong>SIP TLS FQDN</strong> of the node as it uses this field in its signalling with other remote devices. It is also used to increase security. For example, without this field set, Infinity will not work at all with Skype for Business deployments, and you will see an error in the support log when the node receives a Skype for Business call. It must also match the details in the TLS certificate applied to the node (you will add a trusted TLS certificate in a later lab). Additionally, if the SIP TLS FQDN is missing, then the IP address of the Conferencing Node is used in SIP TLS signalling, which may result in calls failing. Finally, this field is also used for web request redirects that refer to the node. &nbsp;</p>
+<p>You will manually deploy two Conferencing Nodes in the Transcoding role, as per the details in <strong>section #4.1</strong>. The destination hypervisor version is ESXi v6.7. To deploy the nodes on the hypervisor, you will use a similar procedure to that  you used when deploying the Management Node. Use <strong>section #3</strong> to connect to the hypervisor and upload the nodes, ensuring you give them the correct name and relevant details (<strong>section #4.1</strong>), and remember there are two of them.</p>
+    <p>Deploying the nodes involves specifying the initial configuration of the Conferencing Nodes, selecting the node hypervisor type, then uploading the generated OVA file to the hypervisor. You only use the OVA once, so <strong>PLEASE DELETE</strong> the OVA after it has been uploaded to the hypervisor to reduce local disk usage. From v26, you can re-download a VM image file from the specific Conferencing Nodes configuration page if needs be.</p>
+    <p>When the nodes are powered on and assuming you have got everything correct, they will connect to the Management Node, and you will see the status of the nodes change both in Live View and the status pages for the Conferencing Nodes. The "<strong class="red">No transcoding resource available</strong>" warning will also disappear from the LAN location when looking at the System Locations status page. If you get any node's IP details incorrect, you will need to delete and redeploy the node as these are burnt into the image and cannot be altered.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/creating_conferencing_nodes.htm" target="_blank"
+            title="Infinity Technical Docs">https://docs.pexip.com/admin/creating_conferencing_nodes.htm</a>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

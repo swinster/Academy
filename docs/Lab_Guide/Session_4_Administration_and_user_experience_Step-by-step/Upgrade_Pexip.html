@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Upgrade Pexip</title>
+</head>
+
+<body>
+    <h1 id="header">Upgrade Pexip Infinity</h1>
+	<p>Suggested completion time: <strong>20 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #3&nbsp;</strong>of the lab sheet.</p>
+    <section>
+        <h3 class="main">Take a manual configuration backup of your Pexip Infinity system</h3>
+        <ol>
+            <li>Click&nbsp;<strong>Utilities&nbsp;</strong>--&gt;<strong>&nbsp;Backup/Restore</strong>.</li>
+            <li>Enter a passphrase.</li>
+            <li>Click &ldquo;Create backup&rdquo;.</li>
+            <li>Ensure you download&nbsp;it to your group folder &ldquo;<strong>E:\Pexip\Group Folders\&lt;Your
+                    Group&gt;\</strong>&rdquo;.</li>
+
+            <p><strong>NOTE</strong>: you can also configure automatic backups to an FTP(s) (<u>not</u> SFTP) server.
+            </p>
+        </ol>
+
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Take a VM snapshot of the nodes in your deployment</h3>
+
+        <p>We often get you to upgrade to beta software so you can see new features, but this can sometimes cause issues
+            with that upgrade:</p>
+        <ol>
+            <li>Log into vCentre and navigate to your group VMs that you have deployed on your host (see <strong>section
+                    #3&nbsp;</strong>of the lab sheet).</li>
+            <li><strong>Right-click</strong> on each of your nodes in turn and
+                select&nbsp;<strong>Snapshots&nbsp;</strong><strong>--&gt; Take Snapshot</strong>:<br>&nbsp;&nbsp;<img
+                    src="../../images/Vcentre_snapshots.png" alt="image">&nbsp;</li>
+            <li>Enter and name and description (if you so wish) of the snapshot and click
+                &ldquo;<strong>OK</strong>&rdquo;.</li>
+        </ol>
+        <p><strong>NOTE:</strong> you do not need to &ldquo;Snapshot the virtual machine memory&rdquo;, although VMware
+            recommends that you &ldquo;Quiesce the guest file system&rdquo; for Linux systems. By doing so on a node
+            that is powered on, you will effectively pause the node which will raise an Instability warning that will
+            show for 24 hours. This could also cause calls to drop and even cause a crash in the software, so ensure
+            that you perform these operations during a maintenance window. Powering off the node before snapshotting
+            will stop the alarm from being raised.&nbsp;</p>
+        <hr>
+
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Upgrade Pexip</h3>
+
+        <p>You will upgrade to the latest GA version of Infinity. For the labs, the file is stored on the RDP server but
+            can also be downloaded from <a
+                href="https://www.pexip.com/platform-downloads/infinity/upgrades/current-release#hs_cos_wrapper_widget_14287336963_">https://www.pexip.com/platform-downloads/infinity/upgrades/current-release#hs_cos_wrapper_widget_14287336963_</a>.
+        </p>
+        <ol>
+            <li>On the Management Node, navigate to <strong>Utilities&nbsp;</strong><strong>--&gt; Upgrade.</strong>
+            </li>
+            <li>Select the <strong>upgrade file</strong>. The upgrade file is located on the RDP server in the
+                &ldquo;<strong>E:\Pexip\Group Folders\&lt;Your Group&gt;\Pexip Software\upgrade&rdquo;</strong> folder.
+            </li>
+            <li>Select the upgrade file and click <strong>Continue</strong>.</li>
+            <li>When the file is uploaded, click <strong>Start upgrade</strong>.</li>
+            <li>Now, sit back, relax, and watch the progress as the system is upgraded. Go grab a coffee, tea, or other
+                tasty beverage and snack from the local dispensary, or simply while away some time discussing last
+                nights TV, or whatever else you might want to do to kill some time (read 10-15 minutes). Whilst you are
+                waiting, remember to grab some screenshots of the upgrade process (see <u>Screenshot 1:
+                    Demonstrate your ability to administer a Pexip Infinity system</u>.<u>&nbsp;</u><u>below</u>.</li>
+            <li>When complete, the page will auto-reload, and the latest status will be presented.</li>
+        </ol>
+        <hr>
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Test, then remove snapshots</h3>
+        <ol>
+            <li>When the upgrade finishes, test by making calls into the system (<strong>NOTE:</strong> in a production
+                environment, you should have a test plan that you would follow).</li>
+            <li>Remove the VM snapshots (running on snapshots for a while can consume all the datastore space on a host
+                and stop the Pexip VMs from functioning).<ol>
+                    <li><strong>Right-click</strong> on each of your nodes in turn and
+                        select&nbsp;<strong>Snapshots&nbsp;</strong><strong>--&gt; Manage Snapshot</strong></li>
+                    <li>Select the snapshot you created previously, then click <strong>Delete,</strong> or
+                        <strong>Delete all</strong>.</li>
+                </ol>
+            </li>
+        </ol>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 1: Demonstrate your ability to administer a Pexip Infinity system.</h3>
+
+        <p>For this exercise, you should gather screenshots to show that you can properly upgrade Pexip Infinity. This
+            should show that you have created an offline Infinity configuration backup, VM snapshots of the nodes, plus
+            demonstrate the upgrade process in operation. For example:</p>
+        <p><strong>A screenshot of the VM snapshot (on vCentre) of the Management node:</strong></p>
+        <p><img src="../../images/Vcentre_manage_snapshots_mgt_node.png" alt="image"></p>
+        <p><strong>A screenshot of the VM snapshot (on vCentre) of the LAN Conferencing node 1:</strong></p>
+        <p><img src="../../images/Vcentre_manage_snapshots_conf1_node.png" alt="image"></p>
+        <p><strong>A screenshot of the VM snapshot (on vCentre) of the LAN Conferencing node 2:</strong></p>
+        <p><img src="../../images/Vcentre_manage_snapshots_conf2_node.png" alt="image"></p>
+        <p><strong>A screenshot of the VM snapshot (on vCentre) of the DMZ Conferencing node:</strong></p>
+        <p><img src="../../images/Vcentre_manage_snapshots_edge_node.png" alt="image"></p>
+        <p><strong>A screenshot of the Infinity configuration backup:</strong></p>
+        <p><img src="../../images/Utilities_config_backup.png" alt="image"></p>
+        <p><strong>A screenshot of the Infinity configuration backup stored offline:</strong></p>
+        <p><img src="../../images/Offline_backup.png" alt="image"></p>
+        <p><strong>A screenshot of the Infinity Upgrade Status in progress:</strong></p>
+        <p><img src="../../images/Utilities_upgrade_status.png" alt="image">&nbsp;</p>
+        <p><strong>A screenshot of the main live view of the Infinity upgrade in progress:</strong></p>
+        <p><img src="../../images/Liveview_upgrade_progress.png" alt="image"></p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/Upgrade_Pexip.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

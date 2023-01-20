@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Deploy External Conferencing Node (initially in the Transcoding Role)</title>
+</head>
+
+<body>
+<h1 id="header">Deploy External Conferencing Node (initially in the Transcoding Role)</h1>
+<p><img src="../../images/trascoding_node.svg" alt="" /></p>
+<p>Use <strong>section #3</strong> and <strong>section #5</strong> of the lab sheet.</p>
+<section>
+    <p>We will initially install the Edge node in the <strong>transcoding role</strong> for this task, so the procedure is all but identical to the previous step (although you should use the details outlined in <strong>section #5</strong>). If you remember the Infinity Basics video from Level 1, we discussed that all Conferencing Nodes use the same software, whether deployed in the transcoding or proxying edge role. In the next task, we will change it to use the <strong>proxying edge</strong> role to help understand this point.</p>
+    <p> <strong>NOTE:</strong> You should not consider deploying a node in the proxying edge role in this way as "best practice". Instead, we will use it to help you understand what is happening and the steps required to change the configuration and provide a few helpful learning points:</p>
+    <ul>
+        <li><strong> Infinity is a fully transcoding solution</strong> (as of today). There MUST be a transcoding system location containing at least one transcoding node, yet proxying system locations are optional.</li>
+        <li>An external system location setup with transcoding nodes is still a valid configuration option. Some customers  wish to deploy  Infinity in this way. Of course, it would mean more compute resources for the edge nodes, as transcoding is more compute-intensive. Other deployment types (such as geographically dispersed service providers) may only have transcoding locations.</li>
+        <li>We can see that the Conferencing Node software used for the transcoding role and the proxying edge role is identical. Therefore, we will flip a switch to define how the node behaves.</li>
+        <li> It is simple to switch a Conferencing Node role type between the transcoding and the proxying edge roles, and redefine system location transcoding resources.</li>
+        <li>You should not mix and match Conferencing Nodes of different role types in a single system location.</li>
+    </ul>
+    <p>An administrator would commonly deploy edge nodes with dual Network Interface Cards (NICs). When considering a dual NIC node, there are some essential points to think about:</p>
+    <ul>
+        <li>An edge node is often deployed in the DMZ but equally could be deployed on an internal network. We will discuss why you might deploy internal edge nodes in a later module.</li>
+        <li> The primary NIC <em>always</em> talks to other Pexip nodes (the Management Node and nodes required for transcoding). It does not handle line side traffic to and from endpoints or other call infrastructure.</li>
+        <li>The secondary NIC handles all lines side traffic to and from endpoints or other call infrastructure.</li>
+        <li>The default gateway for the edge node may reside in either the subnet for the primary or secondary NICs. Again, we will discuss the pros and cons of choosing one subnet over another in a later module.</li>
+        <li>As a minimum, a route to the Management Node via the primary NIC would need to be available when you create the node. Without this route, the node will be unable to get its configuration.</li>
+        <li>A static 1:1 NAT address will map to the secondary NIC.</li>
+    </ul>
+    <p>In this lab, you will deploy the edge node in a traditional DMZ: </p>
+    <ul>
+        <li>The secondary NIC, in this case, will face the Internet.</li>
+        <li>As the secondary NIC faces the most significant number of unknown networks (i.e., potentially any public network), the default gateway should reside in the subnet associated with this interface.</li>
+        <li>A static 1:1 NAT has been pre-defined for this external interface.</li>
+        <li>As the primary NIC is in a different subnet to the Management Node and other transcoding nodes, and the default gateway will exist in the secondary NICs subnet, you will define a static route to direct traffic out of the primary interface to the internal subnets.</li>
+    </ul>
+    <p>Other static routes will need to be defined if additional transcoding locations are used by the Edge (such as with Pexip Private Cloud).</p>
+    <p><strong>NOTE: </strong><u>If a dual NIC node requires a static route to the Management Node’s subnet, you <strong>MUST</strong> add this during the node creation process.</u> If you deploy a node and forget to add this route, do not attempt to add the route manually via the nodes CLI as its configuration will be overwritten on reboot. Instead, you should delete the node and recreate it with the correct static route in place. Additional static routes can be added later with no issue.</p>
+    <p>You should set the unique <strong>SIP TLS FQDN</strong> of the node as it uses this field in its signalling with other remote devices. It is also used to increase security. For example, without this field set, Infinity will not work at all with Skype for Business deployments, and you will see an error in the support log when the node receives a Skype for Business call. It must also match the details in the TLS certificate applied to the node (you will add a trusted TLS certificate in a later lab). Additionally, if the SIP TLS FQDN is missing, then the IP address of the Conferencing Node is used in SIP TLS signalling, which may result in calls failing. Finally, this field is also used for web request redirects that refer to the node.&nbsp;</p>
+    <p>When you create a node, you will note that a self-signed certificate is automatically applied. As stated above, you will create and upload a trusted TLS certificate for these nodes in a later lab exercise.</p>
+    <p>Also refer to <a href="https://docs.pexip.com/admin/network_deployments.htm" target="_blank"
+            title="Infinity Technical Docs">https://docs.pexip.com/admin/network_deployments.htm</a> &nbsp;and <a href="https://docs.pexip.com/admin/public_dmz_configuration.htm" target="_blank"
+            title="Infinity Technical Docs">https://docs.pexip.com/admin/public_dmz_configuration.htm</a>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

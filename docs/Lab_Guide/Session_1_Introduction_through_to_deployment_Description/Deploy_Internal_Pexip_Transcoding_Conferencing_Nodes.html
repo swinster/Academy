@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Deploy Internal Pexip Transcoding Conferencing Nodes</title>
+</head>
+
+<body>
+    <h1 id="header">Deploy Internal Pexip Transcoding Conferencing Nodes </h1>
+    <p><img src="../../images/transcoding_nodes.svg" alt="" /></p>
+
+    <p>Use <strong>section #3&nbsp;</strong>and<strong>&nbsp;section #4.1&nbsp;</strong>of the lab sheet.</p>
+    <p>Conferencing Nodes in the Transcoding Role are the workers in Infinity. Pexip Infinity (as of today) is a fully
+        transcoding environment, meaning that ALL call legs that pass through an Infinity deployment are transcoded. This
+        allows Infinity to maintain the best possible interop between all connected devices, although it does mean that
+        in some specific use cases, such as point-to-point calls using the same CODEC (i.e. H.264), Pexip Infinity will
+    still transcode. This may change in a future release.</p>
+    <p>You will manually deploy two Conferencing Nodes in the Transcoding role, as per the details in <strong>section
+            #4.1</strong>. The destination hypervisor version is ESXi v6.7.</p>
+    <p>Deploying the nodes involves specifying the initial configuration of the Conferencing Nodes, selecting the node hypervistor type, then uploading the generated OVA file to the hypervisor. These OVA files is generally only be used once, so <strong>PLEASE DELETE</strong> the OVA after the file has been uploaded to the hypervisor as there is limited disk space. From v26 you can re-download a VM image file from the specific Conferencing Nodes configuration page if needs be.</p>
+<p>The transcoding process is compute-intensive. These nodes require <strong><u>dedicated</u></strong> host
+        resources and would generally consume an entire socket on a host. In a real-world deployment, the vCPU count
+        should fully utilize the hardware that the customer is providing, which should be sized according to the desired
+        call capacity. In this lab, you can leave the vCPU and vRAM settings at the default values. The virtual hardware
+        allocated to the Node can also be changed after deployment, via the VM properties in vCenter.</p>
+    <p>To deploy the nodes on the hypervisor, you will use a similar procedure to that which you used when deploying the
+        Management Node. Use <strong>section #3</strong> to connect to the hypervisor and upload the nodes, ensuring you
+        give them the correct name and relevant details (<strong>section #4.1</strong>), and remember there are two of
+        them.</p>
+    <p>When they are powered on and assuming you have got everything correct, they will connect to the Management Node
+        and you will see the status of the nodes change in Live View and the Status pages for the Conferencing Nodes.
+        The &ldquo;<span class="red">No transcoding resource available</span>&rdquo; warning will also disappear from the LAN location when you
+        look at the System Locations status page. If you get any of the IP details incorrect, you will need to delete
+        and redeploy the node as these a burnt into the image and cannot be altered.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/creating_conferencing_nodes.htm" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com/admin/creating_conferencing_nodes.htm</a>.</p>
+
+</body>
+
+</html>

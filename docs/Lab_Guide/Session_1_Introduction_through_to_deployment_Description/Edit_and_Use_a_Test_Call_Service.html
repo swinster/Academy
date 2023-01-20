@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Edit and Use a Test Call Service</title>
+</head>
+
+<body>
+    <h1 id="header">Edit and Use a Test Call Service</h1>
+
+    <p>Use <strong>section #4.2&nbsp;</strong>of the lab sheet.</p>
+    <p>The Pexip Infinity Test Call Service is a feature both administrators and end-users can use to test and validate
+        connections from different devices and clients. By default, there is already a test call service configured out
+        of the box, which uses an alias of &ldquo;<span class="code">test_call</span>&rdquo;. You can change this alias if you like, and you
+        should also add a new alias that contains the Pexip domain for your deployment.&nbsp;</p>
+    <p>Multiple aliases can be configured for Pexip Infinity services that allow different clients to connect to the
+        same service. For example, a SIP client would dial a URI in the format&nbsp;<span class="code">user@domain</span>, and you would need to
+        configure a suitable alias on the service to match this incoming call (using the&nbsp;<span class="code">Pexip Infinity
+        Domain</span>&nbsp;for your group). However, you may only want WebRTC users to have to type the
+        shorter&nbsp;<span class="code">user</span>&nbsp;part to access the same service.</p>
+    <p>To test this service using webRTC, browse to an internal node and/or the edge node using its FQDN. Note the
+        security warning in the browser. We will add TLS certificates to the Pexip Infinity nodes in the next session,
+        so for the moment accept the warning and move on. Also note that the RDP server has a virtual camera installed
+        allowing you to send a test video stream, however, it seems to flicker when multiple people use it at the same
+        time&nbsp;☹.&nbsp;</p>
+    <p>Please refer to&nbsp;<a
+            href="https://docs.pexip.com/admin/test_call_service.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/test_call_service.htm</a>.
+    </p>
+    
+
+</body>
+
+</html>

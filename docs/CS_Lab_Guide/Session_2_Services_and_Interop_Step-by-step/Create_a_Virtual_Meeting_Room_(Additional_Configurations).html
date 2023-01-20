@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Create a Virtual Meeting Room (Additional Configurations)</title>
+</head>
+
+<body>
+<h1 id="header">Create a Virtual Meeting Room (Additional Configurations)</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>Before configuring some of the Infinity services that handle  conferences and other call types, it's good to recap what firewall  configuration changes are required to allow external endpoints and systems to connect  to Infinity.</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/dfedc5d2-3c27-4dab-b39a-1eb7c1a5d101/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <p>Configure Virtual Meeting Rooms (VMRs) via the Services menu: <strong>Services --&gt; Virtual Meeting Rooms</strong>. </p>
+    <p>&nbsp;</p>
+    <p>Create a secure VMR to allow only users with the correct  PINs to enter the VMR. You will enable both hosts and guests to enter; both  require a PIN. Hosts can manage the conference whilst guests simply participate:</p>
+    <ol>
+        <li>Configure a <strong>name</strong> (<strong>Secure VMR</strong>) and <strong>description</strong>, set the <strong>host pin</strong> and the <strong>guest pin</strong>, and <strong>allow guests.</strong></li>
+        <li>Configure aliases like <span class="code">secure</span> and <span class="code">secure@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2)</strong>.</li>
+        <li>
+            <p><strong>Save</strong> and wait for sync before placing test calls to the VMR  alias.</p>
+        </li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Create a semi-secure VMR allowing easy access for guests:</p>
+    <ol>
+        <li>Configure a <strong>name</strong> (<strong>Semi-Secure
+            VMR</strong>) and <strong>description</strong>, set the <strong>host pin</strong> and <strong>allow guests</strong> to <strong>yes</strong>, with a<strong> blank guest pin</strong>.</li>
+        <li>Configure aliases like <span class="code">semisecure</span> and <span class="code">semisecure@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2)</strong>.</li>
+        <li><strong>Save</strong> and wait for sync before placing test calls to the VMR  alias.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Create a secure VMR only for C level users:</p>
+    <ol>
+        <li>Configure a <strong>name</strong> (<strong>C level VMR</strong>) and <strong>description</strong>, set the <strong>host pin</strong> and <strong>allow guests</strong> to <strong>no</strong>.</li>
+        <li>Configure an alias like <span class="code">clevel</span> and <span class="code">clevel@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2)</strong>.</li>
+        <li><strong>Save</strong> and wait for sync before placing test calls to the VMR  alias.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Create a VMR to show two main speakers but do not allow presentation:</p>
+    <ol>
+        <li>Configure a <strong>name</strong> (<strong>No Presentation VMR</strong>) and <strong>description</strong>, leave <strong>host</strong> and <strong>guest pin blank</strong> as default. Change the layout to <strong>2+21</strong>.</li>
+        <li>In the <strong>Advanced options</strong> section, then set the <strong>Conference capabilities</strong> to <strong>Main video only</strong></li>
+        <li>Configure an alias like <span class="code">nopresentation</span> and <span class="code">nopresentation@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2)</strong>.</li>
+        <li><strong>Save</strong> and wait for sync before placing test calls to the VMR  alias.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Create a VMR to show participant names and limit the room capacity to 3:</p>
+    <ol>
+        <li>Configure a <strong>name</strong> (<strong>Limited Participant VMR</strong>) and <strong> description</strong>, leave the <strong>host</strong> and <strong>guest pin</strong> blank, and the other configuration as default, except <strong>Show names of participants</strong> as <strong>yes.</strong></li>
+        <li>In the <strong>Advanced options</strong> section, then set the <strong>Participant limit</strong> to 3.</li>
+        <li>Configure an alias like <span class="code">smallvmr</span> and <span class="code">smallvmr@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2)</strong>.</li>
+        <li><strong>Save</strong> and wait for sync before placing test calls to the VMR  alias.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>To set the default layout on any of the VMRs to use Adaptive Composition, in the main VMR configuration section, set "<strong>View</strong>" to "<strong>Adaptive composition (automatic face detection and framing)</strong>". You  should also review other available layouts.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check the  configuration of your Pexip Infinity VMR services</h2>
+    <p>When you have created all the VMRs, test all the services.  Be sure to connect multiple endpoints using the PexEPs, adding PINs if  required. You might want to go beyond our steps and try out other options and  layouts. </p>
+    <p>Your VMR services should look as follows:</p>
+    <h3 class="main">A screenshot of the different VMRs configured with a sensible description for each:</h3>
+    <p>&nbsp;<img src="../../images/img1621815020.png" alt="VMR Services configured" title="VMR Services configured">&nbsp;</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Create_a_Virtual_Meeting_Room_(Additional_Configurations).html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

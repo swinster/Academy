@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script> 
+<!-- <script type="text/javascript" src="../../js/script.js"></script> -->
+<title>TLS Certificates</title>
+</head>
+
+<body>
+<h1 id="header">TLS Certificates</h1>
+<section></section>
+<p>In the first lab, you may have noticed that connecting to the Management Node and Conferencing Nodes using your browser caused a security warning to show. This is because when you deploy a new node within an Infinity System, a temporary self-signed certificate will be created and assigned to that node. So naturally, your browser and/or Operating System (and many other external systems) will not trust this certificate, so you need to add new <strong>trusted TLS certificates</strong> for each of the nodes.</p>
+<p>For a client to trust a certificate from a server (in our case, an Infinity node), the certificate presented by the node needs to match particular criteria. For example, the issue and expirey date need to be within a valid date range, and specific attributes within the certificate need to contain references to the nodes FQDN (such as the <strong>Subject Common Name</strong> and <strong>Subject Alternative Name</strong> attributes). In addition, the client needs to create a "<strong>chain of trust</strong>" connection back to the issuing root Certificate Authority (CA), whose certificate is saved in the client's local root CA store.</p>
+<p>Generally, you would add a combination of public and private certificates to an Infinity deployment, depending on what devices will connect to the nodes and from which locations. You will do this in the following steps. It is possible to use public certificates everywhere; however, there is usually an additional cost.</p>
+<hr>
+<p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Create TLS certificate for internal Transcoding Conferencing Nodes</h2>
+    <p>Use <strong>section #4.2</strong> and <strong>section #2</strong> of the lab sheet.</p>
+    <h3 class="main">Generate a CSR on Pexip Infinity</h3>
+    <p>You will use a private CA to issue the certificates for all the internal Infinity nodes. To create the internal Pexip Infinity Nodes' TLS certificate, you must create a Certificate Signing Request (CSR) via the <strong>Utilities --&gt; Certificate Signing Requests</strong> page of the Management Node.&nbsp;&nbsp;Please refer&nbsp;&nbsp;to <a href="https://docs.pexip.com/admin/certificate_signing_request.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/certificate_signing_request.htm</a> and <a class="general" href="https://docs.pexip.com/sfb/on_prem_certs_dns.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/on_prem_certs_dns.htm</a>.</p>
+    <p>The internal TLS certificates used in this lab are primarily for the on-premise integration with Exchange, Skype for Business and the internal LDAP systems. These rely heavily on certificate validation. However, adding trusted certificates on internal infrastructure such as Infinity using a private CA is good security practice, so you should not avoid it. </p>
+    <p>The on-premise Skype for Business certificate requirements are pretty rigorous. Indeed, there are elements of its certificate checking that are outside of the RFCs, so you need to be fully aware of the procedures. Nevertheless, the steps provide a helpful understanding when creating any internal certificates (if they work for an integration with Skype for Business, they should work for any other system integration 😉).</p>
+    <p>Skype for Business will check to see if the FQDNs of the configured devices in a Trusted Application Pool are present in BOTH the Subject Common Name (CN) and the Subject Alternative Names (SAN). When integrating with an on-premises Skype for Business Front End Server, we recommend using a pool of nodes referenced by a single Round Robin DNS entry. The pool FQDN and the unique FQDNs of the Conferencing Nodes all need to be part of the certificate. The certificate signing request thus needs to include multiple FQDNs, so you will generate a SAN certificate, where the pool FQDN should appear in the CN and the SAN, and all other nodes FQDNs should appear in the SAN.</p>
+    <p>The CSR contains the public key that the certificate authority should sign. The matching private key is stored as part of the Pexip Infinity configuration. You should create a non-renewing CSR using <strong>section #4.2</strong> of the lab sheet. Ensure you set the correct custom Common Name on the CSR, then add ALL internal nodes (including the Management Node) as alternative names.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">Creating the internal certificate</h3>
+    <p>You will need to request the certificate using the CSR just generated from the internal Windows ADCS Certificate Authority using the  link <a href="https://dc1.pexipacademy.local/certsrv" title="AD CS">https://dc1.pexipacademy.local/certsrv</a>. First, log in with the credentials shown in <strong>section #2</strong> of the lab sheet. Next, you will need to generate an <strong>advanced certificate request</strong> using the <strong>Web Server with client auth</strong> template and save the certificate as a <strong>Base64 encoded</strong> file. </p>
+    <p><strong>NOTE:</strong> The <strong>Web Server with client auth</strong> template is a modified version of the default ADCS Web Server template. ADCS administrators can create new templates with new properties (see <a class="general" href="https://docs.pexip.com/sfb/certificates.htm#cert_template" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/certificates.htm#cert_template</a>). The template provides both <strong>Client Authentication</strong> and the standard <strong>Server Authentication</strong> policy extensions. For example, the default template would have been acceptable if the Infinity node were only acting as a server. However, some integrations use mutual TLS, which requires the client to present its certificate to the server. Without the Client Authentication extension added to the certificate template, the TLS certificate issued would not work for this case. Most publicly issued TLS certificates contain both these extensions by default.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">Complete the signing request and assign the certificate in the Pexip Infinity deployment</h3>
+    <p>Once the signed certificate has been issued, you will complete the CSR process on the Infinity deployment. Once completed, <strong>assign the certificate to ALL internal nodes (including the Management Node)</strong>. You may note that the "Chain of trust" has a warning about a missing CA – this is normal at this stage. You will resolve this in the next step.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/certificate_management.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/certificate_management.htm</a>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Upload the internal CA root certificate</h2>
+    <p>Use <strong>section #2</strong> of the lab sheet.</p>
+    <p>The internal CA root certificate must be downloaded from the Windows CA server and added to the Infinity deployment. This root certificate is needed to complete the chain of trust between servers when integrating with Skype for Business when you use mutual verification. It is also used when Infinity connects to a secure LDAP source server.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/certificate_management.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/certificate_management.htm</a>.</p>
+    <p>You can get the root certificate from the CA server used earlier. First, Re-navigate to <a href="https://dc1.pexipacademy.local/certsrv" title="AD CS">https://dc1.pexipacademy.local/certsrv</a> (<strong>note:</strong> you will likely still be on the page <a href="https://dc1.pexipacademy.local/certsrv/certfnsh.asp" title="AD CS Finish">https://dc1.pexipacademy.local/certsrv/certfnsh.asp</a>, then <strong>Download a CA certificate</strong>, saving it as a <strong>Base64 encoded</strong> file.</p>
+    <p>Once you have the root certificate, you need to upload it to Infinity's Trusted CA certificate store. You can verify all is OK by viewing the TLS certificate you uploaded in the previous step. Its status should show as "Good".</p>
+    <p><strong>NOTE:</strong> you may also see a warning that the expiry date on this certificate is over 398 days. As this certificate is applied to the Management Node, if you were to browse to this node using Safari, you would see an untrusted certificate warning. For more information, read about this change in functionality in v24 due to the changing behaviours of browsers - <a href="https://docs.pexip.com/admin/previous_releases.htm?Highlight=398#changes_v24" title="Infinity Technical Docs" target="_blank">https://docs.pexip.com/admin/previous_releases.htm?Highlight=398#changes_v24</a>.</p>
+    <p>If end-user devices connect to any internal node (for example, a WebRTC client), they will also need the root CA certificate installed into their trusted CA store. This is usually handled automatically through IT administration systems, such as publishing the certificate to Active Directory.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Create a TLS certificate for external Proxying Edge Node</h2>
+    <p>Use <strong>section #11</strong> of the lab sheet.</p>
+    <p>The publicly available edge node requires a publicly verifiable TLS certificate to be able to federate with MS365, Skype for Business Edge Servers at other companies, and to enable a trusted and secure connection for external users, devices, and other systems (such as integrations with Microsoft Teams and Google Meet). This task uses third-party public Certificate Authorities to issue a free 90-day TLS certificate, however, Pexip has no control over the availability or functionality of these services. In addition, every certificate authority will have slightly different procedures to achieve the same goals.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/sfb/certificates.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/certificates.htm</a>.</p>
+    <p>There are many different public Certificate Authorities, and each has a different set of procedures that you need to follow to issue your TLS certificates. Unfortunately, we cannot possibly document all of these. Still, the steps from above used to issue the internal TLS certificate would be similar. You would likely create a CSR and send it to your chosen public Certificate Authority, who would then issue your certificate, and you complete the process.</p>
+    <p>Some Certificate Authorities allow for the automatic generation of TLS certificates, which we have chosen to use for this lab.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">Using a third-party Certificate Authority via a self-generated PEM certificate bundle</h3>
+    <p>This method will use an externally-generated, pre-made TLS certificate using the Let’s Encrypt Certificate Authority and a separate ACME client. Your certificate includes in its SAN; the edge node FQDN, the domain namespace, plus a pool FQDN, the latter of which is used for some specific integrations later on. </p>
+    <p>You can easily import these pre-made TLS certificates to Pexip Infinity from a PEM file. A PEM file contains a Base64 encoded X.509 certificate(s), which can be read in a text editor (to a fashion). Often, this file can contain multiple intermediate CA certificates, and the TLS certificate with the matching private key. Once imported, it can be assigned to an Infinity node in the same way as previously seen. When you upload this PEM “bundle”, Infinity will automatically add the CA certificates to its Trusted CA store and the TLS certificate (with associated private key) to its TLS certificate store. A TLS certificate administrator could obtain a certificate using a CSR created off of Infinity. This method is more unusual and complicated, but they would then supply you with a similar PEM bundle.</p>
+    <p>A TLS certificate administrator could obtain a certificate using a CSR created off of Infinity. This method is more unusual and complicated, but they would then supply you with a similar PEM bundle. For example, you can use OpenSSL to create a certificate in this way (see <a href="https://docs.pexip.com/sfb/certificates_openssl.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/certificates_openssl.htm</a>).</p>
+    <p>You can find the PEM file link in the lab sheet is <strong>section #11</strong>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Removing ALL temporary certificates</h2>
+    <p>No specific lab sheet section.</p>
+    <p>As noted previously, when you deploy an infinity node, they are automatically assigned a temporary, self-signed certificate. Now that you have applied the trusted TLS certificates to all the nodes, you should remove these temporary certificates from the system. From Infinity version v24 and above, these temporary certificates have expiry dates set to 30 days from the initial node creation; therefore, a warning is raised in Infinity's alarm panel. The intent is to alert an administrator to replace the certificate immediately. However, if the temporary certificates are kept on the deployment, the alarms raised can overshadow others, so removing them will lower the alarms.</p>
+    <p><strong>IMPORTANT NOTE:</strong> As an Infinity system administrator, you should ensure that you tackle alarms as soon as you are aware of them. <strong>Ignoring alarms can lead to an inoperable system.</strong></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

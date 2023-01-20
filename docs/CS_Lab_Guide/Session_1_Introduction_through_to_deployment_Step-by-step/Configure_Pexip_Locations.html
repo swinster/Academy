@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Configure Pexip Locations</title>
+</head>
+
+<body>
+<h1 id="header">Configure Pexip Locations </h1>
+<p>Suggested completion time: <strong>15 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <p>Use <strong>section #4.1</strong> and <strong>section #5</strong>of the lab sheet.</p>
+    <p>You might wish to re-watch the video regarding System Locations.</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/3fbd1f63-6102-45d9-aa6a-4d893904b908/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+</section>
+<section>
+    <h2 class="main">Step-by-step</h2>
+    <ol>
+        <li>Browse to the Management Node URL using its DNS name or IP address (accept the security warning if you see one, we will fix
+            this later).</li>
+        <li>Log in with username <strong>admin</strong> and the <strong>Pexip123!</strong> password.</li>
+        <li>Go to <strong>Platform --&gt; Locations</strong> and click the <strong>Add System Location</strong> button.</li>
+        <li>Create a System Location for the <u>internal nodes</u> with the name <strong>LAN</strong> (see <strong>section #4.1</strong>).</li>
+        <li>Configure DNS and NTP Servers as per <strong>section #4.1</strong>. If you need to add additional servers,
+            click the green plus to add this configuration on the fly. </li>
+        <li>Most other settings can be left as defaults. Note that the <strong>Transcoding Location</strong> is set to <strong>This location</strong>. Also note that this is where you would configure <u>DSCP (QoS)</u> settings and <u>MTU</u> size, meaning that all nodes within this location will inherit these settings.</li>
+        <li><strong>Save</strong>.</li>
+        <li><u>Repeat</u> to create another System Location for the <u>edge nodes</u> using the <strong>DMZ</strong> name (see <strong>section #5</strong>) and keep <strong>Transcoding Location:</strong> <strong>This Location</strong> (<strong>Note:</strong> Yes, this is initially going to be a Transcoding location!! We will change this later. Add <em>public</em> DNS and NTP Servers (<strong>Note:</strong> look for the <u>green add button</u> by the side of property boxes that allow you to add configurations on the fly. You could also navigate to <strong>System --&gt; DNS Servers</strong> and add servers there).</li>
+        <li><strong>Save</strong>.<br>
+            <p><strong>NOTE:</strong> a warning will tell you that "<strong class="red">No transcoding resource available</strong>" is available in each location. We will fix that in the next step. </p>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check your   Infinity deployment</h2>
+    <p>One day, perhaps soon, we will have a way to parse your Infinity deployment and tell you if your configuration matches the required design for this lab. Today, however, you need to check this manually.</p>
+    <p>Your system should match the screenshots seen below.</p>
+    <ul>
+        <li>Use the <strong>System</strong> menu to show system-level settings, such as all available DNS and NTP servers.</li>
+        <li>Use the <strong>Platform</strong> menu to see how these settings are applied to the Management Node and locations.</li>
+    </ul>
+    <p><strong>Screenshot of ALL the DNS servers configured on the system:</strong></p>
+    <p>&nbsp;<img src="../../images/System_DNS.png" alt="System DNS settings" title="System DNS settings"/></p>
+    <p><strong>Screenshot of ALL the NTP servers configured on the system:</strong></p>
+    <p>&nbsp;<img src="../../images/System_NTP.png" alt="System NTP settings" title="System NTP settings"/></p>
+    <p><strong>Screenshot of the DNS and NTP servers applied to the Management Node:</strong></p>
+    <p>&nbsp;<img src="../../images/Platform_mgt_settings.png" alt="Platform Management Node Settings" title="Platform Management Node Settings"/></p>
+    <p><strong>Screenshot of the DNS and NTP servers applied to the LAN location:</strong></p>
+    <p>&nbsp;<img src="../../images/Platform_LAN_settings.png" alt="Platform LAN Settings" title="Platform LAN Settings"/></p>
+    <p><strong>Screenshot of the DNS and NTP servers applied to the DMZ location:</strong></p>
+    <p>&nbsp;<img src="../../images/Platform_DMZ_settings.png" alt="Platform DMZ Settings" title="Platform DMZ Settings"/></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Configure_Pexip_Locations.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

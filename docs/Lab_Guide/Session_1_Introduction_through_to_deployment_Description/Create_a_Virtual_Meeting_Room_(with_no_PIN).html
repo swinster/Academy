@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Create a Virtual Meeting Room (with no PIN)</title>
+</head>
+
+<body>
+    <h1 id="header">Create a Virtual Meeting Room (with no PIN)</h1>
+
+    <p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+    <p>One of the services in Pexip Infinity is Virtual Meeting Rooms (VMRs). When you create Pexip VMRs, you have
+        multiple configuration options you could set. In the upcoming lab exercises, you will create different sorts of
+        VMRs with different properties. For this step, create a standard VMR with no PIN codes that you can connect to
+        using SIP devices and a shorter name for WebRTC users. Set the user part of the alias to <span class="code">vmr</span>.</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/creating_editing_vmrs.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/creating_editing_vmrs.htm</a>.</p>
+    <p>&nbsp;</p>
+<p>You have now created your first VMR. Before you can make a call to the VMR, the configuration must synchronise to
+        the Conferencing Nodes, so you must wait up to 60 seconds after making changes before they take effect. Every 60
+        seconds, each Conferencing Node checks with the Management Node to see if any configuration changes are
+        available. When the database with your new VMR is replicated to the Conferencing Nodes, you will be able to dial
+        in and connect.</p>
+    <p>To connect to your VMR, you can call from a browser. To do so, you can navigate to the Conferencing Node FQDNs,
+        however for now the Nodes will have untrusted self-signed certificates, so you will need to accept the browser
+        warnings (this will be fixed in a later step).</p>
+    <p>If one user in the group connects to the external node (e.g.
+        <strong class="code">https://edge.&lt;your_Infinity_domain&gt;</strong>) outside of the RDP session, and the other user
+        connects to an internal node (e.g. <strong class="code">https://conf02.&lt;your_Infinity_domain&gt;</strong>), you should be
+        able to create a distributed conference. Be aware that your web camera and microphone may not work via the RDP
+        session (there is a virtual camera installed on the RDP server, but it has limited functionality). The trainer
+        should also be able to connect to an internal node with an internal client to help you out if required.</p>
+    <p>Check out Live View to see what is going on (please refer to&nbsp;<a
+            href="https://docs.pexip.com/admin/platform_status.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/platform_status.htm</a>).
+        Note the <strong>backplane</strong> that is created between the two nodes.&nbsp;</p>
+    <p>To understand how Pexip handles a distributed conference, please read through the documentation at&nbsp;<a
+            href="https://docs.pexip.com/admin/dist_architecture.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/dist_architecture.htm</a>.
+        This might seem like a lot of reading, but to fully understand Pexip Infinity, you need to understand how it
+        operates. Indeed, you might need to read these pages several times as Pexip&rsquo;s architectural approach is
+        unlike any other conferencing solution.&nbsp;</p>
+    
+</body>
+
+</html>

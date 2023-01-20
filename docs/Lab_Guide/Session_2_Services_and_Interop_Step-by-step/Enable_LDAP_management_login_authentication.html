@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Enable LDAP management login authentication</title>
+</head>
+
+<body>
+    <h1 id="header">Enable LDAP management login authentication</h1>
+    <p>Suggested completion time: <strong>30 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #2&nbsp;</strong>and<strong>&nbsp;section #9&nbsp;</strong>of the lab sheet.</p>
+    <section>
+        <h3 class="main">To configure LDAP Authentication:</h3>
+        <p>Setup the LDAP server connection:</p>
+        <ol>
+            <li>Go to <strong>Users &amp; Devices&nbsp;</strong><strong>--&gt; Administrator Authentication</strong>.
+            </li>
+            <li><strong>Authentication source: LDAP database and local database</strong>.</li>
+            <li><strong>Require client certificate: Not required</strong>.</li>
+            <li>Set the<strong>&nbsp;LDAP server address.</strong></li>
+            <li>Leave<strong>&nbsp;Allow insecure transport&nbsp;</strong>unchecked (we like security, and we have just
+                added some trusted certs).</li>
+            <li>Set the<strong>&nbsp;LDAP bind username.</strong>
+                <ol>
+                    <li><strong>NOTE:</strong> LDAP can be difficult. The username should be in the format <span
+                            class="code">vcXuserY@pexip.net</span>. If this fails, try just the user part (<span
+                            class="code">vcXuserY</span>), or in the format <span class="code">pexip\vcXuserY</span>.
+                    </li>
+                </ol>
+            </li>
+            <li>Set the<strong>&nbsp;LDAP bind password</strong>.</li>
+            <li>Set the<strong>&nbsp;LDAP base DN.</strong></li>
+            <li>Click <strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>Check the LDAP authentication roles:</p>
+        <ol>
+            <li>Go to <strong>Users &amp; Devices&nbsp;</strong><strong>--&gt; Administrator Roles</strong>.</li>
+            <li>Two common roles should be defined by default, <strong>read-only</strong> and
+                <strong>read-write</strong>.</li>
+        </ol>
+        <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>
+        <p>Setup the LDAP role mapping against the AD group:</p>
+        <ol>
+            <li>Go to <strong>Users &amp; Devices&nbsp;</strong><strong>--&gt; LDAP Role Mappings</strong>.</li>
+            <li>Configure two roles (using names like <span class="code">Read/Write Admins</span>, and <span
+                    class="code">Read Only Admins</span>, which will be used to map the predefined administrator roles,
+                &ldquo;Read-write&rdquo; and &ldquo;Read-only&rdquo;).</li>
+            <li>Select the correct<strong>&nbsp;LDAP group DN&nbsp;</strong>for each mapping.</li>
+            <li>Select the <strong>role to map</strong> for each mapping (there are two default administrator roles you
+                can use, &ldquo;Read-write&rdquo;, and &ldquo;Read-only&rdquo;, which do NOT need to be altered).</li>
+            <li><strong>Save</strong>.</li>
+        </ol>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Testing</h3>
+
+        <p>When you have configured the LDAP authentication, it&rsquo;s time to test these privileges. Log out from the
+            admin account and try to log in as the AD users (but <strong><em>without</em>&nbsp;</strong>the domain
+            part). Once you have tested with restrictive privileges and grabbed the relevant screenshots (see next
+            step), re-edit the&nbsp;<strong>LDAP Role Mappings</strong> so that both groups are assigned the Read/Write
+            role. You can then continue with the rest of the configuration in the labs by using the AD user accounts,
+            and ensure that any screen captures of the Management Node GUI show the user account in the top right of the
+            image.&nbsp;</p>
+
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 2: Demonstrate your ability to administer a Pexip Infinity system.</h3>
+
+        <p><strong>A screenshot of the LDAP Role Mappings:</strong></p>
+        <p>&nbsp;<img src="../../images/img1621813184.png" alt="image"></p>
+        <p><strong>Screenshots showing the different users logged in:</strong></p>
+        <p><img src="../../images/img1621813183.png" alt="image"><img src="../../images/img162181318455.png" alt="image"><img
+                src="../../images/img162181318395.png" alt="image"></p>
+
+        <p><strong>A screenshot showing evidence that the logged-in user has read-only privileges:<br>
+			Note that this user (vc20user2) is unable to edit the properties of the VMR service.</strong></p>
+        <p><img src="../../images/img162181318478.png" alt="image"></p>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Enable_LDAP_management_login_authentication.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+
+    <title>Switching from a Transcoding Edge Node to a Proxying Edge Node</title>
+</head>
+
+<body>
+    <h1 id="header">Switching from a Transcoding Edge Node to a Proxying Edge Node</h1>
+    <p>Suggested completion time: <strong>30 minutes</strong></p>
+    <img src="../../images/transcoding_to_proxy.png" width="150" height="101" alt=""/>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>No specific lab sheet section.</p>
+    <p>Before you make the change, run a quick test conference with a VMR where multiple users connect to the Edge node.
+        Note how this looks in live view: both call legs are terminated on the Edge node.</p>
+    <p>&nbsp;</p>
+    <p>Change the Pexip Transcoding Edge Node into a Proxying Edge Node:</p>
+    <ol>
+        <li>Navigate to <strong>Platform&nbsp;</strong><strong>--&gt; Conferencing Nodes</strong>, then click on your
+            Edge Node.</li>
+        <li>Change the <strong>Role</strong> to a <strong>Proxying Edge Node</strong> and <strong>Save</strong> the
+            configuration.</li>
+    </ol>
+    <p>Note the Warning that appears to tell you that the location that contains the Edge Node, now contains no
+        transcoding resource. We need to update this location so that it can use a resource elsewhere.</p>
+    <p>&nbsp;</p>
+    <p>Change the DMZ Location to use the transcoding resource of the LAN Location:</p>
+    <ol>
+        <li>Navigate to <strong>Platform&nbsp;</strong><strong>--&gt; Locations</strong>, then click on the
+            <strong>DMZ</strong> location.</li>
+        <li>Change the <strong>Transcoding location</strong> to <strong>LAN</strong> and <strong>Save</strong> the
+            configuration.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">Testing</h3>
+
+        <p>Re-run the test calls into the VMR using some endpoints connecting to the Edge node. Each group member can
+            create a WebRTC call via the Edge node from your laptop (outside of the RDP session), although there is a
+            virtual camera added to the RDP server (unfortunately, this flickers when multiple people use it, but it
+            should be sufficient for testing). Note how the calls are now handled by this node in Live View &ndash; the
+            call legs are proxied to the internal transcoding location, where the media is mixed.</p>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 3: Demonstrate how to successfully configure Pexip Infinity Services</h3>
+
+        <p>Grab some screenshots of the updated Live View and status pages of the location showing the change in the
+            role of the Edge node, for example:</p>
+        <p><strong>Screenshot of main Live View showing the updated DMZ node in the Proxying Edge role:&nbsp;</strong>
+        </p>
+        <p>&nbsp;<img src="../../images/img162181393461.png" alt="image"></p>
+        <p><strong>Screenshot of the System Locations status page showing the transcoding resources defined for each
+                location:</strong></p>
+        <p><img src="../../images/img1621813934.png" alt="image"></p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_2_Services_and_Interop_Description/Switching_from_a_Transcoding_Edge_Node_to_a_Proxying_Edge_Node.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

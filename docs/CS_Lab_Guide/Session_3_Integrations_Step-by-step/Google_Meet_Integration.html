@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Google Meet Integration</title>
+</head>
+
+<body>
+<h1 id="header">Google Meet Integration</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<img src="../../images/Google_meet_logo.png" alt="image" width="100">
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #5&nbsp;</strong>and <strong>section #12&nbsp;</strong>of the lab sheet.</p>
+<section>
+    <h2 class="main">Google side</h2>
+    <ol>
+        <li>Go to <a class="general" href="https://admin.google.com" target="_blank" title="Google Admin">https://admin.google.com</a> and log in with the credentials from <strong>section #12</strong>.<br>
+            <p><strong>NOTE:</strong> you will be prompted for a 2FA code whch will  be sent to you trainers phone. Please make sure they are available when you log  into the admin console.</p>
+        </li>
+        <li>Enable <strong>Gateway Interoperability</strong> for <strong><em>your assigned VC Origanisational Unit (OU)</em></strong> by navigating to <strong>Apps --&gt; Google Workspace --&gt; Google Meet,</strong> then in the right-hand section in the <strong>Meet Video Settings</strong> section, click <strong>Gateway Interoperability</strong>.<br>
+            <img src="../../images/Google_gw_interop.png" alt="Google Meet Gateway Interoperability Settings" title="Google Meet Gateway Interoperability Settings"></li>
+        <br>
+        <li>Ensure  that you are configuring the settings similar to the image below, but <u>for your specific</u> organisational unit, <strong><u>NOT</u></strong> the entire Pexip lab environment or other users OUs (<u class="highlight">i.e. do not touch the <strong>g.pexip.net</strong> root domain!</u>). <strong><br>
+            </strong>You should edit <em><strong>your</strong></em> Organisational   Unit (OU):</li>
+        <ol>
+            <li>Check the <strong>Allow interoperability with other systems</strong> option.</li>
+            <li>Select <strong>Use both long and short meeting IDs</strong>. <br>
+                <strong>NOTE:</strong> in a real deployment, you may decided to use just long ID's, however, only short ID's allow for <strong>Meeting ID prefix</strong> matching (helpfull with call routing rules) but are being deprecated.</li>
+            <li>For the <strong>Gateway IP Address</strong>, add your proxying edge <u>static NAT</u> public IP address (see lab sheet <strong>section #5</strong>).</li>
+            <li>For the <strong>Gateway Hostname</strong>, add the <span class="code">Pexip Infinity domain</span> for your deployment (see lab sheet <strong>section #5</strong>). <br>
+                <strong>NOTE:</strong> This is used to create the dialable URI for external users when viewing the third-party dialling instructions.</li>
+            <li>In <strong>Meeting ID prefix</strong>, pick a prefix (numeric) to be used in your dial plan and routing rules (remember this for later&hellip;). In the example below, we use <span class="code">777</span>.</li>
+            <li><strong>Save</strong>.<br>
+                <br>
+            </li>
+        </ol>
+        <p><img src="../../images/Google_gw_interop_details.png" alt="Google Meet Gateway Interoperability Settings Details" title="Google Meet Gateway Interoperability Settings Details"><br>
+        </p>
+        <p><strong>NOTE: </strong>Again - do <strong>NOT</strong> edit the root domain:</p>
+        <p><img src="../../images/Google_gw_interop_not_root.png" alt="Google Meet Gateway Interoperability Settings - Do Not edit the root domain" title="Google Meet Gateway Interoperability Settings - Do Not edit the root domain"></p>
+        <li>Navigate to <strong>Apps&nbsp;</strong><strong>--&gt; Google Workspace&nbsp;</strong><strong>--&gt; Google Meet&nbsp;</strong><strong>--&gt; Interoperability tokens</strong> in the administrative panel.</li>
+        <p><img src="../../images/Google_interop_tokens.png" alt="Google Meet Interoperability Tokens" title="Google Meet Interoperability Tokens"></p>
+        <br>
+        <li>Select <strong>Add a Token</strong>, choose &quot;<strong>Pexip</strong>&quot;, then enter the name <strong>vcX_trusted</strong> (where X is your VC OU number) and click <strong>Generate</strong>.</li>
+        <p><img src="../../images/Google_interop_tokens_detials.png" alt="Google Meet Interoperability Tokens Details" title="Google Meet Interoperability Tokens Details"></p>
+        <li>Copy the token and record it, such as in Notepad++ (<strong>NOTE:</strong> This is the only time you will be able to see the token before it is encrypted and stored in Google Workspace, so will not be visible in clear text again). Click &quot;<strong>Close</strong>&quot; when the token is safely stored.</li>
+        <li>Repeat the two previous   steps to create a second gateway and token for <strong>vcX_untrusted.</strong></li>
+        <li>Ensure that the &quot;<strong>Trusted devices</strong>&quot; toggle is <u>enabled</u> for the trusted-token gateway and <u>disabled</u> for the <u>un</u>trusted-token gateway.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Pexip Infinity side</h2>
+    <p>Adding the Google Meet tokens:</p>
+    <p><strong>NOTE:</strong> You will need an additional concurrent Google  Meet license for each token you add. You can  check the number of licenses on you deployment from <strong>Platform --&gt;  License</strong>s, and look for the license type <span class="code">ghm</span>. </p>
+    <ol>
+        <li>Navigate to <strong>Call</strong> <strong>Control&nbsp;</strong><strong>--&gt; Google Meet Access Tokens.</strong></li>
+        <li>Click <strong>Add Google Meet access token</strong> and enter the name <strong>vcX-ghm-trusted</strong> (where X is your VC number) and the <strong>trusted</strong> access token taken
+            previously from Google Workspace, then click <strong>Save and add another</strong>.</li>
+        <li>Repeat the above process with the <strong>untrusted</strong> token (and an appropriate name) and click <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Creating Call Routing for Google Meet Trusted devices:</p>
+    <ol>
+        <li>Navigate to <strong>Services</strong> <strong>--&gt; Call Routing</strong> and click <strong>Add Call Routing Rule</strong>.</li>
+        <li>Configure the fields as described below (fields not mentioned are configurable per your choices):</li>
+        <ol>
+            <li>Name: Include the word <strong>Trusted</strong> to  tell rules apart from each other.</li>
+            <li>Select a priority that has not been used (e.g. 60) (<strong><u>be aware that more generic rules might match first&hellip;</u></strong><u>)</u></li>
+            <li>Apply to <strong>Incoming gateway calls</strong>.</li>
+            <li>Enable <strong>Match incoming calls from registered devices only</strong>.</li>
+            <li><strong>Destination alias RegEx match</strong>: Use the example below, changed as needed for your environment.</li>
+            <p class="code"><span class="highlight">(</span>&lt;prefix_chosen&gt;\d{3,9}|\d{13}<span class="highlight">)</span>($|(@&lt;Pexip Infinity domain&gt;$))</p>
+            <p>For example: <span class="highlight">(</span><span class="code">8\d{3,9}|\d{13}</span><span class="highlight">)</span><span class="code">($|(@vc20-osl\.pexip\.net$))</span></p>
+            <p>The above RegEx will match the prefix you chose and configured in Google Workspace previously (in this case, <span class="code">8</span>), followed by 3-9 digits (which are randomly generated by Google for the meeting code), then an <span class="code">@</span> symbol, then the domain name of your group. It also will match on the 13-digit long meeting ID if used.</p>
+            <p>An incoming call to <span class="code">81234@vc20-osl.pexip.net</span> would match, but <span class="code">812@vc20-osl.pexip.net</span>, would not.</p>
+            <li><strong>Destination alias RegEx replace string</strong>: <span class="code">\1</span></li>
+            <p>The  replace string refers to the first group in <span class="highlight">parentheses</span> as hightlighted above (i.e. the prefix plus the 3-9 digit short meeting meeting code, <em>or</em> the 13 digit long ID) which is what Infinity sends to Google to look up a valid meeting.</p>
+            <li>Call target: <strong>Google Meet meeting</strong>.</li>
+            <li>Outgoing Location: <strong>DMZ</strong></li>
+            <li><strong>Access token:</strong> Choose your trusted token.</li>
+            <li>Enable the <strong>Treat as trusted</strong> checkbox.</li>
+        </ol>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Creating Call Routing for Google Meet Untrusted devices:</p>
+    <ol>
+        <li>Repeat the prior steps to create a second rule using your <u>un</u>trusted token, making appropriate adjustments to Name and Access token fields, and with the differences described below:
+            <ol>
+                <li>Set a lower priority (higher number) than the rule above (e.g. 70) (<strong><u>also be aware that other more generic rules might match first &#128521;</u></strong>)</li>
+                <li>Ensure that <strong>Match incoming calls from registered devices only</strong> is <u>disabled</u> (the default).</li>
+                <li>Use the same <strong>RegEx match</strong> and <strong>replace</strong> values.</li>
+                <li>Leave the <strong>Treat as trusted</strong> checkbox disabled.</li>
+            </ol>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>To test, navigate to <a class="general" href="https://meet.google.com/" target="_blank" title="Google Meet">https://meet.google.com</a>. You can start a new conference, by clicking <strong>Start a  meeting</strong>.</p>
+    <p>Log in with your lab user credentials (see <strong>section #12</strong>). <br>
+        <strong>NOTE:</strong> You may be  prompted for a 2FA code again, so your trainer will be pinged if needed.</p>
+    <p><img src="../../images/Google_meet_start_meeting.png" alt="Start a meeting with Google Meet" title="Start a meeting with Google Meet"><br>
+    <p>If you are already logged in, you will see a <strong>New Meeting</strong> button, then; you can start a meeting by clicking <strong>Start an instant meeting</strong>.</p>
+    <img src="../../images/Google_meet_start_instant_meeting.png" alt="Start an instant Google Meeting" title="Start an instant Google Meeting">
+    </p>
+    <p>Once you are in the meeting, click the <strong>More phone number</strong> link in the <strong>Your meeting is ready</strong> box, then in the <strong>Third-party system</strong> tab, you should see the joining options for your group.</p>
+    <p>If you accidentally close this dialog, you can get to the  same information by clicking the '<strong>i</strong>' button in the control bar.</p>
+    <p><img src="../../images/Google_meet_more_phone_numbers.png" alt="Finding the More Phone Numbers option in Google Meet" title="Finding the More Phone Numbers option in Google Meet"></p>
+    <p><img src="../../images/Google_meet_third_party_systems.png" alt="Third-party systems in Google Meet" title="Third-party systems in Google Meet"></p>
+    <p>Make sure you test both trusted and untrusted routes (so using both a registered endpoint and the WebApp or a SIP/MS-SIP client).</p>
+    <p>In the real world, you probably would not want users to use  the Infinity WebApp as they might as well navigate directly to Google Meet. So  disabling any incoming call match for the &quot;Match Infinity Connect  (WebRTC/RTMP)&quot; protocol <em>would</em> stop a WebApp user from gatewaying to Google  Meet. However, it would also stop users of the desktop Connect clients, as this  also uses WebRTC under the hood.</p>
+    <p>Google calendar invites use the long meeting ID. However, One  Touch Join can currently parse Google HTML pages using the short ID, although it  will likely use just the long ID going forward. These will be embedded in the  calendar invite headers, providing a more scalable and robust joining option.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check you Pexip Infinity system with a working Google Meet integration.</h2>
+    <p>To ensure you have the Google integration working correctly, check your calls against the screenshots below that show gateway calls in operation in Live View, using the trusted and untrusted connection methods. You should join the same Google Meet meeting for these different devices. Remember to drill down into the gateway call instance in Live View to see the participant graph.</p>
+<h3 class="main">A screenshot of the main Live View for an untrusted Gateway instance to Google Meet:</h3>
+    <p><img src="../../images/Liveview_Google_untrusted.png" alt="Live View showing a Gateway instance for a Google Meet untrusted caller" title="Live View showing a Gateway instance for a Google Meet untrusted caller"></p>
+    <h3 class="main">A screenshot of the graph view of participants in an untrusted Gateway instance to Google Meet:</h3>
+    <p><img src="../../images/Liveview_Google_untrusted_drilldown.png" alt="Conference graph showing the call from the untrusted gateway instance point-of-view" title="Conference graph showing the call from the untrusted gateway instance point-of-view"></p>
+    <h3 class="main">A screenshot of the main Live View for a trusted Gateway instance to Google Meet:</h3>
+    <p><img src="../../images/Liveview_Google_trusted.png" alt="Live View showing a Gateway instance for a Google Meet trusted caller" title="Live View showing a Gateway instance for a Google Meet trusted caller"></p>
+    <h3 class="main">A screenshot of the graph view of participants in a trusted Gateway instance to Google Meet:</h3>
+    <p><img src="../../images/Liveview_Google_trusted_drilldown.png" alt="Conference graph showing the call from the trusted gateway instance point-of-view" title="Conference graph showing the call from the trusted gateway instance point-of-view"></p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '..//Session_3_Integrations_Description/Google_Meet_Integration.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

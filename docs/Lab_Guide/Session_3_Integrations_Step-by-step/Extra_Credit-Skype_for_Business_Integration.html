@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Extra Credit: Skype for Business Integration</title>
+</head>
+
+<body>
+    <h1 id="header">Extra Credit: Skype for Business Integration</h1>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #2, section #4</strong> and <strong>section #6</strong> of the lab sheet.</p>
+    <section>
+        <h3 class="main">Setting up the integration</h3>
+
+        <button type="button" class="collapsible" onclick="collapsibleElement()">Skype for Business configuration (deprecated in this lab):</button>
+        <div class="content">
+            <h4 class="main">Skype for Business configuration.</h4>
+
+            <p class="highlight"><strong><u>NOTE: We no longer complete these steps in the lab. The instructions below are
+                        kept for reference only.</u></strong></p>
+            <p>Commands to run on the SfB Front End server to enable the integration:</p>
+            <ol>
+                <li>The PowerShell commands and relevant details about them can be found at this link: <a
+                        href="https://docs.pexip.com/sfb/sfb_server_config.htm" target="_blank"
+                        title="Pexip Docs">https://docs.pexip.com/sfb/sfb_server_config.htm</a>.
+                </li>
+                <li>Create the correct Skype for Business command based on the template below and the previously linked
+                    documentation. Add your completed commands to a text file and upload this into your group folder in the
+                    RDP
+                    server at &ldquo;<strong>E:\Pexip\Group Folders\&lt;Your Group&gt;\SfB_Commands.txt&rdquo;.</strong> Let
+                    your trainer know when you have completed this so that they can review your file and go over anything
+                    with
+                    you if required.</li>
+
+                <p>Here is a summary of the commands that need to be entered; the information in <strong class="code">&lt; &gt;</strong>
+                    needs to
+                    be replaced with your deployment details. All necessary information can be found in the lab sheet
+                    <strong>section #4.2</strong> and <strong>section</strong> <strong>#6</strong>.</p>
+                <p class="code">New-CsTrustedApplicationPool -Identity <strong>&lt;Pexip conference node pool
+                        name&gt;</strong> -ComputerFqdn
+                    <strong>&lt;first internal conference node&gt;</strong> -Registrar <strong>&lt;SfB FEP FQDN&gt;</strong>
+                    -Site
+                    <strong>&lt;SiteID&gt;</strong> -RequiresReplication $false -ThrottleAsServer $true
+                    -TreatAsAuthenticated $true
+                </p>
+                <p class="code">New-CsTrustedApplicationComputer -Identity <strong>&lt;second internal conference
+                        node&gt;</strong> -Pool
+                    <strong>&lt;Pexip conference node pool name&gt;</strong></p>
+                <p class="code">New-CsTrustedApplication -Applicationid <strong>&lt;groupname&gt;</strong>
+                    -TrustedApplicationPoolFqdn
+                    <strong>&lt;Pexip conference node pool name&gt;</strong> -Port 5061</p>
+                <p class="code">$route = New-CsStaticRoute -TLSRoute -Destination &quot;<strong>&lt;Pexip conference node
+                        pool
+                        name&gt;</strong>&quot; -Port 5061 -MatchUri &quot;&lt;<strong>Pexip Infinity
+                        domain</strong>&gt;&quot;
+                    -UseDefaultCertificate $true</p>
+                <p class="code">Set-CsStaticRoutingConfiguration -Identity &quot;Service:Registrar:<strong>&lt;SfB FEP
+                        FQDN&gt;</strong>&quot;
+                    -Route @{Add=$route}</p>
+
+                <li>You can enter the commands via a remote PowerShell session to the Skype for Business Front End Server
+                    (<strong>NOTE</strong>: this is not a &ldquo;Best Practice&rdquo; way to manage a Skype/Lync deployment
+                    and
+                    is used purely for this lab environment, hence you should read the warning below). There is a PowerShell
+                    script on the RDP desktop that will create a remote PS session on the Skype for Business Server. When
+                    you
+                    are happy, open a remote PowerShell session to the Skype for Business Server.<ol>
+                        <li>Right-click on the &ldquo;<strong>LogonToSfb.ps1</strong>&rdquo; file of the RDP desktop, select
+                            &ldquo;<strong>Run with PowerShell</strong>&rdquo;, and log into the session with your
+                            credentials
+                            (see Lab sheet <strong>section #2</strong>).</li>
+                        <li>Enter the commands you created above.<br><strong>Note:</strong> <u>DO NOT</u>, repeat
+                            <strong><u>DO
+                                    NOT</u></strong> enter the <span class="code">Enable-CsTopolgy</span>&nbsp;command via
+                            the remote PowerShell session.
+                        </li>
+                    </ol>
+                </li>
+                <li>Request that your trainer, playing the role of the SfB administrator, run the <span
+                        class="code">Enable-CsTopology</span>&nbsp;to
+                    enable your deployment to communicate with SfB. <strong>Note:</strong> the reason for this is that
+                    multiple
+                    administrators configuring Skype for Business in this way is not recommended and can cause undesirable
+                    results. Your trainer will stop the class to make sure no one is entering commands at this stage.</li>
+
+                <p>The <u>trainer</u> will then execute this command on the SfB environment to enable the topology.</p>
+            </ol>
+        </div>
+        
+        <p>&nbsp;</p>
+        <h4 class="main">Pexip Infinity configuration.</h4>
+        <p>Add the Skype for Business server as a Lync/Skype for Business Server assign it to the Enterprise LAN
+            location:
+        </p>
+        <ol>
+            <li>Go to <strong>Call Control&nbsp;</strong><strong>--&gt; Lync/Skype for Business Servers</strong>.</li>
+            <li>Click <strong>Add Lync/Skype for Business Server</strong>.</li>
+            <li>Enter a name (this is just a display name).</li>
+            <li>Enter the <strong>FQDN</strong> of the <strong>Skype for Business Server</strong> (lab sheet
+                <strong>section
+                    #6</strong>). This must be the FQDN, not an IP address, otherwise, certificate validation will fail.
+            </li>
+            <li>Leave other fields at default and click <strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>Assign the Skype for Business server to the Enterprise LAN location:</p>
+        <ol>
+            <li>Go to <strong>Platform&nbsp;</strong><strong>--&gt; Locations</strong>.</li>
+            <li>Click the <strong>Enterprise LAN</strong> location.</li>
+            <li>Set the <strong>Lync/Skype for Business Server</strong> to be the new server you have just defined.</li>
+            <li>Click <strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>Ensure the Conferencing Nodes have the correct SIP TLS FQDNs configured.&nbsp;</p>
+        <ol>
+            <li>On <strong>Platform&nbsp;</strong><strong>--&gt; Conferencing Nodes</strong> click the first internal
+                Pexip Conferencing Node.</li>
+            <li>On the configuration value <strong>SIP TLS FQDN</strong>, add the FQDN of the Conferencing Node (lab
+                sheet
+                <strong>section #4.1</strong>) and click <strong>Save</strong>.<ol>
+                    <li>Repeat on the second Conferencing Node with its FQDN.</li>
+                </ol>
+            </li>
+            <li>Make sure that the correct certificate is assigned on the internal Pexip Conferencing Nodes.</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>Configure the global Pexip Infinity domain:</p>
+        <ol>
+            <li>On <strong>Platform&nbsp;</strong><strong>--&gt; Global Settings.</strong></li>
+            <li><strong>Pexip Infinity domain (for Lync/Skype for Business integration):</strong> fill in the domain
+                that is
+                used by Pexip. You can find this on the lab sheet <strong>section #4.2</strong> as &ldquo;<strong>Pexip
+                    Infinity domain</strong>&rdquo; (<strong>note:&nbsp;</strong>this is NOT the Skype for Business SIP
+                domain).</li>
+            <li>Click <strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+
+        <h4 class="main">Testing Initial Skype for Business integration</h4>
+
+        <p>Your trainer should have a Skype for Business client logged in to the OnPrem Skype for Business deployment.
+            Ask
+            your trainer to dial into a VMR you recently created.</p>
+        <hr>
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+      <h3 class="main">Joining a Skype for Business meeting&nbsp;using Call Routing</h3>
+
+        <p>Use<strong>&nbsp;section #4.2&nbsp;</strong>and <strong>section #6</strong> of the lab sheet.</p>
+
+        <h4 class="main">Direct dialling into a Skype for Business Meeting</h4>
+
+        <p>Joining an SfB meeting using direct dialling to the Conference ID:</p>
+        <ol>
+            <li>Go to <strong>Services&nbsp;</strong>--&gt;<strong>&nbsp;Call Routing&nbsp;</strong>and click
+                <strong>Add
+                    Call Routing Rule</strong>.</li>
+            <li>Configure a matching <strong>name</strong> and <strong>priority</strong>.</li>
+            <li><strong>Match</strong> only <strong>incoming</strong> gateway calls and any location.</li>
+            <li><strong>Match SIP/H.323</strong> and <strong>WebRTC</strong> to support Infinity Connect.
+                <strong>Uncheck
+                    Lync/Skype for Business</strong> &ndash; it is unnecessary because SfB client users will connect
+                directly to SfB using the Skype meeting link.</li>
+            <li><strong>Destination alias RegEx</strong> <strong>match:&nbsp;</strong>Match incoming call on
+                <span class="code">sfb.(\d{5,6})@&lt;your Pexip Infinity domain&gt;&nbsp;</span>You can find the domain
+                of your group in the lab sheet
+                <strong>section #4.2</strong>.<ol>
+                    <li>The rule will match any dial-string where the host part (before the &lsquo;@&rsquo; sign) is
+                        either
+                        5 or 6 digits.</li>
+                </ol>
+            </li>
+            <li>In the <strong>replace string</strong>, configure <span class="code">\1</span>&nbsp;which means that the
+                rule will provide only the
+                digits when passing the call to the SfB server &ndash; effectively stripping your group&rsquo;s domain
+                and
+                sending only what SfB needs.<ol>
+                    <li>The <span class="code">\1</span>&nbsp;references the <span class="code">(
+                            &nbsp;)</span>&nbsp;parenthesis sequence, so this returns the result from the
+                        first set.</li>
+                </ol>
+            </li>
+            <li><strong>Call target:</strong> <strong>Lync/Skype for Business meeting direct (Conference ID in dialled
+                    alias)</strong>.</li>
+            <li><strong>Outgoing location: Enterprise LAN</strong>.</li>
+            <li>Select the <strong>Lync/Skype for Business Server</strong> you configured previously.</li>
+            <li><strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+
+        <h4 class="main">Indirect dialling (via a Lobby) into a Skype for Business Meeting</h4>
+
+        <p>Create the virtual reception (lobby):</p>
+        <ol>
+            <li>Go to <strong>Services&nbsp;</strong><strong>--&gt; Virtual Reception</strong> and click <strong>Add
+                    Virtual Reception</strong>.</li>
+            <li>Give the Virtual Reception a <strong>name</strong>.</li>
+            <li>Chose a Virtual Reception type of <strong>Lync/Skype for Business</strong>.</li>
+            <li>Select the <strong>SfB server&nbsp;</strong>and <strong>lookup location</strong>, then select the
+                internal
+                location <strong>Enterprise LAN</strong>.</li>
+            <li>Give the Virtual Reception an alias like <strong class="code">skype@&lt;your lab group
+                    domain&gt;</strong> which can be
+                found in the lab sheet in <strong>section #4.2</strong></li>
+            <li><strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>Create the call routing rule:</p>
+        <ol>
+            <li>Go to <strong>Services&nbsp;</strong><strong>--&gt; Call Routing Rules</strong> and click <strong>Add
+                    Call
+                    Routing Rule</strong>.</li>
+            <li>Configure a <strong>name</strong> and priority (we recommend a lower priority (higher number) like 150
+                since
+                this rule will have a more general matching scope).</li>
+            <li>Match <strong>only incoming gateway calls</strong> and in <strong>any location</strong>.</li>
+            <li>Match incoming<strong>&nbsp;SIP/H.323</strong> and <strong>WebRTC</strong> to support Infinity connect.
+                <strong>Uncheck Lync/Skype for Business</strong> because SfB users will connect using the Skype meeting
+                link.</li>
+            <li><strong>Check</strong> match against <strong>full alias URI</strong>.</li>
+            <li><strong>Match</strong> incoming call on:<br><strong>
+                    &nbsp;</strong><span class="code">.+@&lt;the domain of the SfB environment&gt;.*</span><br>&nbsp;You
+                can find the domain on
+                the lab sheet <strong>section #6</strong> (<strong>Note:</strong> this is the, not the FQDN of the front-end server or pool. Also note that the <span class="code">.*</span> is very
+                important &ndash;
+                <strong><u>Why?</u></strong>)</li>
+            <li>On the <strong>replace string</strong>, leave the field <strong>blank</strong> as no rewriting or
+                transformation is necessary for this rule.</li>
+            <li><strong>Call target: Lync/Skype for Business clients, or meetings via a virtual reception</strong>.</li>
+            <li><strong>Outgoing location: Enterprise LAN</strong>.</li>
+            <li>Select the <strong>Lync/Skype for Business Server</strong>.</li>
+            <li><strong>Save</strong>.</li>
+        </ol>
+        <p>&nbsp;</p>
+
+        <h4 class="main">Testing joining a Skype for Business meeting</h4>
+
+        <p>Ask your trainer to create a Skype meeting and provide the <strong>conference ID</strong>. Use WebRTC, or any
+            video endpoint to connect to the virtual reception you created and then use DTMF tones to enter the
+            conference
+            ID.</p>
+        <hr>
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">An additional routing rule for Skype For Business</h3>
+
+        <p>No specific lab sheet section.</p>
+        <p>Time to think for yourselves, so there are no step-by-step instructions for this section. See the <strong>More info</strong> button, to complete this step.</p>
+        <p>&nbsp;</p>
+
+        <h4 class="main">Testing the addition routing rule for Skype for Business</h4>
+
+        <p>Your trainer should have an SfB client open which you can dial from any device.</p>
+        <p>Make sure you don&rsquo;t break anything else!</p>
+        <p>What is the difference between this rule and the SfB rule used for the indirect routing via the Skype VR
+            (which
+            seems to already work for web app users only)?</p>
+        <p>&nbsp;</p>
+    </section>
+    
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            }
+          });
+        }
+    </script>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '..//Session_3_Integrations_Description/Extra_Credit-Skype_for_Business_Integration.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

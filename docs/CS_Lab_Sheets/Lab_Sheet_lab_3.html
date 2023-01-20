@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../js/jquery-3.4.1.min.js"></script> 
+<script src="../js/popper.min.js"></script> 
+<script src="../js/bootstrap-4.4.1.js"></script>
+<title>Lab Sheet</title>
+</head>
+
+<body>
+<h1 id="header">Lab Sheet</h1>
+<p>Click the section below that corresponds to the reference in the Lab Guide.</p>
+<button class="btn btn-primary toggle-all">Open All</button>
+<div id="accordion" role="tablist">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingOne">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="false" aria-controls="collapseOne"> #1 - General Infrastructure (pre-configured) </a> </h5>
+        </div>
+        <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section1">
+                    <h2>#1 - General Infrastructure (pre-configured)</h2>
+                </nav>
+                <h3>LAN Network</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">IP</th>
+                            <th scope="col">FQDN</th>
+                            <th scope="col">Used in all labs</th>
+                            <th scope="col">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10.200.180.1</td>
+                            <td>N/A</td>
+                            <td>Yes</td>
+                            <td>Gateway</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.2</td>
+                            <td>dc1.pexipacademy.local</td>
+                            <td>Yes</td>
+                            <td>Active Directory - LDAP / DNS / NTP / ADCS</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.3</td>
+                            <td> jumpbox.pexipacademy.local</td>
+                            <td>Yes</td>
+                            <td>Windows Jumpbox (used for internal configurations)</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.4</td>
+                            <td>sfb.pexipacademy.local</td>
+                            <td>No</td>
+                            <td>Skype for Business Front End</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.5</td>
+                            <td>dc2.pexipacademy.local</td>
+                            <td>No</td>
+                            <td>Active Directory - LDAP / DNS / NTP</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.6</td>
+                            <td>exchange.pexipacademy.local</td>
+                            <td>No</td>
+                            <td>Exchange 2019</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.7</td>
+                            <td>pexep-int1.pexipacademy.local</td>
+                            <td>Yes</td>
+                            <td>PexEP &ndash; Configured to dial an internal node</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.8</td>
+                            <td>pexep-ext.pexipacademy.local</td>
+                            <td>Yes</td>
+                            <td>PexEP &ndash; Configured to dial the edge node</td>
+                        </tr>
+                        <tr>
+                            <td>10.200.180.250</td>
+                            <td>esxi.pexipacademy.local</td>
+                            <td>No</td>
+                            <td>ESXi hoist v6.7</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTwo">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo"> #2 - Windows user information (to login to all Windows systems) </a> </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section2">
+                    <h2>#2 - Windows user information (to login to all Windows systems)</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%" scope="row">Username</th>
+                            <td width="82%">administrator@pexipacademy.local<br>
+                                or<br>
+                                pexipacademy\administrator</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Password</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingThree">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseThree" role="button" aria-expanded="false" aria-controls="collapseThree"> #3 - ESXi host information </a> </h5>
+        </div>
+        <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section3">
+                    <h2>#3 - ESXi host information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">ESXi Host URL</th>
+                            <td width="82%">https://esxi.pexipacademy.local/</td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>root</td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                        <tr>
+                            <th>NTP Servers</th>
+                            <td>dc1.pexipacademy.local<br>
+                                dc2.pexipacademy.local (if available in your lab)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingFour">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseFour" role="button" aria-expanded="false" aria-controls="collapseFour"> #4 - Internal Server/Node information </a> </h5>
+        </div>
+        <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section4">
+                    <h2>#4 - Internal Server/Node information</h2>
+                </nav>
+                <h3>#4.1 Internal Pexip Node deployment information</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">Mgt Node Username <br>
+                                (SSH and Web)</th>
+                            <td width="82%">admin</td>
+                        </tr>
+                        <tr>
+                            <th>Mgt Node Password <br>
+                                (SSH and Web)</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                        <tr>
+                            <th>Internal System Location</th>
+                            <td>LAN</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Your internal IP-addresses</strong> (for you to assign to the Management and Conferencing Nodes in the Transcoding role)</p>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">Name of Node</th>
+                            <th scope="col">IP</th>
+                            <th scope="col">Netmask</th>
+                            <th scope="col">Default Gateway</th>
+                            <th scope="col">VM Network</th>
+                            <th scope="col">Hostname</th>
+                            <th scope="col">Domain Suffix</th>
+                            <th scope="col">SIP TLS FQDN</th>
+                            <th scope="col">System  Location</th>
+                            <th scope="col">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>mgr.pexipacademy.local</td>
+                            <td>10.200.180.10</td>
+                            <td>255.255.255.0</td>
+                            <td>10.200.180.1</td>
+                            <td>LAN</td>
+                            <td>mgr</td>
+                            <td>pexipacademy.local</td>
+                            <td>...</td>
+                            <td>LAN</td>
+                            <td>Management Node</td>
+                        </tr>
+                        <tr>
+                            <td>conf01.pexipacademy.local</td>
+                            <td>10.200.180.11</td>
+                            <td>255.255.255.0</td>
+                            <td>10.200.180.1</td>
+                            <td>LAN</td>
+                            <td>conf01</td>
+                            <td>pexipacademy.local</td>
+                            <td>conf01.pexipacademy.local</td>
+                            <td>LAN</td>
+                            <td>Transcoding Node</td>
+                        </tr>
+                        <tr>
+                            <td>conf02.pexipacademy.local</td>
+                            <td>10.200.180.12</td>
+                            <td>255.255.255.0</td>
+                            <td>10.200.180.1</td>
+                            <td>LAN</td>
+                            <td>conf02</td>
+                            <td>pexipacademy.local</td>
+                            <td>conf02.pexipacademy.local</td>
+                            <td>LAN</td>
+                            <td>Transcoding Node</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Common configuration details for internal devices, configured in the <strong> LAN</strong> System Location:</p>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">DNS Servers</th>
+                            <td width="82%">10.200.180.2<br>
+                                10.200.180.5 (if available in your lab)</td>
+                        </tr>
+                        <tr>
+                            <th>NTP Servers</th>
+                            <td>dc1.pexipacademy.local<br>
+                                dc2.pexipacademy.local (if available in your lab)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>#4.2 Pexip domain and Skype for Business integration information</h3>
+                <table class="table table-striped table-hover">
+                    <tr>
+                        <th>Pexip Infinity domain</th>
+                        <td>{{Domain_Public__DNS}}</td>
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <th width="18%">Pexip internal Conferencing Node pool name</th>
+                            <td width="82%">confpool.pexipacademy.local</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingFive">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseFive" role="button" aria-expanded="false" aria-controls="collapseFive"> #5 - External Pexip Node information </a> </h5>
+        </div>
+        <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section5">
+                    <h2>#5 - External Pexip Node information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">External System Location</th>
+                            <td width="82%">DMZ</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Your external IP-addresses</strong> (for you to assign to the Pexip edge nodes)</p>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">Name of Node</th>
+                            <th scope="col"><strong>Hostname</strong></th>
+                            <th scope="col"><strong>Domain Suffix</strong></th>
+                            <th scope="col"><strong>SIP TLS FQDN</strong></th>
+                            <th scope="col"><strong>System Location</strong></th>
+                            <th scope="col"><strong>Comment</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>edge.pexipacademy.local</td>
+                            <td>edge</td>
+                            <td>pexipacademy.local</td>
+                            <td>{{Edge_Public_DNS}}</td>
+                            <td>DMZ</td>
+                            <td>Proxying Edge Node<br>
+                                (initially Transcoding Node)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p><strong>Network Details:</strong></p>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th colspan="2" scope="col">Primary Interface</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">IP address</th>
+                            <td width="82%">10.200.170.11</td>
+                        </tr>
+                        <tr>
+                            <th>Network Mask</th>
+                            <td>255.255.255.0</td>
+                        </tr>
+                        <tr>
+                            <th>VM Network</th>
+                            <td>DMZ Internal</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th colspan="2" scope="col">Secondary Interface</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">IP address</th>
+                            <td width="82%">10.200.160.101</td>
+                        </tr>
+                        <tr>
+                            <th>Network Mask</th>
+                            <td>255.255.255.0</td>
+                        </tr>
+                        <tr>
+                            <th>VM  Network</th>
+                            <td>DMZ External</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">Default Gateway</th>
+                            <td width="82%">10.200.160.1</td>
+                        </tr>
+                        <tr>
+                            <th>IPv4 static NAT address</th>
+                            <td>{{Public_IP_Edge}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th colspan="2" scope="col"><strong>Static Route</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th width="18%">Route name</th>
+                            <td width="82%">Edge to Internal</td>
+                        </tr>
+                        <tr>
+                            <th>Destination Network</th>
+                            <td>10.200.180.0</td>
+                        </tr>
+                        <tr>
+                            <th>Network Prefix</th>
+                            <td>24</td>
+                        </tr>
+                        <tr>
+                            <th>Route Gateway</th>
+                            <td>10.200.170.1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>Common configuration details for external/DMZ devices, configured in the <strong>DMZ</strong> System Location:</p>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">DNS Servers</th>
+                            <td width="82%">1.1.1.1<br>
+                                1.0.0.1</td>
+                        </tr>
+                        <tr>
+                            <th>NTP Servers</th>
+                            <td>0.pexip.pool.ntp.org<br>
+                                3.pexip.pool.ntp.org</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingSix">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseSix" role="button" aria-expanded="false" aria-controls="collapseSix"> #6 - Skype for Business infrastructure information </a> </h5>
+        </div>
+        <div id="collapseSix" class="collapse" role="tabpanel" aria-labelledby="headingSix" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section6">
+                    <h2>#6 - Skype for Business infrastructure information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">SfB FEP FQDN</th>
+                            <td width="82%">sfb.pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>SfB domain</th>
+                            <td>pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>Site ID</th>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingSeven">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseSeven" role="button" aria-expanded="false" aria-controls="collapseSeven"> #7 - External DNS SRV and A records details </a> </h5>
+        </div>
+        <div id="collapseSeven" class="collapse" role="tabpanel" aria-labelledby="headingSeven" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section7">
+                    <h2>#7 -External DNS SRV and A records details</h2>
+                </nav>
+                <p>Ensure you have checked you external DNS records using <a href="https://dns.pexip.com">https://dns.pexip.com</a>.</p>
+                <p>Serach using your public domain: <strong>{{Domain_Public__DNS}}</strong></p>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingEight">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseEight" role="button" aria-expanded="false" aria-controls="collapseEight"> #8 - Pexip General Licenses </a> </h5>
+        </div>
+        <div id="collapseEight" class="collapse" role="tabpanel" aria-labelledby="headingEight" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section8">
+                    <h2>#8 - Pexip General Licenses</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">Combination Licence</th>
+                            <td colspan="2">{{License}}</td>
+                        </tr>
+                        <tr>
+                            <th rowspan="6">Included Features</th>
+                            <td width="20%">Capacity</td>
+                            <td width="62%">50</td>
+                        </tr>
+                        <tr>
+                            <td>Audio Only Capacit</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>Google Meet</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td>Teams CVI</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>Virtual Meeting Room</td>
+                            <td>3000</td>
+                        </tr>
+                        <tr>
+                            <td>Scheduling</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingNine">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseNine" role="button" aria-expanded="false" aria-controls="collapseNine"> #9 - LDAP Authentication information </a> </h5>
+        </div>
+        <div id="collapseNine" class="collapse" role="tabpanel" aria-labelledby="headingNine" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section9">
+                    <h2>#9 - LDAP Authentication information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">LDAP Server address</th>
+                            <td width="82%">dc1.pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Bind username</th>
+                            <td>LDAPServiceAccount@pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Bind password</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Base DN</th>
+                            <td>dc=pexipacademy,dc=local</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Group DN read/write admin group</th>
+                            <td>Read/Write Infinity Admins</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Group DN read only admin group</th>
+                            <td>Read-only Infinity Admins</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP user search DN</th>
+                            <td>OU=Users,OU=Infinity OU</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP group search DN</th>
+                            <td>OU=Infinity OU</td>
+                        </tr>
+                        <tr>
+                            <th>Test Read/Write Admin user</th>
+                            <td>User1<br>
+                                Or<br>
+                                User3</td>
+                        </tr>
+                        <tr>
+                            <th>Test Read-only Admin user</th>
+                            <td>User2</td>
+                        </tr>
+                        <tr>
+                            <th>Test Admin Acount password</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTen">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseTen" role="button" aria-expanded="false" aria-controls="collapseTen"> #10 - LDAP Sync information </a> </h5>
+        </div>
+        <div id="collapseTen" class="collapse" role="tabpanel" aria-labelledby="headingTen" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section10">
+                    <h2 >#10 - LDAP Sync information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">LDAP Server address</th>
+                            <td width="82%">dc1.pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Bind username</th>
+                            <td>LDAPServiceAccount@pexipacademy.local</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Bind password</th>
+                            <td>Pexip123!</td>
+                        </tr>
+                        <tr>
+                            <th>LDAP Base DN</th>
+                            <td>dc=pexipacademy,dc=local</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingEleven">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseEleven" role="button" aria-expanded="false" aria-controls="collapseEleven"> #11 - External Public Certificate </a> </h5>
+        </div>
+        <div id="collapseEleven" class="collapse" role="tabpanel" aria-labelledby="headingEleven" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section11">
+                    <h2>#11 - External Public Certificate</h2>
+                </nav>
+                <p>An external public certificate and chain of CA certs had been generated for your deployment. You can download the PEM file here:</p>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">Public Certificate + Chain PEM</th>
+                            <td width="82%">{{Certificate_PEM}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingTwelve">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseTwelve" role="button" aria-expanded="false" aria-controls="collapseTwelve"> #12 -  Google Hangouts Integration Information </a> </h5>
+        </div>
+        <div id="collapseTwelve" class="collapse" role="tabpanel" aria-labelledby="headingTwelve" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section12">
+                    <h2>#12 -  Google Meet Integration Information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th width="18%">Google Admin page</th>
+                            <td width="82%"><a href="https://admin.google.com" title="Google Admin Console" target="_blank">https://admin.google.com</a></td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>Check with you trainer</td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td>{{CloudPassword}}</td>
+                        </tr>
+                        <tr>
+                            <th>Google Meet Interop License</th>
+                            <td>Included in combined single license (see Section #8)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" role="tab" id="headingThirteen">
+            <h5 class="mb-0"> <a class="collapsed" data-toggle="collapse" href="#collapseThirteen" role="button" aria-expanded="false" aria-controls="collapseThirteen"> #13 - Microsoft Teams Integration Information </a> </h5>
+        </div>
+        <div id="collapseThirteen" class="collapse" role="tabpanel" aria-labelledby="headingThirteen" data-parent="#accordion">
+            <div class="card-body">
+                <nav id="Section13">
+                    <h2>#13 - Microsoft Teams Integration Information</h2>
+                </nav>
+                <table class="table table-striped table-hover">
+                    <tbody>
+                        <tr>
+                            <th>MS Teams Tenant Name</th>
+                            <td>Pexip.net Training Teams Tenant</td>
+                        </tr>
+                        <tr>
+                            <th>MS Teams Tenant ID</th>
+                            <td>7312139c-2192-4492-bdf2-7222daec4108</td>
+                        </tr>
+                        <tr>
+                            <th>Teams Connector Name</th>
+                            <td>Training Teams Connector</td>
+                        </tr>
+                        <tr>
+                            <th>Teams Connector FQDN</th>
+                            <td>pexip-teamsconn.teams.pexip.net</td>
+                        </tr>
+                        <tr>
+                            <th>Teams Connector Port</th>
+                            <td>443</td>
+                        </tr>
+                        <tr>
+                            <th width="18%">Username</th>
+                            <td width="82%">Check with you trainer</td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td>{{CloudPassword}}</td>
+                        </tr>
+                        <tr>
+                            <th>Microsoft Teams Interop License</th>
+                            <td>Included in combined single license (see Section #8)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr>
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(".toggle-all").click(function(){
+    
+//    if ($(this).data("closedAll")) {
+//        $('.collapse').removeAttr("data-parent");
+//        $('.collapse').collapse('show');
+//        $(this).text("Close All");
+//    }
+//    else {
+//        $('.collapse').attr("data-parent","#accordion");
+//        $('.collapse').collapse('hide');
+//        $(this).text("Open All");
+//    }
+    if ($(this).data("closedAll")) {
+        $('.collapse').addClass('show');
+        $(this).text("Close All");
+    }
+    else {
+        $('.collapse').removeClass("show");
+        $(this).text("Open All");
+    }
+    
+    // save last state
+    $(this).data("closedAll",!$(this).data("closedAll")); 
+});
+
+// init with all closed
+$(".toggle-all").data("closedAll",true);
+</script>
+</body>
+</html>

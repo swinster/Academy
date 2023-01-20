@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Google Meet Integration</title>
+</head>
+
+<body>
+<section>
+    <h1 id="header">Google Meet Integration</h1>
+    <img src="../../images/Google_meet_logo.png" alt="image" width="100">
+    <p>Use <strong>section #5 </strong>and<strong> section #11 ;</strong>of the lab sheet.</p>
+    <p>Conceptually, all integrations with third-party systems are similar,  especially when looking at the Infinity side of the configuration. The Infinity  configuration revolves around setting up Routing Rules (in a similar way described  in the Gateway Point-2-Point calling task). However, setting up the <em>remote</em> systems can be very different for different vendors, so it's good to appreciate  how other vendors have designed their systems. In the task, you will look at  how Pexip Infinity integrates with Google Meet.</p>
+    <p>Currently, Google Meet is a &quot;meet only&quot; platform.  Participants dial into the Google Meet meeting; they can't dial another  endpoint directly (although Google, of course, may decide to change this  behaviour in the future). Therefore, we are using Infinity to <strong>gateway</strong> standards-based devices into the Google Meet environment.</p>
+    <ol>
+        <li>The Incoming call leg to Infinity (known as the &lsquo;A&rsquo; leg) can be from any device that cannot directly
+            connect to Google Meet.</li>
+        <li>The outgoing leg from Infinity (known as the ‘B’ leg) to Google uses HTTP(S) requests to POST messages or GET information from the Google side.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h3 class="main">Google side</h3>
+    <p>You need to log into the Google Admin portal for your OU (<a class="general" href="https://admin.google.com/" target="_blank"
+                title="Google Admin">https://admin.google.com/</a>),
+        then navigate to <strong>Apps&nbsp;</strong><strong>--&gt; Google Workspace&nbsp;</strong><strong>--&gt;
+        Google Meet.</strong> In the Google Meet settings, there are two steps you need to complete:&nbsp;</p>
+    <ol>
+        <li><strong>Gateway Interoperability:</strong> You need to enable gateway  interoperability for <em>your</em> Google Organisational Unit (OU), which  involves configuring Google Meet with some information. You need to define:
+            <ul>
+                <li>the &quot;remote host&quot; used for external VC endpoints  (i.e. this will be your Edge node Static NAT IP address),</li>
+                <li>the domain used to construct the dialling instructions (i.e.  you Pexip Infinity Domain),</li>
+                <li>and a numeric prefix used to match a call routing rule.</li>
+            </ul>
+        </li>
+        <p><strong>NOTE:</strong> Google is moving to use &quot;<strong>long meeting  IDs</strong>&quot; in the future, hence the &quot;<strong>preferred option</strong>&quot;  label. These long IDs provide a 13-digit code with <strong>no prefix</strong>, which will  require a slightly different RegEx match for the Routing Rule. Currently, for  this lab, we have chosen to use both the long and short ID, although only the  short ID is shown on the HTML page for third-party system dialling (as seen in  the step-by-step guide). The &quot;<strong>short IDs</strong>&quot; allows for a prefix  to be added, which can aid with call routing, plus help in controlling  unsolicited callers where a generic 13 digit number may easily match a SPAM  caller's attempt. </p>
+        <p><strong>NOTE:</strong> The &quot;additional gateway for Skype for Business users&quot; is only used when configuring integration with the Pexip Service, so not required for Infinity integrations. </p>
+        <li><strong>Interoperability Tokens:</strong> Two tokens are required; one for trusted devices and one for untrusted devices. When you create these tokens, add them to Pexip Infinity in the next step. &nbsp;</li>
+    </ol>
+    <p>Please refer to&nbsp;<a class="general" href="https://docs.pexip.com/admin/gmeet_gsuite.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/gmeet_gsuite.htm</a>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h3 class="main">Pexip Infinity side</h3>
+    <p>Google Meet integration is an additional feature in Pexip and will require an additional license. You need one license for each access token you add. Therefore, you will require <strong>two licenses</strong> for each connection from trusted and untrusted sources. You will need to add the tokens generated in the previous step into Infinity via the <strong>Call Control --&gt; Google Meet Access Tokens</strong> menu.</p>
+    <p>You will also need to add two call routing rules to connect  the trusted and untrusted devices.</p>
+    <ol>
+        <li>Devices registered to your Infinity deployment should be  treated as &quot;Trusted&quot; when connecting to Google Meet and will then be  admitted directly into the Google Meet meeting.</li>
+        <p><strong>NOTE:</strong> For v20+, there is a new Routing Rule option to allow a call matching the Rule to be treated as trusted regardless of being registered to Pexip; see <a href="https://docs.pexip.com/admin/gmeet_configuration.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/gmeet_configuration.htm</a>.</p>
+        <li>Devices NOT registered to your Infinity deployment (such as  external devices used by customers or business partners) will be treated as  &quot;Untrusted&quot; when connecting to Google Meet. Only authenticated  participants within the Google Meet meeting can admit these untrusted  participants manually from a supported browser.</li>
+    </ol>
+    <p>When configuring the Routing Rules, think about  the&nbsp;outgoing call&nbsp;placement, specifically the <strong>Outgoing Location</strong> for the 'B' leg of the call toward the Google Meet cloud service. Should this  be via the DMZ or LAN?</p>
+    <p>Optionally, you can also configure a VR for lobby access dialling into Meet as described here: <a class="general" href="https://docs.pexip.com/admin/gmeet_configuration.htm#ivr_route" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/gmeet_configuration.htm#ivr_route</a>.</p>
+    <p>When you test, you will need to start a Google Meeting from <a class="general" href="https://meet.google.com/" target="_blank" title="Google Meet">https://meet.google.com</a>.</p>
+</section>
+</body>
+</html>

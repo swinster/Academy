@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Pexip Smart Scale</title>
+</head>
+
+<body>
+<h1 id="header">Pexip Smart Scale</h1>
+<p>Suggested completion time: <strong>20 minutes</strong></p>
+<section> 
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #14</strong> of the lab sheet.</p>
+<section>
+    <p>Understanding Infinity's IP networking and routing requirements  is crucial to properly deploying an Infinity system, especially in more complex  scenarios such as Cloud Bursting and the Pexip Private Cloud. You looked at some  of this information in Level 1 eLearning, so let's recap that video.</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/ff10ce62-9a22-4261-8065-e60486ff007b/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h3 class="main">To configure PSS:</h3>
+    <p>Enable PSS:</p>
+    <ol>
+        <li>Go to <strong>Platform --&gt; Global Setting --&gt; Pexip Private Cloud</strong>.</li>
+        <li>Tick <strong>Enable Pexip Private Cloud</strong>.</li>
+        <li>Set the <strong>Gateway URL</strong>.</li>
+        <li>Set the <strong>Customer ID</strong>.</li>
+        <li>Set the <strong>Authentication token.</strong></li>
+        <li>Save.</li>
+        <li>Ensure the Management Node icon is green (<img src="../../images/Mgt_node_live_view_icon.png" alt="Management Node" title="Management Node">) and there are no alarms raised.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Create a System Location to contain the PSS nodes:</p>
+    <ol>
+        <li>Go to <strong>Platform --&gt; Locations</strong>.</li>
+        <li><strong>Add</strong> a new System Location.</li>
+        <li>Set <strong>Name</strong>.</li>
+        <li>Set <strong>DNS</strong> and <strong>NTP</strong> <strong>Servers&nbsp;</strong>(remembering that external servers may not be reachable).</li>
+        <li>Set <strong>MTU</strong>.</li>
+        <li><strong>Transcoding Location:</strong> This location.</li>
+        <li>Save</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure PSS location:</p>
+    <ol>
+        <li>Go to <strong>Platform --&gt; Pexip Smart Scale</strong></li>
+        <li>Set <strong>Region</strong>.</li>
+        <li>Set <strong>Max HD Calls</strong></li>
+        <li>Set <strong>System Location</strong>.</li>
+        <li>Save.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Enable PSS location:</p>
+    <ol>
+        <li>Check the box next to the location, then in the <strong>Action</strong> drop-down, select <strong>Enable</strong> then click <strong>Go</strong>.</li>
+        <p><img src="../../images/Pexip_smart_scale_location.png" alt="Pexip Smart Scale location" title="Pexip Smart Scale location"></p>
+    </ol>
+    <p>Configure the DMZ System location:</p>
+    <ol>
+        <li><strong>Platform --&gt; Locations</strong>, then select the <strong>DMZ</strong> location.</li>
+        <li>Set <strong>Primary overflow location</strong> as outlined in the lab sheet.</li>
+        <li>Set the <strong>MTU.</strong></li>
+        <li>Then <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure the DMZ Node:</p>
+    <ol>
+        <li><strong>Platform --&gt; Conferencing Nodes</strong>, then select the <strong>Edge node</strong>.</li>
+        <li>In the <strong>Static routes</strong> section, click the green plus to <strong>Add another static route</strong>.</li>
+        <li>Configure the static route, as per the details in <strong>section #14</strong> of the lab sheet.</li>
+        <li>Click <strong>Save</strong> to store the static route configuration.</li>
+        <li>Click <strong>Save</strong> again to update the Conferencing Node.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure the LAN System location:</p>
+    <ol>
+        <li><strong>Platform --&gt; Locations</strong>, then select the <strong>LAN</strong> location.</li>
+        <li>Set <strong>Primary overflow location</strong> as outlined in the lab sheet.</li>
+        <li>Set the <strong>MTU.</strong></li>
+        <li>Then <strong>Save</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Configure the Management Node:</p>
+    <ol>
+        <li><strong>Platform --&gt; Management Nodes</strong>, then select the <strong>Management Node</strong>.</li>
+        <li>Set the <strong>MTU.</strong></li>
+        <li>Then <strong>Save</strong>.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h3 class="main">Testing</h3>
+    <p>Once PSS has been configured and fully deployed,  place internal and external calls into your Infinity deployment. You may need  to add some PexEP friends to add additional load. Initially, you should see  that the transcoding resources in the LAN are used. Infinity will start to  overflow media to the PSS location when the internal transcoding resources are  full.</p>
+    <p>Here&rsquo;s a quick question and answer for you:</p>
+    <p><em>Q. What are the consequences of setting up a <strong>transcoding location</strong> (such as the LAN) to use an <strong>overflow location</strong>?</em></p>
+    <p><em>A. Any endpoint connecting <strong>directly</strong> to a node in  the LAN location will also need a direct route to the PSS location. Infinity  will signal to the endpoint that it must send media directly to the PSS nodes  if overflow happens. The Transcoding Nodes will <strong>NOT</strong> act as a Proxying Edge Node.  Firewall rules may not allow this traffic. Instead, you may wish to reconfigure  the Transcoding Nodes to use the Proxying Edge role and then define the  transcoding resource of the LAN location to be that of the PSS location. Alternatively,  you could add another internal System Location containing Proxying Edge Nodes.</em></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/Pexip_Smart_Scale.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

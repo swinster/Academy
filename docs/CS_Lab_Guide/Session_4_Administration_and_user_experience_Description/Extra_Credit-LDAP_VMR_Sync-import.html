@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Extra Credit: LDAP VMR Sync/import</title>
+</head>
+
+<body>
+<h1 id="header">Extra Credit: LDAP VMR Sync/import</h1>
+<p>Use <strong>section #10</strong> and <strong>section #9</strong>of the lab sheet.</p>
+<section>
+    <p>This LDAP integration can use a separate directory to that used  for LDAP administrator authentication. You need to configure two things, an <strong>LDAP sync source </strong>and an <strong>LDAP sync template</strong>:</p>
+    <ul>
+        <li><strong>LDAP sync source:</strong> this is the LDAP server you will connect to, along with the credentials of a service account required to connect, in addition to the base DN that will form the starting point of any query against the LDAP database,</li>
+        <li><strong>LDAP sync template:</strong> This will provide the parameters used to create VMRs, devices or users.</li>
+    </ul>
+    <p>In addition, you can add additional fields from the LDAP  database within the LDAP template beyond those defined &quot;out of the box&quot;  (although this is not something you will do in this exercise).</p>
+    <p>Refer to <a class="general" href="https://docs.pexip.com/admin/vmr_syncing.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/vmr_syncing.htm</a> and <a
+            href="https://docs.pexip.com/admin/sync_patterns.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/sync_patterns.htm</a>. In addition, LDAP syntax can be quirky, so referring to our LDAP troubleshooting guide can be a lifesaver (see <a href="https://docs.pexip.com/admin/integrate_ldap_troubleshooting.htm" target="_blank"
+            title="Infinity Technical Docs">https://docs.pexip.com/admin/integrate_ldap_troubleshooting.htm</a>).</p>
+    <p>You can see the <strong>Active Directory Users and Computers</strong> window for the <strong>pexip.net</strong> domain in the image below, specifically in <strong>Norway  OU</strong>. There are employees in 4 countries seen under <strong>pexip.net --&gt;  DemoUsers</strong>, where there are the Organisation Units (OUs) <strong>AU</strong>, <strong>GB</strong>, <strong>NO</strong> and <strong>US</strong>.</p>
+    <p>&nbsp;<img src="../../images/img1622078712.png" alt="image"></p>
+    <p>You will need to create an <strong>LDAP sync template</strong> using the above source to create VMRs for the users in <u>Norway</u>, then later users in other countries.</p>
+    <p>The users in Norway are in the LDAP path (know as the Distinguished Name or DN): <span class="code">OU=NO,OU=DemoUsers,</span><span class="highlight">DC=pexip,DC=net</span></p>
+    <p>The <span class="highlight">latter part</span> of this DN should already be in the sync source as the Base DN and is therefore <strong><u>not</u></strong> needed in a <em>relative</em> path.</p>
+    <p>In an ideal world, LDAP databases/Active Directory should be  clean and tidy with the same data formats used for the same fields.  Unfortunately, this is rarely the case. Therefore, it is in your interest to do  an initial LDAP sync <strong><em>without</em></strong> specifying fields to create any <strong>VMR  aliases</strong>. Instead, you can use other fields in the sync template (often the <strong>VMR  Name</strong> and b fields) to temporarily collect the LDAP data, then see what  could be used to construct valid aliases.</p>
+    <p>See if you can answer this question. It will help you extract data from the LDAP directory.</p>
+    <ul>
+        <li><em>What LDAP fields do you think could be added to the VMR name or description to grab user data from AD?</em></li>
+    </ul>
+    <p>Once you have constructed and saved the initial template (<em>without</em> anything specified in the <strong>VMR alias</strong> fields), return to the template and  click the <strong>Sync Now</strong> button.</p>
+    <p>Have a look at <strong>Services&nbsp;--&gt; Virtual Meeting</strong> Rooms to see if any information has been imported. You should see that none of  the VMRs have aliases. However, the VMR names and description fields contain  the information extracted from AD, and perhaps you can use some of these LDAP  fields to create the required VMR aliases.</p>
+    <p>To filter, clean and alter the LDAP data, refer to the documentation linked previously.</p>
+    <p>&nbsp;</p>
+    <p>For this exercise, we want to construct two aliases for each user's VMR:</p>
+    <ul>
+        <li>One URI dialable by any endpoint (SIP/H.323/WebRTC/MS-SIP).
+            <ul>
+                <li>The URI should be in the format: <span class="code">meet.username@&lt;Pexip Infinity
+                    domain&gt;</span>.</li>
+            </ul>
+        </li>
+        <li>And a number dialable via an IVR.
+            <ul>
+                <li>A numeric alias should be unique and prefixed by the country code.</li>
+            </ul>
+        </li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>When examining the LDAP data in the VMR name and description fields, you may notice that the users have email
+        addresses, although these use the domain portion <span class="code">@pexip.net</span>.</p>
+    <ul>
+        <li><em>How could you manipulate this email address to construct the desired URI alias?</em></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>For the numeric alias, the prefix for Norwegian users should  be <strong>947</strong>. In addition, you may notice several possible LDAP fields with valuable  data, such as the <span class="code">employeeID</span> or <span class="code">telephoneNumber</span>.</p>
+    <ul>
+        <li>Consider the security risk if using <span class="code">employeeID</span>. Can it be obscured?</li>
+        <li>The <span class="code">telephoneNumber</span> may need cleaning for spaces etc.</li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>A Norwegian user should eventually have a VMR with two aliases:</p>
+    <ul>
+        <li><span class="code">meet.user@&lt;Pexip Infinity domain&gt;</span></li>
+        <li><span class="code">947xxxxxxx</span></li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>Now add similar Sync Templates for Australia, Great Britain and the United States. Users in each country should
+        have the following prefixes:</p>
+    <ul>
+        <li>United States: 901</li>
+        <li>Australia: 965</li>
+        <li>Great Britain: 944</li>
+    </ul>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

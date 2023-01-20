@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script> 
+<!-- <script src="../../js/script.js"></script> -->
+<title>Extra Credit: Skype for Business Integration</title>
+</head>
+
+<body>
+<h1 id="header">Extra Credit: Skype for Business Integration</h1>
+<p>Use <strong>section #2, section #4</strong> and <strong>section #6</strong>of the lab sheet.</p>
+<p>You will integrate the internal Pexip Conferencing Nodes with  the Skype for Business (SfB) 2015 Frontend (FE) Server. This will enable Skype  for Business users to call directly into your Pexip Infinity VMRs, as well as  make point-to-point calls to internal or external video endpoints using Pexip  Infinity as a gateway. In addition, SIP, H.323, or WebRTC devices can connect  to scheduled Skype meetings, and perhaps even toward individual Skype clients  for point-to-point calls.</p>
+<section>
+    <h2 class="main">Setting up the integration</h2>
+    <button type="button" class="collapsible" onclick="collapsibleElement()">Skype for Business configuration (deprecated in this lab):</button>
+    <div class="content">
+        <p class="highlight"><strong><u>NOTE: We no longer complete these steps in the lab. The instructions below are
+            kept for reference only.</u></strong></p>
+        <h3 class="main">Skype for Business configuration</h3>
+        <p>To integrate Pexip Infinity with a Skype for Business  environment, several items need to be configured on the Skype side:</p>
+<ul>
+            <li>Firstly, a <strong>Trusted Application Pool</strong> (<strong>TAP</strong>) is configured.  This collection of objects is mainly referred to by its FQDN. In Skype for  Business, you do not need to configure any Round Robin DNS records for this  pool FQDN (although for Lync you did), but it is used within the trust  relationship. This pool FQDN should appear in both the Common Name and SAN of  the TLS certificate applied to Infinity nodes that any SfB FE server will  connect to.</li>
+            <li>Secondly, one or more <strong>Trusted Application Computers</strong> (<strong>TACs</strong>)  are added to the above pool, referred by their unique host FQDN. Each TAC will  relate to a Pexip node, and its FQDN should match the SIP TLS FQDN configured  on that node. In addition, this FQDN should appear in the SAN of the TLS  certificate that is applied to the Pexip node.</li>
+            <li>Lastly, a <strong>Trusted Application</strong> (<strong>TA</strong>) is then is  associated with the TAP. It allows third-party applications (such as Pexip  Infinity) trusted status to run as part of a Skype for Business  deployment.</li>
+        </ul>
+        <p>These three settings provide the trust relationship between Skype for Business and Pexip Infinity.</p>
+        <p>In addition, you also need to configure one more thing on the Skype side:</p>
+        <ul>
+            <li>A <strong>static route</strong>. The  static route is used when any SfB user calls a Pexip VMR. It will match the  domain part of a SIP alias and route the call to the associated TAP and TACs.  The static route is sometimes configured to use the same SIP domain as the SfB  deployment, such as <span class="code">example.com</span>. However, to reduce loading on the Pexip  deployment and to avoid Pexip processing unrelated traffic, it is recommended  that a separate subdomain be created, such as <span class="code">video.example.com</span>. This domain  should match the Pexip domain used for Skype integration.</li>
+        </ul>
+        <p>Please refer to&nbsp;<a class="general" href="https://docs.pexip.com/sfb/on_prem_example.htm" target="_blank" title="Infnity Techncial Docs">https://docs.pexip.com/sfb/on_prem_example.htm</a> and&nbsp;<a class="general" href="https://docs.pexip.com/sfb/sfb_server_config.htm" target="_blank" title="Infnity Techncial Docs">https://docs.pexip.com/sfb/sfb_server_config.htm</a>.</p>
+        <p>To apply these settings, you will need to run the correct PowerShell commands in the SfB environment (see <strong>section #4.2</strong> and <strong>section #6</strong> in the lab sheets).&nbsp;You can enter the
+            commands the Skype for Business Front End Server.        To complete the configureation, run&nbsp;<span
+                        class="code">Enable-CsTopology</span>.    </p>
+    </div>
+    <p>&nbsp;</p>
+    <h3 class="main">Pexip Infinity configuration</h3>
+    <p>The Pexip Infinity configuration is somewhat simpler. You will need to (using <strong>section #4</strong>): </p>
+    <ul>
+        <li>Add a Skype for Business Call Control server and assign it to the location that will be used to
+            communicate
+            with the SfB FE server.&nbsp;
+            <ul>
+                <li>Skype for Business uses multiple SIP dialogues for different  modalities (e.g. Audio/Video, messaging, presentation, data transfer of files  etc.). For example, if a Skype for Business client dialled into a VMR, and  another participant in that VMR then presented, Infinity would create a  separate SIP dialogue for presentation toward the SfB client. Setting the SIP  server on the location allows this return dialogue to be sent toward the SfB FE  server.</li>
+            </ul>
+        </li>
+        <li>Ensure the SIP TLS FQDNs on the nodes are configured correctly. They must match the TAC FQDNs defined
+            earlier.</li>
+        <li>Ensure that you have configured the &quot;Pexip Infinity  domain for Skype for Business integration&quot; at either the global or  location setting. This domain should match the static route domain configured  earlier in the Skype for Business configuration. Configuring this in the global  settings will apply to all locations. However, you can also override this at  the location level. Therefore, setting the domain on a System Location will  enable one Pexip deployment to be integrated into many Skype for Business  environments, such as might occur with a Service Provider.</li>
+    </ul>
+    <p>For configuring the Pexip Infinity side, please refer to&nbsp;<a href="https://docs.pexip.com/sfb/on_prem_infinity_config.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/on_prem_infinity_config.htm</a>.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">Testing Initial Skype for Business integration</h3>
+    <p>See step-by-step guide.<u>&nbsp;</u></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Joining a Skype for Business meeting&nbsp;using Call Routing</h2>
+    <p>Use<strong>&nbsp;section #4.2&nbsp;</strong>and <strong>section #6</strong> of the lab sheet.</p>
+    <p>Routing rules are often used to place calls between  different platforms, thus enabling Pexip Infinity to act as a gateway. For  example, you may wish to create call-routing to connect any SIP/H.323/WebRTC  user to a Skype for Business meeting. Or perhaps you would like to connect any  SIP/H.323/WebRTC user directly to a Skype for Business client. Alternatively,  you might want to enable any SfB user to be able to dial to SIP/H.323 video  endpoints.&nbsp;</p>
+<p>Please refer to&nbsp;<a class="general" href="https://docs.pexip.com/admin/about_gateways.htm" target="_blank"
+                    title="Infinity Technical Docs">https://docs.pexip.com/admin/about_gateways.htm</a> and&nbsp;<a class="general" href="https://docs.pexip.com/admin/configuring_gateway_rules.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/configuring_gateway_rules.htm</a>,
+        and also&nbsp;<a class="general" href="https://docs.pexip.com/admin/about_virtual_reception.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/about_virtual_reception.htm</a> and <a class="general" href="https://docs.pexip.com/admin/creating_editing_receptions.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/creating_editing_receptions.htm</a>. </p>
+    <p>When you construct your call routing, there are a few points you will need to consider:</p>
+    <ul>
+        <li>Each rule needs a name and a priority. Priorities range from  1-200 (1 being a specific match, 200 being very general), but it is helpful to  start your list at some mid-point (say 50) so that you can insert rules above  or below. The highest priority (lowest number - 1) is matched first, then Pexip  Infinity will continue through the rules until a match is found. At that point,  it will stop processing any further rules (this behaviour may change in the  future). This means that if you have a routing rule that has a very general  matching scope, that routing rule should have a relatively high numerical value  so that it is one of the last rules checked.</li>
+        <li>A rule can be set to match in a specific location or could match across the entire deployment.</li>
+        <li>You can match multiple protocols on the incoming leg. For  example, SIP/H.323/MS-SIP/WebRTC.</li>
+        <li>Regular Expressions (RegEx) are used to match against the incoming called alias (the TO field).
+            (<strong>NOTE:</strong> RegEx may look cumbersome, but it is vital in understanding any routing in any
+            conferencing solution and will help  when it comes to troubleshooting). Please refer to <a href="https://docs.pexip.com/admin/regex_reference.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/regex_reference.htm</a>.</li>
+        <li>For complex dialling rules, prefixes to the alias may need to be used.</li>
+        <li>Incoming called aliases can be transformed before Pexip Infinity places the outgoing leg.</li>
+        <li>The outgoing leg (as of today) will only use a single protocol.</li>
+        <li>You can set the outgoing leg location to a single location  or &quot;automatic&quot;. Automatic means that the outgoing leg will use the  same location where the incoming leg was matched.</li>
+        <li>You can direct the outgoing leg towards a specific call  control device, or Pexip Infinity will attempt to place the leg using  appropriate DNS records.</li>
+    </ul>
+    <p>In the following steps, you will set up call routing to  allow standard video endpoints to join a Skype for Business meeting. This can  be achieved through a direct dialled URI, or indirectly via a Virtual Reception  (also known as a lobby or IVR).</p>
+<p>Please refer to <a class="general" href="https://docs.pexip.com/sfb/infinity_sfb_gateway.htm#ivr" target="_blank"
+                    title="Infinity Technical Docs">https://docs.pexip.com/sfb/infinity_sfb_gateway.htm#ivr</a>. </p>
+    <p>&nbsp;</p>
+    <h3 class="main">Direct dialling into a Skype for Business Meeting</h3>
+    <p>For this call flow, Infinity needs to match the incoming leg  from the VTC endpoint using call routing, then extract the SfB meeting code  (also known as the PSTN meeting code) and forward the code to SfB to see if  there is a valid conference. Next, Pexip Infinity initiates a SERVICE dialogue  toward the SfB FE server, with the initial request containing the meeting code.  Assuming the meeting code matches a valid conference, the SfB FE server will  respond with a message that includes a full URI of the meeting.&nbsp;</p>
+<p>Pexip Infinity will create a call toward the FE server,  which utilises multiple dialogues (such as INVITEs to the Focus and AV MCUs).  This &quot;second&quot; process doesn't use any rule matching. Instead, it  simply uses some of the configurations in the previously matched rule (such as  the outgoing location and assigned SfB server) to place the call.</p>
+<p>Think about these points when constructing a routing rule to  enable direct dialling into a Skype for Business meeting:</p>
+<ol>
+        <li>You will need to add call routing to capture the initiating  call leg for any incoming location and any incoming call protocol (apart from  MS-SIP, which is normally unnecessary because federated SfB users will usually  connect directly to SfB using the Skype meeting link).</li>
+        <li>When thinking about the RegEx match, you need to be aware  that a Skype for Business meeting code is 5 or 6 digits long and that calls  from SIP and H.323 participants will need to be directed toward your Pexip  domain. In addition, as this lab contains multiple integrations with  third-party systems that use similar codes, you will need to prefix the alias  with something that will help with the match and ensure there are no clashes  later (for example, <span class="code">sfb.</span>).</li>
+        <li>Pexip Infinity should only forward the SfB meeting code  toward the internal SfB FE Server to enable the meeting to be found.</li>
+    </ol>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/sfb/infinity_sfb_gateway.htm#direct_gw_route" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/infinity_sfb_gateway.htm#direct_gw_route</a>. </p>
+    <p>&nbsp;</p>
+    <h3 class="main">Indirect dialling (via a Lobby) into a Skype for Business Meeting</h3>
+    <p>This call flow is similar to that seen in the previous step.  However, there are also some fundamental differences in how the routing rules  are applied. The incoming leg from the VTC endpoint is not matched on the call  routing in this case but rather by directly matching the alias assigned to the  VR. The configuration of the VR causes Pexip Infinity to send the initial  SERVICE request to the SfB FE server with the meeting code entered in the VR. Suppose  the SfB server responds with a valid meeting URI. In that case, Pexip Infinity  will place a multi-dialogue outbound leg to the SfB FE (for example, the  INVITEs to the Focus and AV MCUs). However, it will now use the call routing to  see if the call can be placed.</p>
+<p>These are complex call flows, but it is helpful to understand  both direct and indirect calling to troubleshoot any call signalling issue. Ask  your trainer to explain more if required.</p>
+<p>Think about these points when you are looking to set up call  routing to allow traditional video endpoints to connect to a SfB meeting via a  lobby.</p>
+<ol>
+        <li>You will need to create a Skype for Business Virtual  Reception so that the VTC endpoints can connect to it using a static alias for  your domain and then for Pexip Infinity to connect to the internal SfB FE  server to lookup the meeting code.</li>
+        <li>You will need to create call routing to match the full alias  URI returned by SfB to Pexip Infinity. Then, when Pexip Infinity dials this SfB  meeting URI the call can be routed successfully to the SfB domain. The URI returned  will have a lot of additional parameters, so you will need to ensure that the  RegEx includes a pattern to match these extended properties. An example URI  that the SfB server could return might be:<br>
+            <span class="code">sip:don@example.com;gruu;opaque=app:conf:focus:id:V264DSWS</span></li>
+    </ol>
+    <p>&nbsp;</p>
+    <h3 class="main">Testing joining a Skype for Business meeting</h3>
+    <p>See step-by-step guide.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">An additional routing rule for Skype For Business</h2>
+    <p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+    <p>No specific lab sheet section.</p>
+    <p>The rule you configured to join a Skype for Business meeting  indirectly has a side effect that allows WebApp users to dial an OnPrem  SfB user directly as well. Can you identify why this is the case?</p>
+<p>In this section, your task is to directly enable <em>any</em> remote  device to dial an OnPrem SfB user. </p>
+<ul>
+        <li>Configure a <strong>Call Routing Rule</strong> so you can dial <strong><u>from</u></strong> any client (internal, external, registered and unregistered) <strong><u>to</u></strong> an internal SfB client with a URI in the format of <span class="code">name@pexip.net</span>.</li>
+        <li>You will need to think about how the call will be directed  toward your Infinity deployment and how it must be manipulated and placed to  the SfB OnPrem deployment.</li>
+        <li>You may need to think about the priority or RegEx match of the rule to ensure that it doesn’t conflict  with other rules.</li>
+    </ul>
+    <p>&nbsp;</p>
+    <h3 class="main">Testing the additional routing rule for Skype for Business </h3>
+    <p>See step-by-step guide. </p>
+</section>
+<script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        
+        for (i = 0; i < coll.length; i++) {
+          coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+              content.style.maxHeight = null;
+            } else {
+              content.style.maxHeight = content.scrollHeight + "px";
+            }
+          });
+        }
+    </script>
+</body>
+</html>

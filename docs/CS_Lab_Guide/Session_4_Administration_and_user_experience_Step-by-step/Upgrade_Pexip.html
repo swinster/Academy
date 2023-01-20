@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Upgrade Pexip</title>
+</head>
+
+<body>
+<h1 id="header">Upgrade Pexip Infinity</h1>
+<p>Suggested completion time: <strong>20 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #3 </strong>of the lab sheet.</p>
+<section>
+    <h2 class="main">Take a manual configuration backup of your Pexip Infinity system</h2>
+    <ol>
+        <li>Click <strong>Utilities --&gt; Backup/Restore</strong>.</li>
+        <li>Enter a passphrase.</li>
+        <li>Click <strong>Create backup</strong>.</li>
+        <li>Ensure you download the backup configuration and store it safely.
+            <p><strong>NOTE</strong>: you can also configure automatic backups to be sent to an external  FTP(s) (<u>not</u> SFTP) server.</p>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Take a VM snapshot of the nodes in your deployment</h2>
+    <p>As a best practice before you upgrade, you should  also take a snapshot of the nodes:</p>
+    <ol>
+        <li>Log into vCentre and navigate to your group VMs that you have deployed on your host (see <strong>section #3</strong>of the lab sheet).</li>
+        <li><strong>Right-click</strong> on each of your nodes in turn and select <strong>Snapshots --&gt; Take Snapshot</strong>:<br>
+            &nbsp;<img src="../../images/Vcentre_snapshots.png" alt="image"></li>
+        <li>Enter and name and description (if you so wish) of the snapshot and click &ldquo;<strong>OK</strong>&rdquo;.</li>
+    </ol>
+    <p><strong>NOTE: </strong>you do not need to &quot;Snapshot the virtual  machine memory&quot;, although VMware recommends that you &quot;Quiesce the  guest file system&quot; for Linux systems. By doing so on a powered node, you  will effectively pause the node, which will raise an Instability alarm that  will show for 24 hours. Taking snapshots could also cause calls to drop, so  ensure that you perform these operations during a maintenance window. Powering  off the node before snapshotting will stop the alarm from being raised.</p>
+    <p><strong>NOTE 2:</strong> Snapshots are not considered backups. Once  the upgrade has proven successful, you will delete the VM snapshot. Indeed, continuing  to run VM with active snapshots is a poor practice.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Upgrade Pexip</h2>
+    <p>You will upgrade to the latest GA version of Infinity. Downloaded this from <a href="https://www.pexip.com/platform-downloads/infinity/upgrades/current-release" title="Pexip Infinity Upgrade" target="_blank">https://www.pexip.com/platform-downloads/infinity/upgrades/current-release</a>.</p>
+    <ol>
+        <li>Complete the following steps via the Jumpbox as it  will speed things along.</li>
+        <li>On the Management Node, navigate to <strong>Utilities --&gt; Upgrade.</strong> </li>
+        <li>Select the <strong>upgrade file</strong> you have just downloaded.</li>
+        <li>Select the upgrade file and click <strong>Continue</strong>.</li>
+        <li>When the file is uploaded, click <strong>Start upgrade</strong>.</li>
+        <li>Now, sit back, relax, and watch the progress as the  system is upgraded. Then, go grab a coffee, tea, or other tasty beverage and  snack from the local dispensary, or simply while away some time discussing last  night's TV or whatever else you might want to do to kill some time (read 10-15  minutes). While waiting, remember to check your system against our screenshots (see <strong>Demonstrate your ability to administer a Pexip  Infinity system</strong> below).</li>
+        <li>When complete, the page will auto-reload, and the latest status will be presented.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Test, then remove snapshots</h2>
+    <ol>
+        <li>When the upgrade finishes, test by making calls into the system (<strong>NOTE:</strong> in a production
+            environment, you should have a test plan that you would follow).</li>
+        <li>Remove the VM snapshots (running on snapshots for a while can consume all the datastore space on a host
+            and stop the Pexip VMs from functioning).
+            <ol>
+                <li><strong>Right-click</strong> on each of your nodes in turn and
+                    select&nbsp;<strong>Snapshots&nbsp;</strong><strong>--&gt; Manage Snapshot</strong></li>
+                <li>Select the snapshot you created previously, then click <strong>Delete,</strong> or <strong>Delete all</strong>.</li>
+            </ol>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Demonstrate your ability to administer a Pexip Infinity system.</h2>
+    <p>Check your system against the screenshots below that  show the Infinity upgrade process. Note the offline Infinity configuration  backup, VM snapshots of the nodes, and demonstrate the operation upgrade  process.</p>
+    <h3 class="main">A screenshot of the VM snapshot (on vCentre) of the Management node:</h3>
+    <p><img src="../../images/Vcentre_manage_snapshots_mgt_node.png" alt="image"></p>
+    <h3 class="main">A screenshot of the VM snapshot (on vCentre) of the LAN Conferencing node 1:</h3>
+    <p><img src="../../images/Vcentre_manage_snapshots_conf1_node.png" alt="image"></p>
+    <h3 class="main">A screenshot of the VM snapshot (on vCentre) of the LAN Conferencing node 2:</h3>
+    <p><img src="../../images/Vcentre_manage_snapshots_conf2_node.png" alt="image"></p>
+    <h3 class="main">A screenshot of the VM snapshot (on vCentre) of the DMZ Conferencing node:</h3>
+    <p><img src="../../images/Vcentre_manage_snapshots_edge_node.png" alt="image"></p>
+    <h3 class="main">A screenshot of the Infinity configuration backup:</h3>
+    <p><img src="../../images/Utilities_config_backup.png" alt="image"></p>
+    <h3 class="main">A screenshot of the Infinity configuration backup stored offline:</h3>
+    <p><img src="../../images/Offline_backup.png" alt="image"></p>
+    <h3 class="main">A screenshot of the Infinity Upgrade Status in progress:</h3>
+    <p><img src="../../images/Utilities_upgrade_status.png" alt="image"></p>
+    <h3 class="main">A screenshot of the main live view of the Infinity upgrade in progress:</h3>
+    <p><img src="../../images/Liveview_upgrade_progress.png" alt="image"></p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/Upgrade_Pexip.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

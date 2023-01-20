@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Microsoft Teams Integration</title>
+</head>
+
+<body>
+<section>
+    <h1 id="header">Microsoft Teams Integration</h1>
+    <img src="../../images/Microsoft_Teams_Logo_and_Conector.png" width="337" height="91" alt="" />
+    <p>Use <strong>section #13&nbsp;</strong>of the lab sheet.</p>
+    <p>Your trainer will explain the Teams Connector deployment procedure in Azure to the class (perhaps in the follow-up clinic session), although this lab will use a pre-deployed Teams Connector. This Teams Connector will then be integrated with each trainee's Pexip Infinity deployment.</p>
+    <p>Refer to the documentation at <a class="general" href="https://docs.pexip.com/admin/teams_configuration.htm" target="_blank"
+        title="Infintiy Technical Docs">https://docs.pexip.com/admin/teams_configuration.htm</a> for the Pexip Infinity setup.</p>
+    <p>&nbsp;</p>
+    <p><strong>NOTE</strong>: We use a single <em><strong>shared</strong></em> Azure tenant and Microsoft 365 subscription for these labs across all trainees. It is only possible to set one &quot;Pexip&quot; CVI provider per subscription (using the <span class="code">New-CsVideoInteropServiceProvider</span> Cmdlet). Therefore, we can only specify one set of alternate dialling instructions, which points towards the trainer's demo deployment. Typically in the real world, you would not use a shared single MS365 subscription across multiple Pexip Infinity deployments, so this would not be an issue. However, as you can create a Teams meeting and generate a meeting ID, with a bit of lateral thinking, you can still route calls through your lab deployment to this meeting, thus working around the issue.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Initial setup of the Pexip Infinity deployment</h2>
+    <p>Like other additional features in Pexip Infinity, you will need to enable Microsoft Temas integration through the installation of a license. You will then need to configure Infinity with the Azure Subscription(s) and Teams connector(s) you will use via the <strong>Call Control</strong> menu in the Infinity GUI. Selecting the <strong>Enable Azure Event Hub </strong>property of the Teams Connector configuration allows you to monitor the enhanced status of the Team Connector and set a scheduled scaling policy. For more information, see <a href="https://docs.pexip.com/admin/teams_configuration.htm#gwaddress" title="Infintiy Technical Docs" target="_blank">Configuring your Teams Connector addresse, </a><a href="https://docs.pexip.com/admin/teams_status.htm" title="Infintiy Technical Docs" target="_blank">Viewing Teams Connector instance, call and participant status</a> and <a href="https://docs.pexip.com/admin/teams_scaling.htm" title="Infintiy Technical Docs" target="_blank">Scheduling scaling and managing Teams Connector capacity</a></p>
+    <p><strong>NOTE:</strong> you will <strong>not</strong> set the <strong>Enable Azure Event Hub</strong> property or fill in the <strong>Azure Event Hub connection string</strong> in this lab. Multiple trainee's Infinity deployments are pointing to the same Teams Connector, which is unlikely in the real world. Of course, it is something you likely do for your deployments outside of this lab.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Setting up Pexip Infinity to act as a gateway to Teams</h2>
+    <p>There are two ways you can configure Microsoft Teams gateway calls within Pexip Infinity:</p>
+    <ol>
+        <li><strong>Routing indirectly via a Virtual Reception:</strong> here, you configure Pexip Infinity to act as an IVR gateway (or &quot;lobby&quot;) by configuring a Virtual Reception to capture the meeting code of the required conference, then use a Call Routing Rule (typically the same rule as used for direct routing) to route the call into the Teams conference.<br>
+            <p><strong>NOTE:</strong> you may wish to use the IPv4 static NAT address of your Edge node as one of the aliases for the VR. However, currently, this is used in the General VR, so you will receive an error as you can only use unique aliases across all services. Therefore, in a production environment, if you want to use IP address aliases for multiple VRs, you will require several Conferencing Nodes to target their unique IP addresses.</p>
+        </li>
+        <li><strong>Routing directly via the Pexip Distributed Gateway:</strong> here, you use one or more Call Routing Rules to route incoming calls for specific alias patterns &mdash; that will typically include the meeting code &mdash; directly into the relevant Teams conferences.</li>
+    </ol>
+    <p><strong>NOTE: </strong>The meeting code for a Teams meeting is between 9 and 12 digits long. As this code may lead to dial plan clashes with other integrations, you should ensure that you use a prefix in this lab (for example, <span class="code">teams.</span>) in the alias matched in any call routing. Of course, if you only have one integration in your real-world deployment, this may not matter.</p>
+    <p>&nbsp;</p>
+    <h3 class="main">Creating the Virtual Reception (lobby) for indirect dialling into a Teams meeting:</h3>
+    <p><img src="../../images/teams_reception_routing.png" alt="Microsoft Teams indirect routing form a Virtual Reception " title="Microsoft Teams indirect routing form a Virtual Reception "></p>
+    <p>Here are some things to consider when configuring a Virtual Reception to allow for an indirect connection to a Teams meeting:</p>
+    <ul>
+        <li>What Virtual Reception type should you use?</li>
+        <li>What lookup location should you use?</li>
+        <li>What alias did the <strong>trainer</strong> use for the VR that appears in the Teams Invite? This alias was configured as part of CVI setup when issuing the <span class="code">New-CsVideoInteropServiceProvider</span> Cmdlet.
+            <ul>
+                <li>What parameter of the <span class="code">New-CsVideoInteropServiceProvider</span> Cmdlet specifies the IVR URI seen below the &quot;<strong>Join with a video conferencing device</strong>&quot; label in a Team Meeting Invite?</li>
+                <li>What parameter of the <span class="code">New-CsVideoInteropServiceProvider</span> Cmdlet specifies the &quot;<strong>Alternate dialling instruction</strong>&quot; link in a Team Meeting Invite?</li>
+            </ul>
+        </li>
+        <li>What aliases should <strong><em>you</em></strong> use? For example, can you use an IP alias from the IPv4 static NAT address of the Proxying Edge node, and if not, why not? Hint, think back to what you did in with the General Virtual Reception.</li>
+        <li>What are the additional steps are required to create non-clashing dial plans?</li>
+    </ul>
+    <p>&nbsp;</p>
+    <h3 class="main">Teams call routing rules for direct and indirect routing</h3>
+    <p>You need to create at least one Call Routing Rule, regardless of whether you are using indirect routing, direct routing, or both. The rule(s) must match the alias that has been captured — and probably transformed — by the Virtual Reception (for indirect routing) or match the alias originally dialled by the meeting participant (for direct routing). You will need to add additional prefixes to the routing rules as there are similar dial plans used in this lab for other integrations. </p>
+    <p>For this lab, we will create three call Routing Rules:</p>
+    <ol>
+        <li><strong>Trusted Gateway to Teams from the internal network:</strong>
+            <p>This Routing Rule should allow end devices using different protocols in your internal network to connect directly to a Teams meeting. Further, the rule should capture the 9 to 12-digit Teams conferencing number (both with and without your domain and an additional prefix) and only forward the conferencing number toward the Teams connector.</p>
+        </li>
+        <li><strong>Trusted gateway to Teams from any network for registered devices:</strong>
+            <p>This Routing Rule should allow end devices using different protocols registered in any location to your Pexip Infinity deployment to connect directly to a Teams meeting. Further, the rule should capture the 9 to 12-digit Teams conferencing number (both with and without your domain and an additional prefix) and should forward the conferencing number toward the Teams connector.</p>
+        </li>
+        <li><strong>Untrusted gateway to Teams from the External network:</strong>
+            <p>This Routing Rule should allow end devices using different protocols that connect to your Pexip Infinity deployment via your external location, to connect to a Teams meeting. However, callers will be forced into the Teams lobby to be admitted by an authenticated Teams user. Further, the rule should capture the 9 to 12-digit Teams conferencing number (both with and without your domain and an additional prefix) and forward the conferencing number toward the Teams connector.</p>
+        </li>
+    </ol>
+</section>
+</body>
+</html>

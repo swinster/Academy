@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Upgrade Pexip</title>
+</head>
+
+<body>
+    <section>
+        <h1 id="header">Upgrade Pexip Infinity</h1>
+        <p>Use <strong>section #3</strong> of the lab sheet.</p>
+        <p>When you upgrade Infinity, you will upload an upgrade package to the Management Node, which then proceeds to
+            upgrade itself. Once this node has upgraded, rebooted, and come back online, it schedules the upgrade of the
+            Conferencing Nodes (both Transcoding and Proxying Edge). You will be able to view the upgrade process from
+            the
+            status page, and Live View will also show how the upgrade is progressing. From v17 and later, the upgrade of
+            the
+            Conferencing Nodes will occur five at a time, and from v25 and on, this will occur 10 at a time. Calls in
+            operation will be allowed to end gracefully before the node can be upgraded, but this can halt the upgrade
+            process for some time, therefore it is still wise to schedule upgrades in a maintenance window in most
+            environments.&nbsp;</p>
+        <p>Please refer to&nbsp;<a class="general" href="https://docs.pexip.com/admin/upgrading.htm" target="_blank"
+                title="Pexip Docs">https://docs.pexip.com/admin/upgrading.htm</a>.</p>
+        <p>You should also ensure you are following your normal procedures regarding upgrading infrastructure:</p>
+        <hr>
+    </section>
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">Take a manual configuration backup of your Pexip Infinity system</h3>
+
+        <p>This would likely require taking a backup of the Pexip configuration and storing this in an offline
+            location (potentially via automatic backups).</p>
+
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Take a VM snapshot of the nodes in your deployment</h3>
+
+        <p>You should snapshot your VM in the hypervisor, which allows you to roll back to a previous version if there
+            are issues. This should NOT be considered a VM backup. It is bad practice to continue to run a VM that has
+            an
+            active snapshot for more than a couple of days, as an ever-increasing &ldquo;delta&rdquo; file can consume
+            all
+            the hard drive space. Best practice would be to archive this snapshot using an enterprise-grade backup
+            solution
+            within your virtual infrastructure.</p>
+        <p>Please refer to&nbsp;<a class="general" href="https://docs.pexip.com/admin/backup_restore.htm" target="_blank"
+                title="Pexip Docs">https://docs.pexip.com/admin/backup_restore.htm</a>.</p>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Upgrade Pexip</h3>
+
+        <p>You should then upgrade Infinity using the file in the&nbsp;&ldquo;<strong>E:\Pexip\Group Folders\&lt;Your
+                Group&gt;\Pexip Software\upgrade</strong>&rdquo; folder. For this lab, we are likely going to upgrade to
+            a
+            beta version of Infinity, however, the latest GA upgrade package can be found via the Infinity Platform
+            Downloads page (see&nbsp;<a class="general" href="https://www.pexip.com/platform-downloads" target="_blank"
+                title="Infinity Platform Downloads">https://www.pexip.com/platform-downloads</a>).</p>
+        <p>&nbsp;</p>
+
+        <h3 class="main">Test, then remove snapshots</h3>
+        <p>When you are happy the upgrade is completed successfully, you should delete the VM snapshots</p>
+        <p><strong>NOTE:</strong> VM snapshots taken on the hypervisor are a useful short-term roll-back mechanism that
+            can
+            be used before upgrading, however, this process creates a static file, plus a &ldquo;delta&rdquo; file that
+            contains all changes in the VM. This delta file can grow quite large and consume all the physical disk
+            space,
+            thus it is poor practice to continue to run the VM for more than a few days after the snapshot has been
+            taken.
+            The snapshot should be deleted after you have run some tests to confirm that the system is working as
+            expected
+            (see&nbsp;<a class="general" href="https://kb.vmware.com/kb/1025279" target="_blank" title="VMware Docs">https://kb.vmware.com/kb/1025279</a>). <u>VM snapshots
+                are
+                NOT considered a backup.</u> In addition, the act of snapshotting a Conferencing Node that is powered on
+            will likely cause it to stall, thus raise an instability alarm that will show for up to 24 hours. It is also
+            worth mentioning that you may wish to only snapshot the Management node. If conferencing nodes fail to
+            upgrade,
+            it is always possible to redeploy them as essentially, they are disposable. At the same time, however,
+            redeploying 100 nodes could be a logistical nightmare.
+        </p>
+    </section>
+
+</body>
+
+</html>

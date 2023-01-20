@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Infinity Connect Client Registration and Gateway P2P calls</title>
+</head>
+
+<body>
+<h1 id="header">Infinity Connect Client Registration</h1>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>Pexip Infinity has a separately downloadable companion  desktop app, the <strong>Pexip Infinity Connect</strong> desktop client. Install the client  onto <strong><em>YOUR</em></strong> computer (however, it is also pre-installed on the  Jumpbox for you to configure). In addition, the Infinity Connect client is <strong>not</strong> the same thing as the Pexip My Meeting Video (MMV) client used by the Pexip  Service. We are working on a replacement app for the future, so watch this  space.</p>
+    <p>Please refer to <a
+            href="https://docs.pexip.com/admin/connect_installing.htm"  target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/connect_installing.htm</a>. </p>
+    <p>To register a device, we need to configure a <strong>Device Alias:</strong></p>
+    <ul>
+        <li>Setup a <strong>Device Alias</strong> (this is the identifier used to dial the device – usually, it
+            will look like a URI), and <strong>register</strong> a Pexip Connect client to your deployment.
+            <p>For registering to a Pexip Conference or Proxy Node, you must first create a Device Alias. Refer to <a href="https://docs.pexip.com/admin/registering_devices.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/registering_devices.htm</a> and <a href="https://docs.pexip.com/end_user/guide_for_admins/about_client_settings.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/end_user/guide_for_admins/about_client_settings.htm</a></p>
+        </li>
+        <li>Setup a <strong>Device Alias</strong> for a SIP client. A <strong>Poly RealPresence Desktop</strong> (RPD) client   is pre-installed onto  the Jumpbox. </li>
+    </ul>
+    <p>Clients will often use DNS SRV records to discover the  services that allow them to register to a system and place calls. Therefore, we  have added DNS SRV records to the internal Active Directory DNS and an external  DNS provider for this lab. </p>
+    <p><strong>NOTE:</strong> due to limitations in the lab design, we have  had to use separate DNS domain namespaces (or zones) internally and externally. </p>
+    <ul>
+        <li>The <strong>Internal</strong> DNS namespace is: <span class="code">pexipacademy.local</span>. <br>
+            The local Top Level Domain  (TLD) is a  special-use reserved domain that is not used publicly.</li>
+        <li>The <strong>External</strong> DNS namespace is: <span class="code">&lt;Pexip_Infinity_domain&gt;</span> (see section <strong>#4.2</strong> in the lab sheet).<br>
+            This domain is generated dynamically, especially for <em>your</em> specific lab. </li>
+    </ul>
+    <p>It is common to structure internal and external namespaces  differently. However, using the same domain for voice and video clients and  service URIs is also common. Therefore, this would likely be the external domain  namespace, split across both internal and external users and services. To  achieve this, you would use <strong>split-brain DNS</strong>, where two different sets of DNS  servers are authoritative for the same DNS namespace (or zone). Split-brain DNS  allows different results to be returned to alternative groups of users. </p>
+    <p>So what exactly does this mean?</p>
+    <p>Well, when you configure the <strong>Pexip Infinity Connect</strong> desktop  client, for instance, you need to define the <strong>Registration Host</strong> address.  This is usually the external domain namespace, and the client will query some PexApp  DNS records to discover where the service is located. In a production Infinity  deployment, you would likely want to use the <em>same</em> <strong>Registration Host</strong> setting for all users. Users are free to move from the internal corporate  network to outside, and reconfiguring the client setting each time would be impractical.  In addition, you would typically want internal and external users to register  to a different set of nodes. Internal users would connect to internal nodes,  while external users would connect to external nodes. Split-brain  DNS allows us to achieve this.</p>
+    <p>SIP and H.323 clients also use SRV records to discover  service locations. So, again, you may want to define similar DNS records,  internally and externally, depending on the clients/endpoints  you are using. </p>
+    <p><strong>NOTE:</strong> we are <strong>NOT</strong> using split-brain DNS in this  lab; hence you should set the <strong>internal</strong> domain as the <strong>Registration  Host</strong> in the Pexip Infinity Connect client, or the <strong>SIP Server Proxy</strong> address for Poly's RPD client. Remember, you also have access to the Domain  Controler in the lab environment, so please check out the DNS settings for the  domain if you wish.</p>
+    <p>&nbsp;</p>
+    <p>Let's look at an example.</p>
+    <ul>
+        <li>The external Pexip Infinity domain is: <span class="code">pexipacademy.net</span>.</li>
+        <li>The internal domain   is: <span class="code">pexipacademy.local</span>. </li>
+    </ul>
+    <p>The following <strong>external</strong> SRVs should do the trick to help clients find the <strong>edge</strong> node:<br>
+    </p>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Service/Protocol/Name</th>
+                <th scope="col">TTL</th>
+                <th scope="col">Class</th>
+                <th scope="col">Type</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Port</th>
+                <th scope="col">Target</th>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_h323cs._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1720</td>
+                <td>edge.pexipacademy.net.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_h323ls._udp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1719</td>
+                <td>edge.pexipacademy.net.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sips._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5061</td>
+                <td>edge.pexipacademy.net.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sip._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5060</td>
+                <td>edge.pexipacademy.net.</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="code2">
+                <td scope="row">_pexapp._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>443</td>
+                <td>edge.pexipacademy.net.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Of course, you could have multiple edge nodes for redundancy, so multiple SRVs, with different weights and priorities (if required).</p>
+    <p>&nbsp;</p>
+    <p>The following <strong>internal</strong> SRVs should  help clients find the <strong>internal</strong> nodes. </p>
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr class="table-dark">
+                <th scope="col">Service/Protocol/Name</th>
+                <th scope="col">TTL</th>
+                <th scope="col">Class</th>
+                <th scope="col">Type</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Port</th>
+                <th scope="col">Target</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="code2">
+                <td scope="row">_h323cs._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1720</td>
+                <td><span class="highlight">conf01</span>.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_h323cs._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1720</td>
+                <td><span class="highlight">conf02</span>.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_h323ls._udp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1719</td>
+                <td>conf01.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_h323ls._udp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>1719</td>
+                <td>conf02.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sips._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5061</td>
+                <td>conf01.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sips._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5061</td>
+                <td>conf02.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sip._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5060</td>
+                <td>conf01.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_sip._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>5060</td>
+                <td>conf02.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_pexapp._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>443</td>
+                <td>conf01.pexipacademy.local.</td>
+            </tr>
+            <tr class="code2">
+                <td scope="row">_pexapp._tcp.pexipacademy.net.</td>
+                <td>3600</td>
+                <td>IN</td>
+                <td>SRV</td>
+                <td>1</td>
+                <td>1</td>
+                <td>443</td>
+                <td>conf02.pexipacademy.local.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Here, we see multiple SRV records defined for each service to enable clients to round-robin requests to the different internal nodes. It should be noted that there are other methods to allow endpoints to register to a service, such as through provisioning. </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

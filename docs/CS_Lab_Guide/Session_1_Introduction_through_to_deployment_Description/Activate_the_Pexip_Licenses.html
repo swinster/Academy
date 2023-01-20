@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Activate the Pexip Licenses</title>
+</head>
+
+<body>
+<h1 id="header">Activate the Pexip Licenses</h1>
+<p>Use <strong>section #8</strong> of the lab sheet.</p>
+<section>
+    <p>You need to activate a license to start placing calls through any Infinity deployment. However, you can still deploy and configure an Infinity system without adding licenses. This would allow you to test things like network connectivity, firewall configurations, DNS, and even TLS certificates before you have purchased anything. In this case, your Infinity deployment would answer calls with an audio and video message indicating no valid licence exists. Still, often this is enough for initial testing. </p>
+    <p>When you activate a license, your Management Node will automatically attempt to connect to our licensing server, and assuming the license is valid, it will be activated automatically. However, if the Management Node cannot contact the licensing server or there is a problem with the license activation, you can download an offline licencing request. This request should be sent to Pexip Technical Support, who, in return, will send you a response file that you can manually upload.</p>
+<p>The licenses you require will depend on which features you would like to activate. At a minimum, you need capacity and system licenses:</p>
+    <ul>
+        <li> A system license permits basic operations of the Infinity platform.</li>
+        <li>Capacity licenses, either “port licenses” (video connections) or “audio licenses” (audio connections), allow you to make concurrent calls through your deployment.</li>
+        <li>To use Virtual Meeting Rooms (VMRs) or Virtual Auditoriums (VAs), you will need a VMR license.</li>
+        <li>A Scheduling license would allow your user to schedule a VMR using Exchange and Outlook.</li>
+        <li>A Microsoft Teams license would allow you to connect a Microsoft 365 tenant.</li>
+        <li>A Google Meet license allows you to add an access token for a Google Meet integration.</li>
+        <li>One Touch Join (OTJ) licenses enable Infinity to show Cisco and Poly endpoints different meeting details.</li>
+        <li>An Epic telehelth license allows healthcare organisations to integrate with their Epic Electronic Health Record system.</li>
+    </ul>
+    <p>A single license key can enable many features, as is seen for your lab licence.</p>
+    <p>Please refer to <a
+            href="https://docs.pexip.com/admin/licenses.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/licenses.htm</a>.</p>
+    <p><strong>NOTE:</strong> <u>The license is your paid subscription to use Pexip</u>. If for any reason you need to move the Management Node, say to a different host or change its IP address, you <strong>MUST</strong> return the license before decommissioning the node. If you destroy the Management Node with an active license, you will be unable to reuse the license elsewhere, and Pexip may apply a charge to get your system working. We highlight this procedure in the licensing email that contains the license key. </p>
+    <p>The same is true of a lab or pre-production setup you may have. <u>Do NOT destroy the lab without first returning the license!</u></p>
+    <p>We do not spend time in this lab on moving the Management Nod. However, such a change is quite a disruption to the system. You should refer to <a href="https://docs.pexip.com/admin/management_node_move.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/management_node_move.htm</a> if you need to do this.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

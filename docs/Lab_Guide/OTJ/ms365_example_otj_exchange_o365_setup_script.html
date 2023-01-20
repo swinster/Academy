@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Example OTJ Exchange O365 setup script</title>
+</head>
+
+<body>
+	<p><h1 id="header">Example OTJ Exchange O365 setup script</h1></p>
+	<p><a href="https://docs.pexip.com/support/exchange_mailbox_ps.htm">Click this link</a> to take you to the latest guidance from our Docs team on Creating Microsoft Exchange room resources via PowerShell.<br>Below is an example of the file contents.</p>
+	<p><strong>Example Script</strong></p>
+	<div class="code">#Set Execution Policy<br>
+	Set-ExecutionPolicy RemoteSigned<br>
+	<br>
+	#If not installed, install Exchange Online Module<br>
+	Install-Module ExchangeOnlineManagement<br>
+	<br>
+	#If not installed, install Azure AD Module<br>
+	Install-Module -Name AzureAD<br>
+	<br>
+	#Connect to Exchange Online and AzureAD, works also with a MFA enabled account<br>
+	Connect-AzureAD<br>
+	Connect-ExchangeOnline<br>
+	<br>
+	#gather input for Pexip Room name and Password<br>
+	$prn = Read-Host -Prompt ‘Enter the room name’<br>
+	$pwd = Read-Host -Prompt ‘Enter the password’ -AsSecureString<br>
+	$displayname = Read-Host -Prompt ‘Enter the display name’<br>
+	$domain = Read-Host -Prompt ‘Enter the domain name here’<br>
+	$ServiceAccount = Read-Host -Prompt ‘Enter the service account name’<br>
+	<br>
+	#Create the Resource Account<br>
+	New-Mailbox -MicrosoftOnlineServicesID "$prn@$domain" -Alias $prn -Name "$prn" -DisplayName "$displayname" -Room -EnableRoomMailboxAccount $true -RoomMailboxPassword (ConvertTo-SecureString -String $pwd -AsPlainText -Force)<br>
+	<br>
+	#Set the Access Permissions for the Service Account<br>
+	Add-MailboxPermission -Identity "$prn@$domain" -User "$ServiceAccount" -AccessRights FullAccess<br>
+	<br>
+	#Configure the Calendar Processing for the Resource Account<br>
+	Set-CalendarProcessing -Identity "$prn@$domain" -AutomateProcessing AutoAccept -DeleteComments $False -DeleteSubject $False -AddOrganizerToSubject $False -RemovePrivateProperty $False</div>
+</body>
+</html>

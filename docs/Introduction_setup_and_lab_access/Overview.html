@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap-4.4.1.js"></script>
+    <title>Overview</title>
+</head>
+
+<body>
+
+    <h1 id="header">Overview</h1>
+
+    <p>The primary goal of this training lab guide is to walk you through how to plan a Pexip Infinity installation,
+        configure and deploy different Infinity components such as the Management and Conferencing Nodes, and configure
+        Infinity services as necessary to provide the desired outcomes.</p>
+    <p>In these labs, you will deploy and install a Pexip Management Node, two internal Pexip Conferencing Nodes (in the
+        Transcoding Role) within a LAN location, and one external Pexip Conferencing Node (initially in the Transcoding
+        Role, then switching to the Proxying Edge role) within a DMZ location. You can see the topology in the diagram
+        below. Both locations will handle standards-based SIP/H.323 and WebRTC video traffic, as well as integrate with
+        different ecosystems. For example, the internal Pexip Conferencing Nodes will be integrated with an on-premises
+        Skype for Business 2015 deployment, whilst the Pexip Edge Node will handle federated Microsoft calls via Lync or
+        Skype for Business environments at other organisations, or Office 365. Additional integrations with Microsoft
+        Teams, Google Hangouts and the Pexip Private Cloud will also be enabled.&nbsp;</p>
+    <p>You should refer continuously to&nbsp;<a class="general" href="https://docs.pexip.com" target="_blank"
+            title="Pexip Docs">https://docs.pexip.com</a>, which is our
+        official documentation site regarding configuring Pexip. We will provide you with links in each section to
+        various documentation pages where appropriate.</p>
+    <p>The guide itself has broken into two parts:</p>
+    <ul>
+        <li>A description of the desired outcomes (which you are reading now). It is intended that this will provide
+            further background information to the lab exercises, along with how and why you might deploy and manage
+            Infinity. This initial session guide also includes this introduction and guidance on accessing the
+            lab.&nbsp;</li>
+        <p>As an additional challenge, users that have previous experience with Pexip could attempt to deploy and
+            configure
+            Pexip using the information in this section alone.</p>
+        <li>A step-by-step guide to complete the required configurations and relevant testing.&nbsp;</li>
+    </ul>
+    <p>Each group has a name (e.g. &ldquo;<span class="code">vc1</span>&rdquo;, &ldquo;<span
+            class="code">vc2</span>&rdquo; etc., and may even have a location appended such
+        as &ldquo;vc1-osl&rdquo;) and uses a shared domain space of pexip.net. These are used together to give a unique
+        domain namespace for each group&rsquo;s lab (e.g., &ldquo;<span class="code">vc20-osl.pexip.net</span>&rdquo;).
+        Each Node also has a
+        hostname (e.g. &ldquo;<span class="code">mgr</span>&rdquo;, &ldquo;<span class="code">conf01</span>&rdquo;,
+        &ldquo;<span class="code">edge</span>&rdquo;), and we can prepend this to the
+        group domain to give the nodes Fully Qualified Domain Names (FQDNs). We can then use these FQDNs to browse to
+        the nodes (e.g., <a class="general" href="https://mgr.vc20-osl.pexip.net" target="_blank">https://mgr.vc20-osl.pexip.net</a> or
+        <a class="general" href="https://edge.vc20-osl.pexip.net" target="_blank">https://edge.vc20-osl.pexip.net</a>).</p>
+    <p>When managing devices in this lab, please refer to the lab sheet for your group. Each task will refer to the
+        relevant lab sheet section if required. For your information, we have tried to keep the usernames consistent and
+        passwords simple, with <em>most</em> passwords set to &ldquo;Pexip123&rdquo;. However, some usernames and
+        passwords can be different, especially for cloud services, thus you should consult the lab sheet.</p>
+    <p><img src="../images/img1621972024.png" alt="image"></p>
+</body>
+
+</html>

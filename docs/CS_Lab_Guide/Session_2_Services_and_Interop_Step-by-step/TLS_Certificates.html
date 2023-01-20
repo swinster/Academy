@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script> 
+
+<!-- <script type="text/javascript" src="../../js/script.js"></script> -->
+<title>TLS Certificates</title>
+</head>
+
+<body>
+<h1 id="header">TLS Certificates</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <h2 class="main">Create TLS certificate for internal Transcoding Conferencing Nodes</h2>
+    <p>Use <strong>section #4.2</strong> and <strong>section #2</strong> of the lab sheet.</p>
+    <p>Before you start, let's recap the fundamentals of TLS  certificates:</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/Infinity%20Fundamentals/media/7db4a72d-0681-45f6-b5e9-9eeb6fec726c/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <h3 class="main">Generate a CSR on Pexip Infinity</h3>
+    To generate a new Certificate Signing Request:
+    <ol>
+        <li>Click <strong>Utilities --&gt; Certificate Signing Request</strong>, then <strong>Add New Certificate signing request.</strong></li>
+        <li>Enter the following:<br>
+            <br>
+        </li>
+        <p>TLS Certificate: <strong>Create non-renewal CSR</strong><br>
+            Subject name: <strong>User-provided custom Common Name</strong><br>
+            Custom subject name: <span class="code"><strong>&lt;your Pexip pool name&gt;</strong></span> from lab sheet <strong>section #4.2</strong>.<br>
+            Private key type: <strong>RSA (2048 bit)</strong><br>
+            Alternative names: <strong class="code">&lt;FQDNs of ALL your internal Pexip nodes&gt;</strong>, i.e:</p>
+        <ol>
+            <li>Select both internal Conferencing Nodes from the list</li>
+            <li>Select the Management Node from the list</li>
+        </ol>
+        <br>
+        <p>Fill in the additional subject fields (not essential, but useful):<br>
+            <br>
+            Organization: <strong>Pexip</strong><br>
+            Department: <strong>IT</strong><br>
+            City: <strong>Oslo</strong><br>
+            State or province: leave blank<br>
+            Country: <strong>NO</strong><br>
+            <br>
+        <li>Click <strong>Save</strong>, then click the <strong>Download</strong> button to get the CSR and open the file in a text editor.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <h3 class="main">Creating the internal certificate.</h3>
+    <p>To create the certificate from the Windows Active Directory Certificate  Services (ADCS) server:</p>
+    <ol>
+        <li>Browse to <a href="https://dc1.pexipacademy.local/certsrv" title="AD CS">https://dc1.pexipacademy.local/certsrv</a> (use a browser bookmark within the Jumpbox session).</li>
+        <li>Log in with the username and password described in the lab sheet <strong>section #2</strong>.</li>
+        <li>Click<strong> Request a certificate</strong> and then submit an <strong>advanced certificate request</strong>.</li>
+        <li>Open the CSR file (downloaded from the Pexip deployment) in a text editor (we recommend using Notepad++, rather than the built-in Windows Notepad) and copy the content into the <strong>Saved Request</strong> input field.</li>
+        <li>Select <strong>Certificate Template: Web Server with client auth</strong>.<br>
+            <strong>NOTE:</strong> The <strong>Web Server with client auth</strong> template is a modified version of the default ADCS Web Server template. ADCS administrators can create new templates with new properties (see <a class="general" href="https://docs.pexip.com/sfb/certificates.htm#cert_template" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/sfb/certificates.htm#cert_template</a>). The template provides both <strong>Client Authentication</strong> and the standard <strong>Server Authentication</strong> policy extensions. For example, the default template would have been acceptable if the Infinity node were only acting as a server. However, some integrations use mutual TLS, which requires the client to present its certificate to the server. Without the Client Authentication extension added to the certificate template, the TLS certificate issued would not work for this case. Most publicly issued TLS certificates contain both these extensions by default.<br>
+        </li>
+        <li><strong>Submit</strong> and on the following page select the <strong>Base 64 encoded</strong> radio button, then click <strong>Download certificate</strong>.</li>
+    </ol>
+    <p>&nbsp;</p>
+    <h3 class="main">Complete the signing request and assign the certificate in the Pexip Infinity deployment:</h3>
+    <ol>
+        <li>If the CSR page is no longer open, go to <strong>Utilities --&gt; Certificate Signing Requests</strong>, then click the <strong>CSR</strong>.</li>
+        <li>In the <strong>Certificate</strong> section, click the button "<strong>Choose</strong> <strong>file</strong>", then select and upload the certificate file you just created from the Windows CA. You will see the Certificate ASCII text appear in the input box.</li>
+        <li>Click <strong>Complete</strong>, and the UI will show the Change TLS certificate page.</li>
+        <li>Assign the certificate to <u>only</u> the <em>internal</em> Conferencing Nodes and the Management Node, then click <strong>Save</strong>.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h3 class="main">Upload the internal CA root certificate</h3>
+    <p>Use <strong>section #2</strong> of the lab sheet.</p>
+    <p>There are several ways to complete this task. Our job is <strong>not</strong> to make you Windows PKI administrators, so we have outlined just one way:</p>
+    <ol>
+        <li>In the jumpbox sessio, re-browse to the page at <a href="https://dc1.pexipacademy.local/certsrv" title="AD CS">https://dc1.pexipacademy.local/certsrv</a> (<strong>note:</strong> you will likely still be on the page <a href="https://dc1.pexipacademy.local/certsrv/certfnsh.asp" title="AD CS Finish">https://dc1.pexipacademy.local/certsrv/certfnsh.asp</a>, so
+            click the <strong>Home</strong> link in the top right of the screen).</li>
+        <li>If prompted, log in with the username and password described in the lab sheet <strong>section #2</strong>.</li>
+        <li>Click the link, <strong>Download a CA certificate, certificate chain or CRL</strong>.</li>
+        <li>Select <strong>Base 64</strong> and click <strong>Download CA certificate</strong>.</li>
+    </ol>
+    <p>Upload the root certificate to the Management Node:</p>
+    <ol>
+        <li>On Pexip, open <strong>Platform --&gt; Trusted CA certificates</strong>.</li>
+        <li>Click <strong>Import</strong>.</li>
+        <li>Select the file downloaded in the prior step and click <strong>Import</strong>.</li>
+    </ol>
+    <p>Verify that the internal CA root certificate is applied:</p>
+    <ol>
+        <li>Click <strong>Platform --&gt; TLS Certificates</strong>.</li>
+        <li>On the certificate with the conference pool name generated by the internal CA, if the status shows as “Good”, then the root CA certificate from the prior step is applied
+            correctly.<br>
+            <strong>NOTE:</strong> you may also see a warning that the expiry date on this certificate is over 398 days. As this certificate is applied to the Management Node, if you were to browse to this node using Safari, you would see an untrusted certificate warning. For more information, read about this change in functionality in v24 due to the changing behaviours of browsers - <a href="https://docs.pexip.com/admin/previous_releases.htm?Highlight=398#changes_v24" title="Infinity Technical Docs" target="_blank">https://docs.pexip.com/admin/previous_releases.htm?Highlight=398#changes_v24</a>.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Create a TLS certificate for external Proxying Edge Node</h2>
+    <p>Use <strong>section #11</strong> of the lab sheet.</p>
+    <section>
+        <h3 class="main">Using a third-party Certificate Authority via a self-generated PEM certificate bundle.</h3>
+        <p>Import the PEM files:</p>
+        <ol>
+            <li>In <strong>Section #11</strong> of the lab sheet, click the link to download the TLS certificate for your edge node (in PEM format). This certificate and chain were automatically generated when your lab instance was created.&nbsp;</li>
+            <li>Navigate to <strong>Platform --&gt; TLS Certificates</strong>, then click "<strong>Import Files</strong>".</li>
+            <li>Click "<strong>Choose Files</strong>", and select the the PEM file you have just downloaded,then
+                "<strong>Import</strong>".<br>
+                <strong>NOTE:</strong> as the certificate contains a private key, the PEM has a passphrase assigned - use <span class="code"><strong>P3x1p123!</strong></span></li>
+        </ol>
+        <p>Assign the Certificate to the node:</p>
+        <ol>
+            <li>Back on the <strong>TLS Certificates</strong> page, click on the certificate you have just imported (which will have a Subject name of "<strong class="code">edgepool.pexip.net</strong>").<br>
+                <strong>NOTE:</strong> We have used this Common Name because it makes upcoming integrations simpler. Often you would set a common pool name for your external domain namespace.</li>
+            <li>In the <strong>Nodes</strong> selection box, select the <strong>Edge node</strong> for your group and click" <strong>Save</strong>".</li>
+        </ol>
+        <p>&nbsp;</p>
+    </section>
+</section>
+<section>
+    <h2 class="main">Removing ALL temporary certificates</h2>
+    <p>No specific lab sheet section.</p>
+    <ol>
+        <li>Click <strong>Platform&nbsp;</strong><strong>--&gt; TLS Certificates</strong>.</li>
+        <li>Select the certificates to remove (ensure that they are NOT assigned to any nodes, if they are, rectify this using the steps above before proceeding).</li>
+        <li>From the dropdown action box toward the top of the screen, select "<strong>Delete selected TLS certificates</strong>", then click "<strong>Go</strong>".</li>
+        <li>On the "<strong>Are you sure?</strong>" page, click "<strong>Yes, I'm sure</strong>" (at the bottom of the screen).</li>
+        <li>Ensure that any alarms on the system disappear.</li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Navigate to your edge node using the browser of your choice,  and check the certificate presented is correct. The Subject Common Name (CN)  and Subject Alternative Names (SAN) should be valid, and the issuing CA should  be trusted. You should note that the browser warning relating to an untrusted  certificate will have disappeared, and the regular padlock symbol will show in  the browser's URL bar. If you had an open browser session to a node, you might  need to close the tab and re-open.</p>
+    <p>Assuming Infinity's certificate details and configuration are  correct, as detailed in the previous steps, you can now use a Skype for  Business federated client to connect to any Infinity service. However, a Skype  for Business environment will need to either have an open federation or whitelist  your lab's domain.</p>
+    <p>If you have an issue connecting to your VMRs with your own  Skype for Business client, before calling your trainer, you might want to check  the support logs for any obvious errors. A word of warning, you probably missed  an earlier step &#128521;.</p>
+    <p>All Pexip deployments use open federation, accepting  connections from any Skype for Business or Lync system (and indeed Microsoft Teams,  although using a Teams client to connect to Infinity via the Skype Gateway is  not recommended or supported due to incompatibilities with presentation). Of  course, unless you have configured the Pexip Infinity services (such as a VMR)  with aliases in the format of <span class="code">name@domain</span>, your Skype for Business client  will be unable to connect.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Checking the successful configuration Pexip Infinity TLS certificates</h2>
+    <p>Compare your system against the screenshots below show the new certificates in place, for example:</p>
+    <h3 class="main">A screenshot showing the public and private TLS certificates assigned to the nodes, with all the temporary TLS certificate removed:</h3>
+    <p><img src="../../images/img1621804969.png" alt="TLS Certificates" title="TLS Certificates"></p>
+    <h3 class="main">A screenshot showing the CA certificates uploaded to the system, both the public intermediate CA cert, and the private root CA cert:</h3>
+    <p><img src="../../images/img1621804968.png" alt="Trusted CA Store" title="Trusted CA Store"></p>
+    <h3 class="main">Screenshots showing the TLS certificates correctly applied to the Management Node and an internal LAN Conferencing Node:</h3>
+    <p><img src="../../images/img162180496892.png" alt="Trusted Internal Conferencing Node TLS Certificate" title="Trusted Internal Conferencing Node TLS Certificate"><img src="../../images/img162180496978.png" alt="Trusted Internal Management Node TLS Certificate" title="Trusted Internal Management Node TLS Certificate"></p>
+    <h3 class="main">A screenshot showing the TLS certificate correctly applied to the DMZ Conferencing Node:</h3>
+    <p><img src="../../images/img1621809769.png" alt="Trusted External Conferencing Node TLS Certificate" title="Trusted External Conferencing Node TLS Certificate"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_2_Services_and_Interop_Description/TLS_Certificates.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

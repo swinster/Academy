@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Edit and Use a Test Call Service</title>
+</head>
+
+<body>
+<h1 id="header">Edit and use a Test Call service</h1>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>The Pexip Infinity Test Call Service is a feature both administrators and end-users can use to test and validate connections from different devices and clients. There is already a test call service configured out of the box, which uses an alias of “<span class="code">test_call</span>”. You can change this alias if you like, but you should also add a new alias that contains the <span class="code">Pexip Infinity Domain</span> for your deployment (see <strong>section #4.2</strong> in the lab sheet)</p>
+    <p>Multiple aliases can be configured for every Infinity service, allowing various clients to connect to the same service differently. For example, a SIP client would dial a URI using <span class="code">user@domain</span>. Therefore, you would configure a suitable alias on the service to match this incoming call (using your <span class="code">Pexip Infinity Domain</span> for your lab from <strong>section #4.2</strong>). However, you may only want WebRTC users to type the shorter <span class="code">user</span> part to access the same service.</p>
+    <p>To test this service using webRTC, open a browser to an internal node (using a Jumpbox browser bookmark), and the edge node using its FQDN from your device. Note and accept the security warning in the browser. We will add TLS certificates to the Infinity nodes in the next lab. Also, note that the Jumpbox server has a virtual camera installed, allowing you to send a test video stream.</p>
+    <p>Check out the screenshots on the previous page to ensure your deployment is working as expected.</p>
+    <p>Please refer to <a
+            href="https://docs.pexip.com/admin/test_call_service.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/test_call_service.htm</a>.</p>
+    <hr>
+    <p></p>
+</section>
+</body>
+</html>

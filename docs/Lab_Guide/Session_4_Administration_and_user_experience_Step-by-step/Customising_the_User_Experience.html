@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Customising the User Experience</title>
+</head>
+
+<body>
+    <h1 id="header">Customising the User Experience</h1>
+	<p>Suggested completion time: <strong>20 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>No specific lab sheet section.</p>
+    <p>No step-by-step instructions for this section, see the click the "More Info" button above.</p>
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">NextGen Portal</h3>
+
+        <p>Sign up to the <a href="https://brandingportal.pexip.com/" title="Next Gen Branding portal" target="_blank">Branding Portal</a> and create a unique brand and theme for your Infinity deployment (see the
+        description guide for more information), then upload the resultant file via the Management Node. You will need to wait for the Pexip support staff to authorise this resquest, but if you tell your trainer, they can hurry this along.</p>
+        <p>You will need:</p>
+        <ul>
+            <li>A background image 1920 x 1080 pixel. This should be unfussy as informational messages are laid out over the top of the image. Architectural images are often quite good to use (check out <a href="https://unsplash.com/" title="Unsplash" target="_blank">Unsplash</a>). You would usually need to ensure this meets with the corporate branding theme so involve the marketing department, but even they will need guidance of what works and what does not.</li>
+            <li>A logo image 200 x 100 pixels. Ideally this would be simple, monochrome and slightly transparent (often okayed by a marketing department), but for this lab, any 200x100 logo will do.</li>
+        </ul>
+        <p>When you create your WebApp brand, make sure you add the "Layout" plugin from the "Customizations" menu. This will allow a host to change the layout of a service (such as a VMR) directly from the web client.</p>
+        <p>&nbsp;<img src="../../images/Snag_170a6726.png" width="700" height="464" alt=""/></p>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 2:&nbsp;Demonstrate your ability to customise Infinity by showing a customised WebApp landing page,
+        including a subtle corporate logo.</h3>
+
+        <p>Grab a screenshot of the customised final user experience where they land on the branded WebApp (including a
+            subtle corporate logo, for example:</p>
+        <p><strong>A screenshot of the customised WebApp landing page:</strong></p>
+        <p>&nbsp;<img src="../../images/img162182782244.png" alt="image"></p>
+        <hr>
+
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 3: Demonstrate your ability to customise Infinity by showing a customised in-conference experience,
+        including a subtle corporate logo.</h3>
+
+        <p>Grab a screenshot of the customised final user experience when they enter a videoconferencing service, such
+            as a VMR (including a subtle corporate logo), for example:</p>
+        <p><strong>A screenshot of the customised in-conference theme (in this case, the Welcome screen) also showing the "Change Layout" plugin:</strong></p>
+        <p>Make sure you test out the plugin  functionality so you know what it does :).</p>
+        <p>&nbsp;<img src="../../images/Snag_171c35ae.png" alt="image" width="1000">&nbsp;</p>
+        <p>&nbsp;</p>
+    </section>
+
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/Customising_the_User_Experience.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

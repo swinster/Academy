@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Switching from a Transcoding Edge Node to a Proxying Edge Node</title>
+</head>
+
+<body>
+<h1 id="header">Switching from a Transcoding Edge Node to a Proxying Edge Node</h1>
+<img src="../../images/transcoding_to_proxy.png" width="150" height="101" alt="" />
+<p>No specific lab sheet section.</p>
+<section>
+    <p>You have deployed Conferencing Nodes in the Transcoding role within the LAN and the DMZ. Nodes in the transcoding role decode incoming media and encode outgoing media, and any media sent between different transcoding locations use an automatic <strong>backplane</strong>. The backplanes are an essential concept in the world of Infinity as they carry media between the nodes used to host the same conference but <strong>distributed</strong> across different locations. Further, only media <strong>required</strong> in other locations is sent across the backplane. It is, therefore, far more <strong>efficient</strong> on bandwidth if all users connect to a local location. As a result, multiple transcoding locations are often deployed across geographically dispersed sites and data centres.</p>
+    <p>Deployment architectures such as geographically distributed systems or a Service Provider model allow users to join the transcoding location closest to them, reducing the last hop media path where the network connection may be unregulated. Infinity then automatically determines if users in other locations have connected to the same conference service, linking these locations using a backplane over a well-defined network connection.</p>
+    <p>As transcoding is compute-intensive, it might be more efficient to concentrate the high compute resources in one location (the LAN) for this traditional enterprise scenario. We can change the Infinity node in the DMZ to “proxy” media toward the LAN location.</p>
+    <p>Previously, we outlined that Infinity is a fully transcoding environment today, so the proxying edge role is all about getting media from a remote device to an Infinity transcoding node in another location. Therefore, it is essential to understand that the Proxying Edge role is not about proxying one remote users’ media directly to another; instead, it MUST be directed initially to a transcoding location.</p>
+    <p>Before making and change, run a test connection into a VMR using a single endpoint connecting to the Edge node. Note how things look in Live View and the conference graph.</p>
+    <p>To switch to a proxying solution, you need to complete two steps:</p>
+    <ul>
+        <li>The node's role needs to be changed (from a Transcoding Conferencing Node to a Proxying Edge Node).</li>
+        <li>Then the transcoding resource of the <em>location</em> needs to be updated (to target a location that contains Transcoding Nodes. For example, the current transcoding target of "This Location" now only includes Proxy node(s), so it will be unable to perform any transcoding by definition.</li>
+    </ul>
+    <p>That's it!</p>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/edge_guidelines.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/edge_guidelines.htm</a>. </p>
+    <p>You can convert any node and location very simply as the underlying software for each role type is identical. However, each node role has very different compute and host requirements. You should plan for these changes, understand what you might need to alter on the guest VM (such as vCPUs and vRAM within the hypervisor), and understand the knock-on effects on the host. <strong>For example, proxying nodes still require dedicated host resources.</strong> We are still dealing with real-time media, and overcommitting host resources will lead to poor call quality and performance. Also, be aware that you cannot mix and match different Conferencing Node role types (Transcoding and Proxying Edge) in the same System Location. Please refer to <a href="https://docs.pexip.com/admin/admin_planning.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/admin_planning.htm</a> and <a class="general" href="https://docs.pexip.com/admin/server_design.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/server_design.htm</a>. </p>
+</section>
+</body>
+</html>

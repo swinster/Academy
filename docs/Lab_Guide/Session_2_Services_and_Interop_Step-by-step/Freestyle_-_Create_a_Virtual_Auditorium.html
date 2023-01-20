@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+
+    <title>Freestyle &ndash; Create a Virtual Auditorium</title>
+</head>
+
+<body>
+    <h1 id="header">Freestyle &ndash; Create a Virtual Auditorium</h1>
+    <p>Suggested completion time: <strong>30 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>No specific lab sheet section.</p>
+    <p>No steps outlined. Please refer to <a class="general" href="https://docs.pexip.com/admin/creating_editing_lectures.htm"
+            title="Pexip Docs" target="_blank">https://docs.pexip.com/admin/creating_editing_lectures.htm</a>
+        to complete the task. The point of this exercise is that you will refer to our documentation.</p>
+    <p>Create your Virtual Auditorium!</p>
+    <p>Most of the time you when you create a Virtual Auditorium, you will do so to allow both hosts and guests, so you
+        will want to ensure that you have <strong>set a Host PIN</strong> and &ldquo;<strong>Allow
+            guests</strong>&rdquo; is set to &ldquo;<strong>Yes</strong>&rdquo;. &nbsp;</p>
+    <p>&nbsp;</p>
+    <section>
+        <h3 class="main">Testing</h3>
+
+        <p>Perhaps a lecture is a little lonely with just two users in a group, so invite some friends in the form of
+            <strong>PexEPs</strong> (Pexip EndPoints). PexEPs allow you to generate video calls to help you test an
+            Infinity
+            system.</p>
+        <p><strong>NOTE:</strong> When you get back to your day job in your organisation (i.e., outside of these labs),
+            you
+            can use our PexEPs to test your Infinity deployments (again, not for these labs). If you wanted to set this
+            up,
+            you should ensure that you deploy the PexEP VM on your <strong><u>internal corporate network</u></strong>,
+            it
+            should NOT be publicly accessible as it could be used by SPAMers. Check out the &ldquo;Additional
+            tools&rdquo;
+            resource in the course material for more information.</p>
+        <p>&nbsp;</p>
+        <p>Use the following to <u>place calls into your LAN system location <strong>from the RDP session
+                    only</strong></u>.
+            Don&rsquo;t be too greedy as your classmates will want to try as well. You can use the bookmarks in the
+            browsers
+            via the RDP session.</p>
+        <ol>
+            <li><a class="general" href="http://pexep-int-sd.pexip.net/" target="_blank"
+                    title="PexEP Internal SD">http://pexep-int-sd.pexip.net/</a> (SD)</li>
+            <li><a class="general" href="http://pexep-int-hd.pexip.net/" target="_blank"
+                    title="PexEP Internal HD">http://pexep-int-hd.pexip.net/</a> (HD)</li>
+        </ol>
+        <p>&nbsp;</p>
+        <p>For the &ldquo;Meeting room URI&rdquo;, add the URI alias you have just created for your VA.</p>
+        <p>For the &ldquo;Conferencing Node IP or hostname&rdquo;, add the host FQDN or IP address of your
+            <strong><u>internal</u></strong> node (see <strong>Section</strong> <strong>#4</strong>).</p>
+        <p>&nbsp;</p>
+        <p>Use any of the following to <u>place calls into your DMZ system location</u> (remember, there are bookmarks
+            in
+            the browsers via the RDP session):</p>
+        <ol>
+            <li>US: <a class="general" href="http://us-pexep.pex.me" target="_blank"
+                    title="PexEP External US">http://us-pexep.pex.me</a></li>
+            <li>Europe: <a class="general" href="http://no-pexep.pex.me" target="_blank"
+                    title="PexEP External EU">http://no-pexep.pex.me</a></li>
+            <li>Australia: <a class="general" href="http://au-pexep.pex.me" target="_blank"
+                    title="PexEP External AU">http://au-pexep.pex.me</a></li>
+        </ol>
+        <p><strong>NOTE:</strong> these are based on a VERY old code and can fail from time to time. If you see an error, please ask your trainer to reboot them.</p>
+        <p>For the &ldquo;Meeting room URI&rdquo;, add the URI alias you have just created for your VA.</p>
+        <p>For the &ldquo;Conferencing Node IP or hostname&rdquo;, add the host FQDN or IP address of your
+            <strong><u>edge</u></strong> node (see <strong>Section #5</strong>).</p>
+        <p>&nbsp;</p>
+        <p><strong>Warning:</strong> Don&rsquo;t Play too long, there is a lot more to get through yet.</p>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Screenshot 4: Demonstrate how to successfully configure Pexip Infinity Services</h3>
+
+        <p>When you have added multiple calls into a Virtual Auditorium, grab some screenshots of Live View to show this
+            in
+            operation. Join both as a host and guest to see the different user experiences, grabbing a screenshot as you
+            go.
+            Add them to the relevant document as evidence, for example:</p>
+        <p><strong>A screenshot showing a Virtual Auditorium service with lots of PexEPs joined:&nbsp;</strong></p>
+        <p>&nbsp;<img src="../../images/img1621814356.png" alt="image"></p>
+        <p><strong>A screenshot showing the graph view of the Virtual Auditorium, with all the PexEPs joined:</strong>
+        </p>
+        <p><img src="../../images/img162181435665.png" alt="image"></p>
+
+        <p><strong>A screenshot showing the user experience of the <u>Host</u> when in the Virtual Auditorium (notice
+                the
+                view of the host, in this case, uses to 1+7 layout, and they see the names of all participants in the
+                roster
+                list):</strong></p>
+        <p><img src="../../images/img1621814357.png" alt="image"></p>
+        <p><strong>A screenshot showing the user experience of the <u>Guest</u> when in the Virtual Auditorium:</strong></p>
+        <p><img src="../../images/img162181435796.png" alt="image"></p>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_2_Services_and_Interop_Description/Freestyle_-_Create_a_Virtual_Auditorium.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

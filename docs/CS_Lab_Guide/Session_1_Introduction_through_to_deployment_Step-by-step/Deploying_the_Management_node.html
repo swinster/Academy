@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Deploying the Management Node</title>
+</head>
+
+<body>
+<h1 id="header">Deploying the Management Node</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<p><img src="../../images/mgt_node.svg" alt="" /></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>We highly advise checking out the "<strong>More Info</strong>" button above, as simply following the step-by-step guide will not give you insight into the "why's" of what you are doing. You will see a button like this on most pages.</p>
+<p>Please note that we are directly interacting with a <strong>VMware ESXi host</strong> in these labs rather than via the <strong>VMware vCentre</strong> orchestration layer seen in the video. Most enterprises use vCentre to control many ESXi hosts, but this lab only contains a single ESXi host.</p>
+<p>Using <strong>section #</strong><strong>3</strong> and <strong>section #4.1</strong> of the lab sheet.</p>
+<p>&nbsp;</p>
+<hr>
+<section>
+    <h2 class="main">Setting the correct time in the hypervisor</h2>
+    <p>The following video relates explicitly to using VMware vCentre, but many concepts are similar in this lab when deploying directly to an ESXi host. </p>
+    <!-- copy and paste. Modify height and width if desired. -->
+    <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/VMware%20Installation%20of%20Pexip%20Infinity%20v2/media/0759cbf4-f572-4ddc-9eb1-5dda534ac6a1/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    <ol>
+        <li>Before you deploy the Management Node, it is a good idea to download the OVA file from our website.</li>
+        <li>Login to your ESXi host using the "<strong>ESXi Host Web</strong>" link in the left panel in your environment, or navigate to <a href="https://esxi.pexipacademy.local/" title="ESXi Host from the Jumpbox" target="_blank">https://esxi.pexipacademy.local/</a> from the Jumpbox (also see <strong>section #3</strong> in the lab sheet).</li>
+        <li>Click the <strong>Manage</strong> option in the navigator, then click on the <strong>System --&gt; Time and Date</strong> section. Even if the time is correct, setting NTP servers for the host is an excellent idea. Then, click the <strong>Edit settings</strong> button. Note: the time zone shown may differ from your time zone - UTC is always a good option for infrastructure.
+            <p><img src="../../images/ESXi_host_NTP.png" alt="Open the ESXi host's time configuration" title="Open the ESXi host's time configuration"/></p>
+        </li>
+        <li>Select “<strong>Use Network Time Protocol (enable NTP client)</strong>” and set the NTP server as <strong>dc1.pexipacademy.local</strong> (a DNS server has already been defined for the ESXi host allow the resolution this FQDN).<br>
+            <strong>NOTE:</strong> There is only one internal NTP server in this lab, but you should configure multiple servers in a real environment (see <strong>section #4.1</strong> in the lab sheet).<br>
+            Ensure the "NTP service startup policy" is set to "<strong>Start and stop with host</strong>", then click <strong>Save</strong>.
+            <p><img src="../../images/ESXi_host_edit_NTP.png" alt="Edit the ESXi host's NTP settings" title="Edit the ESXi host's NTP settings"/></p>
+        </li>
+        <li>Ensure that the NTP client service has started and if it hasn't, click <strong>Actions --&gt; NTP service --&gt; Start</strong>.
+            <p><img src="../../images/ESXi_host_NTP_start2.png" alt="Start the ESXi host's NTP client" title="Start the ESXi host's NTP client"/></p>
+        </li>
+        <li><strong><u>Recheck the NTP service to ensure it is running and that the time is correct</u></strong> (check the time against the Jumpbox or Domain Controler  time).
+            <p><img src="../../images/ESXi_host_NTP_running2.png" alt="Check the ESXi host's NTP client status and time" title="Check the ESXi host's NTP client status and time"/></p>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Deploying the Management Node to the ESXi host</h2>
+    <ol>
+        <li>Before deploying the Management Node, you need to download the latest General Availability (GA) released  "<strong>Generic Management Node OVA</strong>" file from our website. <br>
+            <br>
+            <strong>NOTE:</strong> For an ESXi host, you will need to have stored this file locally. For vCentre, it is possible to deploy directly from a URL. <br>
+            <br>
+            You can always find the latest files linked to our main Infinity platform download page at <a href="https://www.pexip.com/platform-downloads/infinity/current-release" title="Infinity platfrom downloads" target="_blank">https://www.pexip.com/platform-downloads/infinity/current-release</a>. In addition, you can find previous versions from <a href="https://dl.pexip.com/infinity/index.html" title="Repository of all Infinity node images" target="_blank">https://dl.pexip.com/infinity/index.html</a>. There are pre-defined bookmarks in the browsers on the Jumpbox. The file name will look something like "<span class="code">Pexip_Infinity_v26.2_generic_pxMgr_62420.ova</span>"<br>
+            <br>
+            <strong> NOTE:</strong> The upload to the ESXi host will be quicker if you download the file via the Jumpbox.</li>
+        <li>When logged in the ESXi host using the information provided in the lab sheet <strong>section #3</strong>.</li>
+        <li>Select <strong>Create/Register VM</strong>(you can also right (or option)
+            click on the host and select <strong>Create/Register VM</strong>).<br>
+            <p><img src="../../images/ESXi_host_create_vm.png" alt="Create a new VM on an ESXi host" title="Create a new VM on an ESXi host"/></p>
+            Or
+            <p><img src="../../images/ESXi_host_create_vm_right_click2.png" alt="Create a new VM on an ESXi host using a right click" title="Create a new VM on an ESXi host using a right click"/></p>
+        </li>
+        <li>Select <strong>Deploy a virtual machine from an OVF or OVA file</strong>, then click <strong>Next</strong>.</li>
+        <li>Give the  Management Node a name of "<span class="code">mgr.pexipacademy.local</span>" (see <strong>section #4.1</strong> in the lab sheet), then drag &amp; drop the OVA file (or select it) so that it is shown in the selection box, then click <strong>Next</strong>.<br>
+            <p><img src="../../images/EXi_host_upload_OVA.png" alt="Upload the OVA file to the ESXi host" title="Upload the OVA file to the ESXi host"/></p>
+        </li>
+        <li>Click <strong>Next</strong> in the <strong>Select Storage</strong> page.</li>
+        <li>Click the <strong>I agree</strong> button on the <strong>EULA page</strong> and click <strong>Next</strong>. <br>
+            <strong> NOTE: </strong>This shows up far neater when deploying the Management Node using vCentre.
+            <p><img src="../../images/ESXi_host_EULA.png" alt="Accept the EULA" title="Accept the EULA"/></p>
+        </li>
+        <li>For the <strong>Deployment options</strong>, you should ensure the <strong>Disk provisioning</strong> is set to <strong>Thick</strong> and the <strong>Network mapping</strong> to the VM Network <strong>LAN</strong> (see lab sheet <strong>section #4.1)</strong>, then click <strong>Next</strong>.<br>
+            <strong>NOTE:</strong> ALL nodes should be thick provisioned. <br>
+            <strong>NOTE:</strong> Different nodes may need their network interfaces assigned to different VM Networks (VLAN IDs)<br>
+            <p><img src="../../images/ESXi_host_deployment.png" alt="Deploy using thick provisioned disks and the correct VLAN ID" title="Deploy using thick provisioned disks and the correct VLAN ID"/></p>
+        </li>
+        <li>Review the summary and click <strong>Finish</strong>. When the node has deployed, is will power on automatically.<br>
+            <strong>NOTE:</strong> in vCentre, this dosn't happen automatically.<br>
+        </li>
+        <li>Click the <strong>Virtual Machines</strong> selector, then the Management Node VM.
+            <p><img src="../../images/ESXi_host_open_vm.png" alt="Open the Management Node VM" title="Open the Management Node VM"/></p>
+        </li>
+        <li>When the Management Node has booted, you should see a thumbnail image of the console screen. Click on the thumbnail image to open a console session to the Management Node using the ESXi host's GUI.
+            <p><img src="../../images/ESXi_host_vm_thumbnail.png" alt="View the Management Node console thumbnail" title="View the Management Node console thumbnail"/></p>
+            <p><img src="../../images/ESXi_host_console.png" alt="Open the Management Node cosole via the ESXi GUI" title="Open the Management Node cosole via the ESXi GUI"/></p>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Initial configuration of the Management Node</h2>
+    <p>Until now, the deployment of the Management Node is specific to the hypervisor you are using. All hypervisors have different requirements and instructions, be they OnPrem or cloud-based infrastructure. However, once the Management Node has booted, its initial and subsequent configuration is universal.</p>
+    <p>You might wish to rewatch this video from the installation module regarding the Management Node installation wizard. </p>
+    <!-- copy and paste. Modify height and width if desired. -->
+    <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/fe8fe07e-6c29-40cf-a492-fda0225301e3/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    <ol>
+        <li>Log in with username <strong>admin</strong> and then set and verify the password to <strong>Pexip123!</strong> (this known consistent password allows trainers to help).</li>
+        <li>Re-enter the password once more to start the <strong>Management Node Installation wizard</strong>, then follow the
+            steps via the console. If you make a mistake, press <strong>Ctrl+C </strong>to restart the wizard.<br>
+            <p><strong>NOTE:</strong> in v27, a network administrator can configure DHCP to offer default values for hostname, domain name, DNS and NTP servers.</p>
+            <ol>
+                <li>The IP address for the Management Node is <strong>10.200.180.10</strong> (see lab data sheet <strong>section
+                    #4.1</strong>).</li>
+                <li>The network mask is <strong>255.255.255.0</strong> (you can just press <strong>Enter</strong>).</li>
+                <li>The gateway IP address is <strong>10.200.180.1</strong>.</li>
+                <li>The <strong>hostname</strong> is the first part of the Management Node FQDN, like <span class="code"><strong class="highlight">mgr</strong>.pexipacademy.local</span>.</li>
+                <li>The <strong>domain
+                    suffix</strong> is the last part, like <span class="code">mgr.<strong class="highlight">pexipacademy.local</strong></span>.</li>
+                <li>The <strong>DNS</strong> server is <strong>10.200.180.2</strong>.<br>
+                    <strong>NOTE:</strong> In this lab, there is only one DNS server; however, in an actual deployment, you should add multiple DNS servers for redundancy.<br>
+                    <strong>NOTE:</strong> Up to v26, multiple DNS servers are added using a space as a delimiter. In v27, you are now able to use commas.<br>
+                </li>
+                <li>The <strong>NTP</strong> server is <strong>dc1.pexipacademy.local</strong>.&nbsp;<br>
+                    <strong>NOTE:</strong> In this lab, there is only one NTP server; however, in an actual deployment, you should add multiple NTP servers for redundancy.<br>
+                    <strong>NOTE:</strong> Up to v26, multiple NTP servers are added using a space as a delimiter. In v27, you are now able to use commas.<br>
+                </li>
+                <li>Set the web UI credentials to <strong>admin /</strong> <strong>Pexip123! – <u>Please keep the password as this so we can help if required</u>.<br>
+                    </strong><strong>NOTE:</strong> in an actual  deployment the OS password and web UI password will likely differ.<br>
+                    <strong style="color: red">REALLY IMPORTANT NOTE: The SSH Password is the “Key to your Kingdom” – if you lose or forget this, you may have to manually redeploy the entire system in the future</strong>.</li>
+                <li><strong>Disable</strong> (by typing "<strong>n</strong>") <strong>incident reporting</strong> and <strong>usage statistics</strong>. <br>
+                    <strong>NOTE:</strong> We highly advise that you enable both these settings for actual deployments. <br>
+                    <strong>NOTE: </strong>For additional help with incident reporting, when the Management Node is up, you should set up the <strong>Contact email address</strong> within the <strong>Global Settings</strong> so that Pexip can contact you for further information (also see below).<br>
+                    <br>
+                    <p>When the installation wizard is complete, the Management Node will restart, and you will be able to reach it using your browser via the assigned URL/IP. The first time the Management Node powers up, it can take about 5 minutes before the web service begins responding and displaying the web interface. If you connect to the node using the Jumpbox, you will have to accept the security warning shown in the browser as the Management Node only has a self-signed certificate applied after creation. We will fix that in a later lab exercise.</p>
+                    <p><strong>NOTE:</strong> Using the link in the left panel masks this certificate problem as the connection routes via a reverse proxy. We still need to add a trusted TLS certificate to the Management Node.</p>
+                    <p><strong>NOTE:</strong> if the Management Node goes into a boot loop, likely, it can’t reach a specific NTP server, so it will be unable to set the correct time. If this happens, check the network (VLAN) assigned to the vNIC and that all the details entered in the installation wizard are correct.</p>
+                    <p>Once the Management Node is up, log in and double-check the <strong>Reporting</strong> section in the <strong>Global settings</strong>. You should have disabled Incident Reporting for this lab from the steps above, but this may have been overlooked.</p>
+                </li>
+                <li>Navigate to <strong>Platform Settings --&gt; Global Settings --&gt; Reporting</strong> and ensure that the <strong>Enable incident reporting</strong> option is <strong>unchecked</strong>. <br>
+                    <span class="red"><strong >IMPORTANT NOTE:</strong></span> in your own (or your customers) Infinity deployments, you would likely want to have this option <strong>enabled</strong> as it allows Pexip to provide proactive support for your deployment.</li>
+                <li>Fill in the <strong>Contact email address</strong> field, which should point to a distribution email list, in this case: <br>
+                    "Contact email address" = <strong>traininglab@pexip.com</strong></li>
+            </ol>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Further configuration of the system settings and Management Node details</h2>
+    <p>At this point, the initial configuration of the Management Node is complete. However, you may wish to re-watch the following videos that outline other System Settings (such as adding further DNS and NTP servers) and additional configurations you may want to apply to a Management Node.</p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/700b25d5-903e-457f-b5c8-617687a62655/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <p><!-- copy and paste. Modify height and width if desired. -->
+        <iframe class="embeddedObject shadow resizable" name="embedded_content" scrolling="no" frameborder="0" type="text/html" 
+        style="overflow:hidden;" src="https://www.screencast.com/users/Pexip-Academy/folders/General%20Installation%20of%20Pexip%20v2/media/65b71820-99fb-4fcd-85fe-3889fc532dc0/embed" height="405" width="720" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Deploying_the_Management_node.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

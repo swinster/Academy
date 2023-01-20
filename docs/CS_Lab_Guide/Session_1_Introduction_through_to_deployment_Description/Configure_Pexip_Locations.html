@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Configure Pexip System Locations</title>
+</head>
+
+<body>
+<h1 id="header">Configure Pexip System Locations</h1>
+<p>Use <strong>section #4.1 </strong>and<strong> section #5 </strong>of the lab sheet.</p>
+<p>A system location is a way to group Conferencing Nodes (the workers within an Infinity deployment) into different <strong>logical containers</strong>, such as by data centres or (as you will do in this lab) network segments like LAN and DMZ. Each system location has a specific configuration for preferred system services (such as DNS, NTP etc.) or individual call control services. Conferencing Nodes are deployed into a system location and <strong>inherit</strong> settings from that location.</p>
+<p>A common area of confusion is understanding how you might set <strong>DSCP (QoS)</strong> and <strong>MTU</strong> settings. You define DSCP and MTU settings at the system location level, which applies to all nodes within that location. Therefore, you do not specify them per node.</p>
+<p>Another common area of confusion is how to define <em>where</em> transcoding should take place. We have noted in previous modules that Infinity is a <strong>fully transcoding</strong> environment today. Therefore, all calls that route into an Infinity deployment are transcoded, and we can define a specific location, or sequence of locations, to be used for transcoding. The default setting for a new location is to use resources deployed within the exact same location. Still, equally, we could direct (or <strong>overflow</strong>) this responsibility to other location(s), allowing Infinity to scale and provide additional resilience.</p>
+<p>As described previously, you will install two internal and one external, Infinity Conferencing Nodes into separate system locations. Of course, it's possible to deploy an Infinity node and create a system location (and indeed, add further services to that location) all in one go; however, when deploying Infinity for the first time, it's helpful to complete these steps in sequence. </p>
+<p>Initially, we will set the transcoding location for both the LAN and DMZ to be "this location". Later, we will modify the DMZ location to use the LAN for its transcoding resource.</p>
+<ul>
+    <li>The LAN system location transcoding location will be set to “<strong>This Location</strong>”. The Conferencing Nodes deployed in this system location will be set up using the “<strong>Transcoding Role</strong>”. See lab sheet <strong>section #4.1</strong>.</li>
+    <li>For the DMZ system location (see <strong>section #5</strong>), it too will be configured with the transcoding location as “<strong>This Location</strong>". We will initially configure the Edge node
+        in the <u>transcoding role</u>. Later, we will manually change the role of this node and the transcoding
+        resource for the external system location.</li>
+</ul>
+<p> <strong>NOTE:</strong> You should not consider deploying a node in the proxying edge role in this way as "best practice". Instead, we will use it to help you understand what is happening and the steps required to change the configuration and provide a few helpful learning points:</p>
+<ol>
+    <li><strong> Infinity is a fully transcoding solution</strong> (as of today). There MUST be a transcoding system location containing at least one transcoding node, yet proxying system locations are optional.</li>
+    <li>An external system location setup with transcoding nodes is still a valid configuration option. Some customers  wish to deploy  Infinity in this way. Of course, it would mean more compute resources for the edge nodes, as transcoding is more compute-intensive. Other deployment types (such as geographically dispersed service providers) may only have transcoding locations.</li>
+    <li>We can see that the Conferencing Node software used for the transcoding role and the proxying edge role is identical. Therefore, we will flip a switch to define how the node behaves.</li>
+    <li> It is simple to switch a Conferencing Node role type between the transcoding and the proxying edge roles, and redefine system location transcoding resources.</li>
+    <li>You should not mix and match Conferencing Nodes of different role types in a single system location.</li>
+</ol>
+<p>Once you have created the system locations, you will see some red warning text in the transcoding resources column stating, “<span class="red"><strong>No transcoding resource available</strong></span>”. Adding Conferencing Nodes in the transcoding role into these locations will cause these warnings to disappear. In addition, it provides valuable feedback if you have misconfigured the nodes and locations.</p>
+<p>Please refer to <a
+            href="https://docs.pexip.com/admin/system_locations.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/system_locations.htm</a>. </p>
+<p><strong>NOTE:</strong> As you go through the deployment guide and use the Pexip GUI, note the green plus icons next to some configuration items (see the image below as an example). These allow you to add additional configurations without stopping the current operation. So, for example, when you deploy nodes in the next task, you could have added a system location during that process, and Infinity will pop up the additional configuration options. A video at the end of the lab explains this process.&nbsp;</p>
+<p><img src="../../images/img1622032547.png" alt="image"></p>
+</body>
+</html>

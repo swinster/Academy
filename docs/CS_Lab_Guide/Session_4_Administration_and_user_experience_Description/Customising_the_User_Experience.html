@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Customising the User Experience</title>
+</head>
+
+<body>
+<h1 id="header">Customising the User Experience</h1>
+<p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+<p>No specific lab sheet section.</p>
+<section>
+    <p>In Pexip Infinity, you can apply customisations to most  user-facing components so that you can deliver something unique to you and your  users and customers. For example, you can fully customise the Connect Client  interface (including the web app, desktop and mobile), in addition to the  in-call experience. Brands and Themes are different concepts that apply to the  client user interface and the in-call experience.</p>
+    <p>As of v17, we introduced a new user experience (known as the  NextGen Connect client), and the older version is now known as the Legacy  client. In addition, we have created external web portal services to create  branding templates for free. The NextGen portal can customise the entire User  Experience (both client interface and in-call experience).</p>
+    <p>Both portals can be accessed via the landing page at <a class="general" href="https://brandingportal.pexip.com/" target="_blank"
+            title="Pexip Infinity Branding Portal">https://brandingportal.pexip.com/</a>/, and each requires a separate login, so you  will need to create an account for both. However, we will concentrate on the  NextGen branding in this exercise only.</p>
+    <p>When creating custom branding, the web app experience is  defined by a web template that you upload to the Management Node (or optionally  to a reverse proxy). If you so wish, it can be further customised manually.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<h2 class="main">NextGen Portal</h2>
+<p>Step-by-step page &ndash; None (you are on your own now 😊)</p>
+<p>The  portal experience blurs the lines between client user interface customisation  (known as &quot;branding&quot;) and the in-call experiences (known as &quot;theming&quot;). However, as these are applied to different elements of Pexip Infinity in different ways, we have continued to document these areas separately. See <a href="https://docs.pexip.com/admin/customize_clients.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/customize_clients.htm</a> for information on customising the client experience, and <a class="general" href="https://docs.pexip.com/admin/themes.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/themes.htm</a> for information on customising the in-call experience.</p>
+<p>Be aware of design choices for backgrounds where users will see messages (such as VR's and the &quot;waiting for host&quot; prompt). Please  do not make them busy or distracting. Think about accessibility (i.e. colour  clashes, colour blindness etc., see <a class="general" href="https://docs.pexip.com/admin/accessibility.htm"
+            target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/accessibility.htm</a>), and logo watermarks  are often better as an all-white,  40% transparent  image. Some excellent royalty-free background  images can be found at <a class="general" href="https://unsplash.com/" target="_blank" title="Unspalsh">https://unsplash.com/</a> </p>
+<p>There are four main edit sections (subject to change). Go through each section and create a NexGen user
+    experience.</p>
+<ul>
+    <li><strong>App Edits:</strong> This allows you to change the look and feel of the Connect app and some in-call experience screens, plus adding the watermarking logo.</li>
+    <li><strong>Customisation:</strong> Here, you can change how the Connect app functions, such as the bandwidth options that are exposed to the user.</li>
+    <li><strong>Splash Screens:</strong> You  can adjust the main in-call experience themes in this section.</li>
+    <li><strong>Languages:</strong> Here, you can set up translation strings for each of the static text elements
+        within the clients. These user-defined languages can then be assigned to the Connect client via the
+        Customisation menu.</li>
+</ul>
+<p>To create a branding/theme package, you can select one or several of your edits (App Edits, Customization and/or
+    Splash Screens), which will then create one or two zip files:</p>
+<ul>
+    <li>The <strong>branding.zip</strong> is a combination of the <strong>App Edits</strong>, <strong>Customisation</strong> and <strong>Languages</strong> sections which is uploaded as the web app customisation (<strong>Service Configuration </strong><strong>&agrave; Web App Customization</strong>).</li>
+    <li>And <strong>ivr.zip</strong>, mainly containing the <strong>Splash Screens</strong> edits and  incorporates the watermark logo from the <strong>App Edits</strong> section, uploaded as a  theme (<strong>Service Configuration --&gt; Themes</strong>) and assigned to individuals  Infinity services, or globally across the deployment.</li>
+</ul>
+<p>Test out the new client interface and Infinity services.</p>
+<p><strong>NOTE:</strong> you can also brand the desktop client, although this requires more work. Rember, though, you should always consult our documentation here - <a href="https://docs.pexip.com/admin/customize_clients.htm#apply" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/customize_clients.htm#apply</a>. From  Infinity v25, you will need to ensure that the branding package you create is digitally  signed, and the client must upload a trusted (public) key before branding can  be applied. Unfortunately, version 1.8 on the Connect client cannot apply branding  to mobile clients due to additional security restrictions.</p>
+</body>
+</html>

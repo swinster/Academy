@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Deploying the Management node</title>
+</head>
+
+<body>
+    <h1 id="header">Deploying the Management node</h1>
+    <p>Suggested completion time: <strong>30 minutes</strong></p>
+    <p><img src="../../images/mgt_node.svg" alt="" /></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <p>Using <strong>section #</strong><strong>3</strong> and <strong>section #4.1</strong> of the lab sheet </p>
+    <section>
+        <h3 class="main">Setting the correct time.</h3>
+
+        <ol>
+            <li>In your vCentre, open the Data Center for your class (<strong>SessionA</strong> or
+                <strong>SessionB</strong>)</li>
+            <li>Select the ESXi host (a blade) that is provided for your group (see <strong>section #3</strong> in the
+                lab
+                sheet).</li>
+            <li>Click the <strong>Configure</strong> tab for the host, then click on the
+                <strong>System&nbsp;</strong><strong>--&gt; Time Configuration</strong> section &ndash; does the time
+                need
+                correction? If so, then click the <strong>Edit</strong> button. Note the time via the RPD session will
+                be in
+                CET/CEST.</li>
+            <li>Select &ldquo;<strong>Use Network Time Protocol</strong>&rdquo;, and set the NTP servers as outlined in
+                the
+                lab sheet.</li>
+            <li>Ensure the &ldquo;<strong>Start NTP Service</strong>&rdquo; tick box is checked.</li>
+            <li>Set the NTP Service to &ldquo;<strong>Start and Stop with Host</strong>&rdquo;, then click
+                <strong>OK</strong>.</li>
+            <li><strong><u>Recheck the time and make sure it is correct</u></strong> (check the RDP server time).<br>
+                <br>
+            </li>
+        </ol>
+        <hr>
+        <p>&nbsp;</p>
+    </section>
+    <section>
+        <h3 class="main">Deployment and initial configuration of the Management Node</h3>
+
+        <ol>
+            <li>When logged in to vCenter, find your ESXi host using the information provided in the lab sheet
+                <strong>section #3</strong>.</li>
+            <li>Select <strong>Actions</strong>, then <strong>Deploy OVF Template</strong> (you can also right (or
+                option)
+                click on the host and select <strong>Deploy OVF template</strong>). <strong>NOTE</strong>: even though
+                vCentre says &ldquo;OVF template&rdquo;, you will be deploying an <strong>OVA</strong> file.<br>
+                <img src="../../images/img162172466472.png" alt="image">
+                <br>
+                Or<br>
+                <img src="../../images/img162172466344.png" alt="image"></li>
+            <li>To deploy the template:</li>
+            <ol>
+                <li>You can <u>either</u> deploy directly from a web server (the preferred option) <u>or</u> a local
+                    file.<br>
+                    <strong>NOTE:</strong> In this lab, you <u>should initially deploy a previous version of
+                        Infinity</u>, which will allow you to see the upgrade process in session 4. <strong><u>Please
+                            ask your trainer what version you should deploy.</u></strong>
+                    <ol>
+                        <li><strong>Preferred option:</strong> To deploy from a web server, use a <u>previous</u> stable
+                            version of a Generic Management Node (from <a
+                                href="https://dl.pexip.com/infinity/index.html"
+                                target="_blank">https://dl.pexip.com/infinity/index.html</a>).
+                            There is a pre-defined bookmark in the browsers via the RDP session.
+                            <br>
+                            <br>
+                            Find the direct link to the OVA file, then <strong>right (or option) click</strong> the link, and
+                            copy it (it will look something like <a
+                                href="https://dl.pexip.com/infinity/v26/Pexip_Infinity_v26_generic_pxMgr_62340.ova"
+                                target="_blank">https://dl.pexip.com/infinity/v26/Pexip_Infinity_v26_generic_pxMgr_62340.ova</a>.
+                            <br>
+                            <br>
+                            Select &ldquo;<strong>URL</strong>&rdquo; in the vCentre dialogue, then paste in the URL
+                            link to the correct
+                            file, then click <strong>Next</strong>.<br><img src="../../images/img1621724663.png"
+                                alt="image"><strong><br>
+                                NOTE:</strong> In
+                            reality, you would likely download and install the latest stable version, which is always
+                            linked to the main
+                            Pexip platform download page at <a
+                                href="https://www.pexip.com/platform-downloads/infinity/current-release"
+                                target="_blank">https://www.pexip.com/platform-downloads/infinity/current-release</a>.<br><br>
+
+                        </li>
+                        <li><strong>Secondary option:</strong> Select &ldquo;<strong>Local file</strong>&rdquo; and
+                            browse to the
+                            &ldquo;<strong>E:\Pexip\Group Folders\&lt;Your Group&gt;\Pexip
+                                Software\Deploy</strong>&rdquo; folder.
+                            Select the Management Node OVA and click <strong>Next</strong>.<br><img
+                                src="../../images/img162172466334.png" alt="image"></li>
+                    </ol>
+				</li>
+                <li>Give the virtual machine a name that matches the FQDN of the node. You can find this on the lab
+                    sheet in
+                    <strong>section #4.1</strong>, and should combine it as &lsquo;hostname.domain_suffix&rsquo;. Select
+                    the
+                    Data Centre you are using for your lab (this will be either &ldquo;<strong>Session A</strong>&rdquo;
+                    or
+                    &ldquo;<strong>Session B</strong>&rdquo;), then click <strong>Next</strong>.</li>
+                <li>Select your host as the compute resource.</li>
+                <li>Review and continue.</li>
+                <li>Accept the license agreement.</li>
+                <li>Select the correct <strong>datastore</strong> (see Lab sheet <strong>section #3</strong>), Disk
+                    provisioning: <strong>Thick Lazy Zeroed. (Note:&nbsp;</strong>ALL nodes should be thick
+                    provisioned).</li>
+                <li>Select the <span class="highlight">correct VM network</span> (Lab sheet <strong>section
+                        #4.1</strong>).
+                    You do NOT need to change
+                    anything
+                    in the &ldquo;IP allocation settings&rdquo; &ndash; you will set the network details of the node in
+                    the next
+                    step.</li>
+                <li>Review the summary and click Finish.</li>
+                <li>When the node has deployed, either click the green play icon next to the VM name, or <strong>right
+                        (option)
+                        click</strong> on it, and select <strong>Power&nbsp;</strong><strong>--&gt; Power
+                        On</strong>.<br>
+                    <img src="../../images/img162172466456.png" alt="image"><br>
+                    Or <br>
+                    <img src="../../images/img1621724664.png" alt="image"></li>
+            </ol>
+            <li>When the Management Node is deployed onto the hypervisor and <u>started</u>, click the link
+                <strong>Launch
+                    Web Console</strong> in the summary tab below the thumbnail preview.&nbsp;<br>
+                <img src="../../images/img162172466451.png" alt="image"></li>
+            <ol>
+                <li>Log in with username <strong>admin</strong> and then set and verify the password to
+                    <strong>Pexip123&nbsp;</strong>(this known consistent password allows trainers to help).</li>
+                <li>Re-enter the password once more to start the Management Node Installation wizard, then follow the
+                    steps via
+                    the console. If you make a mistake, press <strong>Ctrl+C </strong>to restart the wizard.
+                    <ol>
+                        <li>You will find the IP details for your Management Node on the lab data sheet <strong>section
+                                #4.1</strong>.</li>
+                        <li>The <strong>hostname</strong> is the first part of the management node FQDN, like <span class="code"><strong class="highlight">mgr</strong>.&lt;your_group&gt;.pexip.net</span>.</li>
+                        <li>The <strong>domain
+                        suffix</strong> is the last part, like&nbsp; <span class="code">mgr.<strong class="highlight">&lt;your_group&gt;.pexip.net</strong></span>.</li>
+<li>Set the web UI credentials to <strong>admin /</strong> <strong>Pexip123 &ndash; <u>Please
+                                    keep the
+                                    password as this so we can help if
+                                    required</u>.<br>&nbsp;</strong>(<strong>NOTE:</strong>
+                        in a real deployment the OS password and web UI password will likely differ, <strong
+                                style="color: red">REALLY
+                                IMPORTANT NOTE: The SSH Password is the &ldquo;Key to your Kingdom&rdquo; &ndash; if you
+                                lose or
+                                forget this, you may have to manually redeploy the entire system in the
+                                future)</strong>.</li>
+                        <li>Disable incident reporting and usage statistics (<strong>NOTE:</strong> this will likely
+                            differ in
+                            the real world).<br>
+                            <br>
+                        </li>
+                    </ol>
+                </li>
+            </ol>
+            <li>When the installation wizard is complete, the Management Node will restart, and you will be able to
+                reach it
+                using your browser via the assigned URL/IP. The first time the Management Node powers up it can take
+                about 5
+                minutes before the HTTPS service begins responding and displaying the web interface. You will have to
+                accept
+                the security warning shown in the browser as the management node only has a self-signed certificate
+                applied
+                after creation. <strong>NOTE:</strong> if the management node goes into a boot loop, likely, it
+                can’t
+                reach a specific NTP server so will be unable to set a correct time. If this happens, check the network
+                that
+                has been assigned to the vNIC, and that all the details that you have entered into the installation
+                wizard
+                are correct.</li>
+            <li>Log into the Management node and double check the "<strong>Reporting</strong>" settings:</li>
+            <ol>
+                <li>You should have disabled "Incident Reporting" <u>for this lab</u> from the steps above but this may have been overlooked. <br>
+                    Navigate to <strong>Platform Settings --&gt; Global Settings --&gt; Reporting</strong> and ensure that the "Enable incident reporting" option is <strong>unchecked</strong>.<br>
+                    <span class="red"><strong >IMPORTANT NOTE:</strong></span> in your own (or your customers) Infinity deployments, you would likely want to have this option <strong>enabled</strong> as it allows Pexip to provide proactive support for your deployment.</li>
+                <li>You should also fill in the "Contact email address" field, which should point to a distribution email list: <br>
+                "Contact email address" = <strong>traininglab@pexip.com</strong></li>   
+            </ol>
+        </ol>
+    </section>
+    
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Deploying_the_Management_node.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>

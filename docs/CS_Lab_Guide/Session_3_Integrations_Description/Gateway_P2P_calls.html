@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Gateway P2P calls</title>
+</head>
+
+<body>
+<h1 id="header">Gateway Point-to-point (P2P)  calls</h1>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p>In the previous lab, you  registered endpoints to your Infinity deployment, and you were able to dial  directly into the services you had created, such as VMRs, a VA, a VR and the Test  Call service. However, even though you could see other devices show up in the  Infinity Connect client phone book as you typed an alias to dial, calls between  registered devices could not be placed. This problem was due to missing Routing  Rules.</p>
+    <p>Pexip Infinity's distributed architecture  does not behave like a traditional call control device, such as Cisco's  Expressway, VCS, or Poly's DMA. For example, there is no &quot;local zone&quot;  concept to which endpoints will register. Infinity deployments are distributed  systems by their very nature, so allowing any endpoint registered anywhere to  call any other endpoint is not a good practice. Therefore, it is the job of the  Infinity administrator to configure Routing Rules to allow registered (or  unregistered) endpoints to place a call to another device. </p>
+    <p>You need to configure <strong>Routing Rules</strong> to enable registered devices to call each other, and both call and be called by,  external systems. The services created from these Routing Rules are known as <strong>Gateway</strong> calls.</p>
+    <ol>
+        <li>Configure a <strong>Call Routing Rule</strong> so it is possible to dial <strong><u>from</u></strong> internal and external systems <strong><u>to</u></strong> registered clients <span class="code">@&lt;Pexip Infinity domain&gt;</span>.
+            <p>The key here is to ensure your  RegEx rule matches your domain and that the call target is directed towards  &quot;Registered devices only&quot;. In addition, you probably want to ensure that both  &quot;inbound&quot; and &quot;outbound&quot; calls are matched so that you can call a registered  device directly from a VMR.</p>
+        </li>
+        <li>Configure a <strong>Call Routing Rule</strong> so you can dial <strong><u>from</u></strong> registered devices (and VMRs) <strong><u>to</u></strong> any public IP as H.323 &ndash; ideally, you can test with an available hardware endpoint (<strong>Note:</strong> you can get extra credit if you can explain how the IP match RegEx works!).
+            <p>This rule is similar to the above,  although the RegEx match needs to capture a dialled IP address. Again, there  are several ways to do this, so check the RegEx examples to cut&rsquo;n&rsquo;paste.</p>
+        </li>
+        <li>Configure a <strong>Call Routing Rule</strong> so you can dial <strong><u>from</u></strong> registered devices (and VMRs) <strong><u>to</u></strong> any external system via the DMZ (<span class="code">something@domain</span>) as SIP &ndash; ideally, you can test with an available hardware endpoint.
+            <p>It is essential to ensure that you do not cause  a loop here. Ignore <em>your</em> domain (you can use a <a href="https://docs.pexip.com/admin/regex_reference.htm?Highlight=regex#position" target="_blank" title="Infintiy Technical Docs">negative lookahead RegEx example</a>) and that the inbound call is matched only from registered devices. Often, these are some of the last rules to add to a system.</p>
+        </li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Also refer to <a
+            href="https://docs.pexip.com/admin/configuring_gateway_rules.htm" target="_blank" title="Infintiy Technical Docs">https://docs.pexip.com/admin/configuring_gateway_rules.htm</a>, <a class="general" href="https://docs.pexip.com/admin/about_gateways.htm" target="_blank" title="Infintiy Technical Docs">https://docs.pexip.com/admin/about_gateways.htm</a> and <a href="https://docs.pexip.com/admin/regex_reference.htm" target="_blank" title="Infintiy Technical Docs">https://docs.pexip.com/admin/regex_reference.htm</a>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Infinity Connect Client Registration and Gateway P2P calls</title>
+</head>
+
+<body>
+    <h1 id="header">Infinity Connect Client Registration and Gateway P2P calls</h1>
+    <p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+    <p>Routing rules are one of the most flexible and complicated configuration pages in Pexip Infinity, so let&rsquo;s
+        practice and at the same time download, install and register the Pexip <strong><u>Connect client for
+                Infinity</u></strong>. This client should be installed on YOUR computer, <u>not</u> the RDP server. In
+        addition, the Infinity Connect client is <u>not</u> the same thing as the Pexip My Meeting Video client used by
+        the Pexip Service. We are working on a replacement app that can be used by both Infinity and the Service, so
+        watch this space.</p>
+    <p>We need routing rules to be added to enable registered devices to call each other, and both call and be called
+        by, external systems. These are known as gateway calls.</p>
+    <p>Please refer to <a
+            href="https://docs.pexip.com/admin/connect_installing.htm"  target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/connect_installing.htm</a>.
+    </p>
+    <ol>
+        <li>Setup a <strong>Device Alias</strong> (this is the identifier used to dial the device &ndash; usually it
+            will look like a URI), and <strong>register</strong> a Pexip Connect client to your
+            deployment.
+			<p>For registering to a Pexip Conference or Proxy Node, you must first create a Device
+            Alias. Refer to <a
+                href="https://docs.pexip.com/admin/registering_devices.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/registering_devices.htm</a>
+            and <a
+                href="https://docs.pexip.com/end_user/guide_for_admins/about_client_settings.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/end_user/guide_for_admins/about_client_settings.htm</a>
+			</p>
+        </li>
+        <li>Configure a <strong>Call Routing Rule</strong> so it is possible to dial <strong><u>from</u></strong>
+            internal and external systems <strong><u>to</u></strong> registered clients <span class="code">@&lt;Pexip Infinity
+            domain&gt;</span>.
+			<p>The key here is to ensure your RegEx rule matches your domain, and that the
+            call target is directed towards &ldquo;Registered devices only&rdquo;. You probably want to ensure that both
+            &ldquo;inbound&rdquo; and &ldquo;outbound&rdquo; calls are matched, so you can call a registered device
+				directly from a VMR.</p>
+	  </li>
+        <li>Configure a <strong>Call Routing Rule</strong> so you can dial <strong><u>from</u></strong> registered
+            devices (and VMRs) <strong><u>to</u></strong> any public IP as H.323 &ndash; ideally, you can test with an
+            available hardware endpoint (<strong>Note:</strong> you can get extra credit if you can explain how the IP
+            match RegEx works!).
+			<p>This is similar to the above, although the RegEx match needs to
+            capture a dialled IP address. There are several ways to do this, so check the RegEx examples to
+            cut&rsquo;n&rsquo;paste.
+			</p>
+	  </li>
+        <li>Configure a <strong>Call Routing Rule</strong> so you can dial <strong><u>from</u></strong> registered
+            devices (and VMRs) <strong><u>to</u></strong> any external system via the DMZ (<span class="code">something@domain</span>) as SIP
+            &ndash; ideally, you can test with an available hardware endpoint.
+			<p>Here, it is important to
+            ensure that you do not cause a loop. Ignore your domain (you can use a <a
+                href="https://docs.pexip.com/admin/regex_reference.htm?Highlight=regex#position" target="_blank" title="Pexip Docs">negative lookahead
+                RegEx example</a>) and that the inbound call is matched only from registered devices. Often, these are
+		  one of the last rules to add to a system.</p>
+	  </li>
+    </ol>
+    <p>&nbsp;</p>
+    <p>Also refer to <a
+            href="https://docs.pexip.com/admin/configuring_gateway_rules.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/configuring_gateway_rules.htm</a>,
+        <a class="general" href="https://docs.pexip.com/admin/about_gateways.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/about_gateways.htm</a>
+        and <a
+            href="https://docs.pexip.com/admin/regex_reference.htm" target="_blank" title="Pexip Docs">https://docs.pexip.com/admin/regex_reference.htm</a>.
+    </p>
+</body>
+
+</html>

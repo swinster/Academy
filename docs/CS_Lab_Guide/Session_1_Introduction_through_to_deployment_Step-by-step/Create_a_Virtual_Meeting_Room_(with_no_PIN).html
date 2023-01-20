@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Create a Virtual Meeting Room (with no PIN)</title>
+</head>
+
+<body>
+<h1 id="header">Create a Virtual Meeting Room (with no PIN)</h1>
+<p>Suggested completion time: <strong>15 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <ol>
+        <li>Navigate to <strong>Sevices --&gt; Virtual Meeting Room</strong>, then click <strong>Add VMR</strong>. </li>
+        <li>Use the <strong>name</strong> "<strong>General VMR</strong>" and set a <strong>description</strong> of your choosing. The name and description are visible if a Skype client adds the VMR to the buddy list/roster. Construct your VMR name and description with this potential exposure in mind.</li>
+        <li>Leave <strong>host pin</strong> blank, <strong>allow guests</strong> as <strong>no</strong>, and <strong>guest pin</strong> blank.</li>
+        <li>Leave all other fields as default.</li>
+        <li>On the alias section, create one alias called <span class="code">vmr@<strong>&lt;Pexip Infinity domain&gt;</strong></span> (see lab sheet <strong>section #4.2</strong> to figure out your domain). Create another alias using only <span class="code">vmr</span> and no domain.<br>
+            <strong>NOTE:</strong> This lab uses different internal and external domain namespace, but you only need to use the <em>external</em> <span class="code">Pexip Infinity domain</span> for aliases applied to the  services.<br>
+        </li>
+        <li>Click <strong>Save</strong>.</li>
+        <li>Wait <strong>1 minute</strong> for the changes to be replicated to all the nodes.<br>
+            <br>
+        </li>
+    </ol>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check your working Pexip Infinity deployment</h2>
+    <p>Place different calls into the VMR service. Ensure that you make at least one call into the service through the LAN location (using the Jumpbox), and place another call into the same service through the DMZ location simultaneously (using your machine or mobile).</p>
+    <ul>
+        <li>You can connect to an internal node using a browser bookmark <strong>within</strong> the Jumpbox session (you will have to accept the security warning for now), e.g. <span class="code">https://conf02.pexipacademy.local</span>.</li>
+        <li>Connect to the DMZ node from <span class="align-content-start"><em><u>your</u></em></span> laptop or mobile device (<strong>not</strong> from the Jumpbox), e.g. <span class="code">https://edge.<strong>&lt;Pexip Infinity_domain&gt;</strong></span>.</li>
+    </ul>
+    <p>It isn't straightforward to connect multiple devices to an Infinity service using internal and external locations. In the next lab, we will make this easier for you by giving you some PexEPs (Pexip Endpoints) that you can use to place calls into the different locations.</p>
+    <p>Check your system against the screenshots of the calls in operation at the same time. Show Live View from the Management Node, and drill down into the VMR call service. It’s also good to show a screenshot of the actual call from the end user’s point of view, for example:<br>
+        <br>
+    </p>
+    <h3 class="main">Screenshot of the main Live View showing a VMR service, with users connected to the DMZ and LAN
+        nodes:</h3>
+    <p>This image shows a similar Live View to the Test Call service you saw previously. However, note that the circle's colour representing the service instances are different (light blue for a VMR service, light green for the Test Call service). Also, note that as you hover over the VMR service, you see a line connecting the nodes in the different locations. This line represents the backplane over which media is sent between nodes.</p>
+    <p>&nbsp;<img src="../../images/Liveview_VMR.png" alt="Live View showing two participants in a VMR and the edge node in the Transcoding Role" title="Live View showing two participants in a VMR and the edge node in the Transcoding Role"></p>
+    <h3 class="main">Screenshot of the conference graph of the VMR service showing individual
+        participants connected in different locations (notice how a
+        backplane connects the locations where the same VMR instance is in operation):</h3>
+    <p>&nbsp;Drilling down in the VMR service instance, you will see a clearer indication of what is going on. The Trainer is connected to an internal node in the LAN location, and the Learner is connected to the edge node in the DMZ location. </p>
+    <p>Both nodes are in the transcoding role, so media is terminated and decoded when coming from the endpoint, then mixed and encoded when sent to the endpoint. Both endpoints connect using an alias associated with the VMR service, so Infinity automatically joins the locations and endpoints together. The connection is known as a <strong>backplane</strong> and allows all users to experience a single conference view, no matter where they are based. This ability to handle <strong>distributed conferences</strong> is the fundamental building block of an Infinity system. </p>
+    <p>&nbsp;Lastly, note the summary information you see as you hover different objects in Live View. For example, the image shows a summary of the Trainer participant, detailing signalling protocol, IP address, role within the VMR and signalled bandwidth. You can get other details about the conference by hovering over other elements or double-clicking to drill down further.</p>
+    <p><img src="../../images/Liveview_VMR_drilldown.png" alt="Live View conference graph showing two participants in a VMR and the edge node in the Transcoding Role" title="Live View conference graph showing two participants in a VMR and the edge node in the Transcoding Role"></p>
+    <h3 class="main">Screenshot of the user experience (for the first user) connecting to the VMR Service:</h3>
+    <p><img src="../../images/img1621795468.png" alt="End-user experience for first joined participant " title="End-user experience for first joined participant "></p>
+    <h3 class="main">Screenshot of the user experience (for the second user) connecting to the VMR Service:</h3>
+    <p><img src="../../images/img1621795469.png" alt="End-user experience for second joined participant " title="End-user experience for second joined participant "></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Create_a_Virtual_Meeting_Room_(with_no_PIN).html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

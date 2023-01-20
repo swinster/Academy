@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title></title>
+</head>
+
+<body>
+<h1 id="header">IVR and Audio / PSTN Connectivity</h1>
+<p>Suggested completion time: <strong>30 minutes</strong></p>
+<section> 
+    
+    <!-- Trigger the modal with a button -->
+    <div class="pad">
+        <button type="button" class="btn btn-info openBtn">More info</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document"> 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">More information</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"> </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<p>Use <strong>section #5</strong> of the lab sheet.</p>
+<section>
+    <p>We have decided to give you <strong>no</strong> step-by-step instructions for this section! You are on your own but ensure you have checked the <strong>More Info</strong> button 😊. If you get stuck, help is probably close by.</p>
+    <p>PSTN stands for &quot;Public Switched Telephone  Network&quot;. In this task, you will be able to dial a regular phone number from  your mobile phone that will route the call to your Infinity deployment. The  idea is that this call will land in a Virtual Reception, and you will then be  able to enter a numeric alias to be transferred into a VMR.</p>
+    <p>This task differs slightly from the instructions outlined in  our documentation (see <a href="https://docs.pexip.com/admin/integrate_pstn.htm" title="Infinity Technical Docs" target="_blank">https://docs.pexip.com/admin/integrate_pstn.htm</a>) as you  will capture the alias of the dialled PSTN number. It allows us to explore how  you could determine the correct alias from a SIP trunk that you cannot route to  a statically defined VR alias through analysing the <strong>Administrator</strong> and <strong>Support  logs</strong>. </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Testing</h2>
+    <p>Each trainee will have a SIP trunk pre-setup in Twilio, and different geographical PSTN numbers are associated with that SIP trunk. You should be able to dial the PSTN number for your  geographical region, which will direct a call into your Infinity deployment. Your trainer will be able to give you the number you can dial for your system. </p>
+    <p><strong><u>NOTE: THE INTEGRATION WILL NOT WORK IMMEDIATELY!</u></strong></p>
+    <p>To determine the alias that needs to be set up for the VR, place a call to the number associated with your  SIP trunk. You should do this <u>without ANY modification to the configuration on your Infinity deployment!</u> Initially, you will likely hear a voice message saying, “the phone numbers are not in use", or a busy signal, but this can vary by region and sometimes the call will simply disconnect.</p>
+    <p>You then need to check the Administrator and/or Support logs  to see what alias Twilio has used when it sends the INVITE to Pexip. Pexip uses  this header to match against a Conference Alias and form the basis of the alias  you need to add to the VR. </p>
+    <p>Here are some examples of the Administrator and Support  logs. In addition, we have <span class="highlight">highlighted</span> some essential parts in each event that  can help you determine what you might need to add as an alias to your VR.</p>
+    <p>As you anaylyse the logs, think about the alias that will need to be added to your VR.</p>
+    <ul>
+        <li>Do you need the IP address in the alias? Perhaps you should check the docs <a
+                    href="https://docs.pexip.com/admin/about_aliases.htm#ipaddress" target="_blank"
+                    title="Infinity Technical Docs">https://docs.pexip.com/admin/about_aliases.htm#ipaddress</a>.</li>
+        <li>What about the plus (&quot;<span class="code">+</span>&quot;) sign?</li>
+        <li>Remember, you will need to wait for 1 minute for the changes to replicate to the nodes, but if the first
+            alias you configure doesn&rsquo;t work, try something else....</li>
+    </ul>
+    <h3 class="main">Administrator Log:</h3>
+    <p class="code">2021-02-25T04:54:30.473+00:00 edge 2021-02-25 04:54:30,473 Level=&quot;INFO&quot;
+        Name=&quot;administrator.conference&quot; <span class="highlight">Message=&quot;Participant attempting to
+        join
+        conference.&quot; ConferenceAlias=&quot;sips:+61288061210@91.90.42.120&quot; </span>Participant=&quot;sip:+447951954139@pexiptraining20.pstn.twilio.com&quot; Protocol=&quot;SIP&quot;
+        Direction=&quot;in&quot; Remote-address=&quot;54.252.254.64&quot;
+        Participant-id=&quot;3da94421-c6de-488d-b8f8-8f3bfadb4ca4&quot; Registered=&quot;False&quot;
+        Location=&quot;DMZ&quot;</p>
+    <div class="code2">
+        <p class="highlight2">2021-02-25T04:54:30.511+00:00 edge 2021-02-25 04:54:30,511 Level=&quot;WARNING&quot;
+            Name=&quot;administrator.conference&quot; Message=&quot;Participant failed to join conference.&quot; <span class="highlight">ConferenceAlias=&quot;sips:+61288061210@91.90.42.120&quot;</span> Participant=&quot;sip:+447951954139@pexiptraining20.pstn.twilio.com&quot; Protocol=&quot;SIP&quot;
+            Direction=&quot;in&quot; Remote-address=&quot;54.252.254.64&quot;
+            Participant-id=&quot;3da94421-c6de-488d-b8f8-8f3bfadb4ca4&quot; Location=&quot;DMZ&quot; <span
+                    class="highlight">Reason=&quot;Neither conference nor gateway found&quot;</span></p>
+    </div>
+    <p>&nbsp;</p>
+    <h3 class="main">Support Log:</h3>
+    <p class="code">2021-02-25T04:54:30.457+00:00 edge 2021-02-25 04:54:30,456 Level=&quot;INFO&quot;
+        Name=&quot;support.sip&quot; Message=&quot;Received SIP request&quot; Src-address=&quot;54.252.254.64&quot;
+        Src-port=&quot;40809&quot; Dst-address=&quot;91.90.42.120&quot; Dst-port=&quot;5061&quot;
+        Transport=&quot;TLS&quot; Received-time=&quot;2021-02-25T04:54:30,447596&quot; Detail=&quot;<br>
+        INVITE sips:+61288061210@91.90.42.120 SIP/2.0<br>
+        Record-Route: &lt;sip:54.252.254.64:5061;transport=tls;r2=on;lr&gt;<br>
+        Record-Route: &lt;sip:54.252.254.64;r2=on;lr&gt;<br>
+        Max-Forwards: 28<br>
+        <span class="highlight">To: &lt;sips:+61288061210@91.90.42.120&gt;</span><br>
+        From:
+        &lt;sip:+447951954139@pexiptraining20.pstn.twilio.com&gt;;tag=37878786_6772d868_1b3c5cf9-8583-4e8b-9947-d41053ca1025<br>
+        CSeq: 1013501 INVITE<br>
+        Diversion: &lt;sip:+61288061210@public-vip.au1.twilio.com&gt;;reason=unconditional<br>
+        Call-ID: b3bbfb57574d9acc5fa58facb74a387a@0.0.0.0<br>
+        Via: SIP/2.0/TLS 54.252.254.64:5061;branch=z9hG4bK1c34.dc6554d6eb9d3d71e3f4f38313fdaf3d.0<br>
+        Via: SIP/2.0/UDP
+        172.21.175.35:5060;rport=5060;branch=z9hG4bK1b3c5cf9-8583-4e8b-9947-d41053ca1025_6772d868_452-15114849142176759034<br>
+        Contact: &lt;sip:+447951954139@172.21.175.35:5060;transport=udp&gt;<br>
+        Allow: INVITE,ACK,CANCEL,BYE,REFER,OPTIONS,NOTIFY<br>
+        User-Agent: Twilio Gateway<br>
+        X-Twilio-AccountSid: AC4df8a8d1b862177d7f74b5d34343d541<br>
+        Content-Type: application/sdp<br>
+        X-Twilio-CallSid: CAe5170e12de8bc2020398c398ac12448c<br>
+        Content-Length: 276</p>
+    <p class="code2">2021-02-25T04:54:30.473+00:00 edge 2021-02-25 04:54:30,473 Level=&quot;INFO&quot;
+        Name=&quot;administrator.conference&quot; <span class="highlight">Message=&quot;Participant attempting to
+        join
+        conference.&quot; ConferenceAlias=&quot;sips:+61288061210@91.90.42.120&quot;</span> Participant=&quot;sip:+447951954139@pexiptraining20.pstn.twilio.com&quot; Protocol=&quot;SIP&quot;
+        Direction=&quot;in&quot; Remote-address=&quot;54.252.254.64&quot;
+        Participant-id=&quot;3da94421-c6de-488d-b8f8-8f3bfadb4ca4&quot; Registered=&quot;False&quot;
+        Location=&quot;DMZ&quot;</p>
+    <p class="code">2021-02-25T04:54:30.489+00:00 edge 2021-02-25 04:54:30,489 Level=&quot;INFO&quot;
+        Name=&quot;support.conference&quot; <span class="highlight">Message=&quot;Alias didn&apos;t match any
+        Conference
+        or Gateway rule&quot;</span> Protocol=&quot;sip&quot; <span
+                class="highlight">Alias=&quot;sips:+61288061210@91.90.42.120&quot;</span></p>
+    <p class="highlight2">2021-02-25T04:54:30.511+00:00 edge 2021-02-25 04:54:30,511 Level=&quot;WARNING&quot;
+        Name=&quot;administrator.conference&quot; <span class="highlight">Message=&quot;Participant failed to join
+        conference.&quot; ConferenceAlias=&quot;sips:+61288061210@91.90.42.120&quot;</span> Participant=&quot;sip:+447951954139@pexiptraining20.pstn.twilio.com&quot; Protocol=&quot;SIP&quot;
+        Direction=&quot;in&quot; Remote-address=&quot;54.252.254.64&quot;
+        Participant-id=&quot;3da94421-c6de-488d-b8f8-8f3bfadb4ca4&quot; Location=&quot;DMZ&quot; <span
+                class="highlight">Reason=&quot;Neither
+        conference nor gateway found&quot;</span></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Check you Pexip Infinity system with a working PSTN integration.</h2>
+    <p>To ensure you have the PSTN integration working correctly, check  your system against the screenshots below of Live View that show an incoming  PSTN call into the VR. Further, check the Conference and Participant History that  the call has been successfully transferred from the VR to the VMR. Lastly, remember  to drill down into the gateway call instance in Live View to show the  participant graph.</p>
+    <h3 class="main">A screenshot of the main Live View for a PSTN call into the general VR:</h3>
+    <p>&nbsp;<img src="../../images/img1621823705.png" alt="image"></p>
+    <h3 class="main">A screenshot of the graph view of the PSTN participant in the VR:</h3>
+    <p><img src="../../images/img162182370566.png" alt="image"></p>
+    <h3 class="main">A screenshot of the main Live View for a PSTN call transferred into the VMR:</h3>
+    <p><img src="../../images/img162182370543.png" alt="image"></p>
+    <h3 class="main">A screenshot of the graph view of the PSTN participant transferred into the VMR:</h3>
+    <p><img src="../../images/img162182370548.png" alt="image"></p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '..//Session_3_Integrations_Description/IVR_and_Audio-PSTN_Connectivity.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

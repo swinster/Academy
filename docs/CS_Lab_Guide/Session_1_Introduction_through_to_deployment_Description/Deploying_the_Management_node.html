@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Deploying the Management Node</title>
+</head>
+
+<body>
+<h1 id="header">Deploying the Management Node</h1>
+<p><img src="../../images/mgt_node.svg" alt="" /></p>
+<section>
+    <p>Use <strong>section #3</strong> and <strong>section #</strong><strong>4.1</strong> of the lab sheet.</p>
+    <p>The Management Node is the first component you need to install in an Infinity deployment. It is the single pane administration tool for Infinity. It lets you configure various Pexip Infinity services and integrations with other systems and provides a central point to view both ongoing and historical conferences. It also acts as a Syslog server, providing a unified set of logs from all nodes within a deployment, including itself. It doesn’t participate in any conferencing duties, so no media or call signalling will pass through it. Currently, there is only one Management Node per Pexip Infinity deployment (although this may change in a later version).</p>
+    <p>Once the Management Node is up, you can also deploy and configure Conferencing Nodes, which are the workers of an Infinity deployment. The Conferencing Nodes will get their configuration from the Management Node.</p>
+    <p><strong>NOTE:</strong> In Infinity <strong>versions up to v26</strong>, <strong>every change</strong> you make on the Management Node <strong>takes up to 1 minute to replicate</strong> to other nodes in the deployment. This "pull" configuration means that the Conferencing Nodes check in with the Management Node every minute and pull down any updates. <strong>From v27</strong>, <strong>some configuration items are pushed</strong> to the Conferencing Nodes from the Management Nodes <strong>as required</strong>.</p>
+    <p>Pexip Infinity nodes run in a pure virtualised environment. You can think of a virtualised environment as having two main components:</p>
+    <ul>
+        <li>The <strong>host</strong>: this is the physical machine  used to run the hypervisor.</li>
+        <li>The <strong>guests</strong>: these are Virtual Machines (VMs) that run inside the hypervisor on the
+            host. </li>
+    </ul>
+    <p>We will use VMware ESXi as the hypervisor in this lab, but Pexip can run on many other hypervisors, both OnPrem and in the cloud. OnPrem hypervisors include HyperV, Zen and KVM; cloud platforms include Azure, GCP, AWS and OCI (as a technical preview in v26).</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Setting the correct time</h2>
+    <p>Correct time synchronisation is <strong>critical</strong> to the proper functioning of Pexip Infinity. When you deploy the <em>Management Node</em>, you will specify an NTP server, and assuming you have set this correctly and have assigned the correct network VLAN to the guest, then the time on the Management Node will be accurate. On the other hand, if the Management Node cannot reach any NTP server, it will not boot.</p>
+    <p>When you come to deploy a <em>Conferencing Node</em>, it will initially get its time from the host. If the host's time is incorrect, your new node may not be able to connect to the Management Node due to mismatched timestamps. Therefore, ensure you check the <strong>host's</strong> time and configure its NTP servers (see <a href="https://docs.pexip.com/admin/configuring_vmware.htm" title="Infinity technical docs" target="_blank">https://docs.pexip.com/admin/configuring_vmware.htm</a>).</p>
+    <p>You can connect to the ESXi hypervisor via the direct link in the left-hand panel or the Jumpbox. Log into the ESXi management interface with the username and password provided on the lab sheet in <strong>section #3</strong>.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Deploying the Management Node to the ESXi host</h2>
+    <p>To deploy the Management Node, first download the latest <strong>generic Management Node image</strong> from the Infinity platform download page <a href="https://www.pexip.com/platform-downloads/infinity/current-release" title="Infinity platfrom downloads" target="_blank">https://www.pexip.com/platform-downloads/infinity/current-release</a>. Additionally, you can find other Infinity versions and node types at <a href="https://dl.pexip.com/infinity/index.html" title="Repository of all Infinity node images" target="_blank">https://dl.pexip.com/infinity/index.html</a>. The file name will look something like <span class="code">Pexip_Infinity_v26_generic_pxMgr_62340.ova</span>. Then connect to the ESXi hypervisor and upload an OVA file (it is best to do this via the Jumpbox as the download/upload process is quicker).</p>
+    <p>All nodes should have their virtual disks set to be thick provisioned, which pre-allocates a contiguous data storage space on the hypervisors datastore. VM administrators often prefer thin disk provisioning as VM images initially take up less physical data storage; however, storage space grows over time as the VM writes more data. Pexip nodes gain additional efficiency with data in a contiguous block, and there is no danger of accidentally running out of storage space as the data file grows. </p>
+    <p>Also, allocate the correct VM Network to the node's network interface, as assigning the wrong VM Network to an interface places that interface into an incorrect VLAN. As a result, the node will likely be unable to connect to expected network devices, even if the IP details on the node are correct.</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+<section>
+    <h2 class="main">Initial configuration of the Management Node</h2>
+    <p>Once you have uploaded the image  to the hypervisor, you can  start the guest and open a terminal window via the ESXi host to finish the install wizard configuration process using the CLI.&nbsp;</p>
+    <p><strong style="color: #FF0000">IMPORTANT NOTE: The SSH Password is the “Key to your Kingdom” – if you lose or forget this, you may have to manually redeploy the entire system in the future.</strong> <u>Please also ensure you use the terminal and web admin password of “<strong>Pexip123!</strong>”</u> (so we can help). </p>
+    <p><strong>Disable incident reporting and usage statistics</strong>,  although you would likely want to have this option enabled in your own (or your  customers) Infinity deployments. Incident reporting allows Pexip to provide  proactive support for your deployment, whilst usage statistics help Pexip understand  how you use the current product and develop future features proactively. Today,  the usage statistics are sent to <span class="code">api.keen.io</span> (TCP port 443 (HTTPS)).</p>
+<p>You can then log on to the Management Node using a browser and FQDN. However, if you connect to the node using the Jumpbox, you will need to accept the security warning as the node only has a self-signed certificate at this point. We will fix that in a later lab exercise.</p>
+    <p><strong>NOTE:</strong> Using the link in the left panel masks this certificate problem as the connection routes via a reverse proxy. We still need to add a trusted TLS certificate to the Management Node.&nbsp; </p>
+    <p>Once logged in, you should double-check the reporting setting in <strong>Platform Settings --&gt; Global Settings --&gt; Reporting</strong> and ensure that the "<strong>Enable incident reporting</strong>" option is unchecked. You should also ensure you have added a proper distribution email in the "Contact email address" field. In this case, make it <strong>traininglab@pexip.com</strong>.</p>
+    <p>Refer to <a class="general" href="https://docs.pexip.com/admin/installing_management_node_vmware.htm" target="_blank"
+            title="Infinity technical docs">https://docs.pexip.com/admin/installing_management_node_vmware.htm</a> and <a href="https://docs.pexip.com/admin/global_settings.htm#reporting" title="Infinity technical docs" target="_blank">https://docs.pexip.com/admin/global_settings.htm#reporting </a> </p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

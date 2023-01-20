@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+<link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+<script src="../../js/jquery-3.4.1.min.js"></script> 
+<script src="../../js/popper.min.js"></script> 
+<script src="../../js/bootstrap-4.4.1.js"></script>
+<title>Create a Virtual Meeting Room (with no PIN)</title>
+</head>
+
+<body>
+<h1 id="header">Create a Virtual Meeting Room (with no PIN)</h1>
+<p>Use <strong>section #4.2</strong> of the lab sheet.</p>
+<section>
+    <p><span style="font-size: 1em; letter-spacing: 0.02em;">The second Infinity service we will look at is the Virtual Meeting Rooms (VMR). VMRs are the main meeting spaces in an Infinity deployment and have many configuration options. In the next lab, you will create different VMRs with different properties. For this step, however, you will create a standard VMR with no PIN codes that you can connect to using SIP and H.323 devices and a shorter name for WebRTC users.</span><span style="font-size: 1em; letter-spacing: 0.02em;">&nbsp;</span><br>
+    </p>
+    <p>To achieve this, make sure you set a couple of aliases in a VMR named "<strong>General VMR</strong>":</p>
+    <ul>
+        <li>The short alias for WebRTC users will be <span class="code">vmr</span>.</li>
+        <li>The longer alias needs to include your <span class="code">Pexip Infinity Domain</span>.</li>
+    </ul>
+    <p>Please refer to <a class="general" href="https://docs.pexip.com/admin/creating_editing_vmrs.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/creating_editing_vmrs.htm</a>.</p>
+    <p>&nbsp;</p>
+    <p>You have now created your first VMR. Before you can make a call to the VMR, the configuration must synchronise to the Conferencing Nodes, which can take up to 60 before they take effect. Every 60 seconds, each Conferencing Node checks with the Management Node to see if any configuration changes are available. When the database with your new VMR is replicated to the Conferencing Nodes, you will be able to dial in and connect.</p>
+    <p><strong>NOTE:</strong> from v27 we have made some changes to how nodes get configuration updates. We will continue to improve in upcoming releases and speed up the synchronisation process.</p>
+    <p>You can place calls into your VMR using WebRTC via our browser. First, navigate to the Conferencing Node FQDNs. The nodes will have an untrusted self-signed certificate applied, so you must accept the browser warnings. You will fix the security issue in a later lab.</p>
+    <p>Place one call to the DMZ node (e.g. <span class="code">https://edge.&lt;Pexip_Infinity_domain&gt;</span>) from a browser outside the Jumpbox session. Then place another call to an internal LAN node (e.g. <span class="code">https://conf02.pexipacademy.local</span>), this time using a browser bookmark inside the Jumpbox session. Be aware that your web camera and microphone may not work via the Jumpbox session, however, there is a virtual camera installed on the Jumpbox server that will provide a video feed for testing.</p>
+    <p>Once you have completed this, you will automatically create your first <strong>distributed conference</strong>. Check out Live View to see what is happening  (please refer to <a href="https://docs.pexip.com/admin/platform_status.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/platform_status.htm</a>). Note the <strong>backplane</strong> between the two nodes. Remember, at the moment, all nodes in your deployment are in the transcoding role. Media landing in the DMZ is terminated and decoded, then sent (if required) to other nodes in other locations where it is mixed, encoded and sent to other endpoints. The same process is happening on the nodes in the LAN location. </p>
+    <p>&nbsp;Now review the screenshots on the previous page to ensure your system is behaving as expected and that you understand what is happening.</p>
+<p>To understand how Infinity handles a distributed conference, please read the documentation at <a href="https://docs.pexip.com/admin/dist_architecture.htm" target="_blank" title="Infinity Technical Docs">https://docs.pexip.com/admin/dist_architecture.htm</a>. This might seem like a lot of reading, but understanding these fundaments will help you interpret what is happening and why. In addition, Infinity is the only fully distributed videoconferencing platform on the planet, and these documentation pages detail more that could be delivered here. Indeed, you might need to read these pages several times as Pexip’s architectural approach is unlike any other conferencing solution.;</p>
+    <hr>
+    <p>&nbsp;</p>
+</section>
+</body>
+</html>

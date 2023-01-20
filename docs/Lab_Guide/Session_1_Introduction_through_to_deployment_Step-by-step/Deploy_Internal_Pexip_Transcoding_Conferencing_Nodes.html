@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Deploy Internal Pexip Transcoding Conferencing Nodes</title>
+</head>
+
+<body>
+    <h1 id="header">Deploy Internal Pexip Transcoding Conferencing Nodes</h1>
+    <p>Suggested completion time: <strong>30 minutes</strong></p>
+    <p><img src="../../images/transcoding_nodes.svg" alt=""/></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <p>Use <strong>section #3</strong> and <strong>section #4.1</strong> of the lab sheet.</p>
+    <p>Go to <strong>Platform --&gt; Conferencing Nodes</strong> and click
+        <strong>Add Conferencing Node.</strong></p>
+    <ol>
+        <li>On the <strong>Add Conferencing Node</strong> page, fill in the required fields using the details provided in (Lab sheet <strong>section #4.1</strong>).
+            <ol>
+                <li><strong>Name</strong>: Enter the name as the FQDN.</li>
+                <li><strong>Role: Transcoding Conferencing Node</strong>.</li>
+                <li><strong>Hostname</strong>, <strong>domain,</strong> and <strong>IP</strong> details.</li>
+                <li>Note that these Conferencing Nodes should be in the <strong>Enterprise LAN</strong> location.</li>
+                <li>Note the other information that can be assigned to a specific Conferencing Node, but you do not need to configure anything else.</li>
+                <li><strong>Save</strong>.</li>
+            </ol>
+        </li>
+        <li>On the <strong>Download Conferencing Node image</strong> page:
+            <ol>
+                <li>Select <strong>Deployment type: Manual (ESXi 6.7 and above).</strong></li>
+                <li>You can leave the vCPU and vRAM settings at the default values. <strong>NOTE:</strong> in the real world, getting your VMs design correctly is critical, although these settings can be changed in OnPrem hypervisors after deployment, and  cloud platforms, the selection is automatic as the compute instance types are pre-determined.</li>
+                <li>Enter the SSH password, also <strong>Pexip123</strong> to keep things simple (<strong>IMPORTANT NOTE:</strong> as of current Pexip software, we do not employ password input validation, so be careful with the password you type. You may need to redeploy the node if you lose, forget, or input the original password incorrectly).</li>
+                <li>Click the <strong>Download</strong> button.</li>
+            </ol>
+        </li>
+        <li>When the download is complete, navigate back to the vCenter URL (Lab sheet <strong>section #3</strong>).</li>
+        <li><strong>Right Click</strong> on your host and select <strong>Deploy OVF template</strong>. The next steps are similar to those used when deploying the Management Node.</li>
+        <li>Choose <strong>Local File</strong>, then select the OVA file you have just downloaded (likely to be in the downloads folder), then click <strong>Next</strong>.</li>
+        <li>Ensure the <strong>Virtual Machine name</strong> is as specified in <strong>section #4.1</strong> of the lab
+            sheet. Ensure you are deploying to the correct vCenter and Data Center for your area, then click
+            <strong>Next</strong>.</li>
+        <li>Ensure you are deploying to the correct <strong>host</strong> (which should be correctly selected), then
+            click <strong>Next</strong>.</li>
+        <li>Review the details and if you are happy, click <strong>Next</strong>.</li>
+        <li>You should always deploy the nodes with <u>Thick Provisioned vHDDs</u>, to avoid any undesirable storage issues
+            later. The correct datastore should be shown (which will include the similar naming convention as your
+            host), then click <strong>Next</strong>.</li>
+        <li>Set the <strong>VM network</strong> as specified in your Lab Sheet (see <strong>section #4.1</strong>).
+            Leave the IP allocation as static and IPv4 &ndash; the IP address is burnt into the node configuration),
+            then click <strong>Next</strong>.</li>
+        <li>Review the details and if you are happy, click <strong>Finish</strong>.</li>
+        <li>When the Node has been deployed, you will need to power it on. You can see all the VMs on your host by clicking the <strong>VMs</strong> tab for the host. <strong>Right-click</strong> on the Node, then choose <strong>Power --&gt; Power On</strong>.&nbsp;</li>
+        <li><strong><u>Permanently delete the OVA file</u></strong> from the downloads folder as <u>we can run out of space on the RDP server!</u></li>
+        <li>Ensure the new Node communicates with the Management Node once it has fully booted. On the Pexip GUI, navigate to <strong>Status --&gt; Conferencing Nodes</strong>, and ensure the <strong>Last Contacted</strong>, <strong>Last Updated</strong> and <strong>HD port</strong> count look OK. Also check <strong>Status --&gt; Locations</strong>, which should report that some transcoding resource is available.</li>
+        <li>Rinse and repeat for the second transcoding node in the LAN.</li>
+    </ol>
+    
+<script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                "../Session_1_Introduction_through_to_deployment_Description/Deploy_Internal_Pexip_Transcoding_Conferencing_Nodes.html",
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script></body>
+
+</html>

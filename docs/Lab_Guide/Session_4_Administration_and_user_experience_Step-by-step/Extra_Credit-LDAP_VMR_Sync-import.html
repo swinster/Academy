@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../css/bootstrap-4.4.1.css" rel="stylesheet" type="text/css">
+    <link href="../../css/styles.css" rel="stylesheet" type="text/css" media="screen">
+    <script src="../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/bootstrap-4.4.1.js"></script>
+    <title>Extra Credit: LDAP VMR Sync/import</title>
+</head>
+
+<body>
+    <h1 id="header">Extra Credit: LDAP VMR Sync/import</h1>
+	<p>Suggested completion time: <strong>40 minutes</strong></p>
+    <section>
+
+        <!-- Trigger the modal with a button -->
+        <div class="pad">
+            <button type="button" class="btn btn-info openBtn">More info</button>
+        </div>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">More information</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <p>Use <strong>section #10&nbsp;</strong>and<strong>&nbsp;section #9&nbsp;</strong>of the lab sheet.</p>
+    <p>Configuring the LDAP sync source:</p>
+    <ol>
+        <li>Go to&nbsp;<strong>Utilities&nbsp;</strong><strong>--&gt; LDAP sync source&nbsp;</strong><strong>--&gt;
+                Add LDAP sync source</strong>.</li>
+        <li>Give it a proper <strong>name</strong>, i.e. the name of your LDAP server.</li>
+        <li>Set the<strong>&nbsp;LDAP server</strong>.</li>
+        <li>Set the&nbsp;<strong>LDAP bind username</strong>.</li>
+        <li>Set the&nbsp;<strong>LDAP bind password</strong>.</li>
+        <li>Configure the<strong>&nbsp;LDAP base DN:&nbsp;</strong><span class="code">dc=pexip,dc=net</span></li>
+        <li><strong>Save</strong>.</li>&nbsp;
+    </ol>
+    <p></p>
+    <p>Configuring the LDAP sync template (to get the initial data set):</p>
+    <ol>
+        <li><strong>Utilities&nbsp;--&gt;&nbsp;LDAP sync
+                template&nbsp;--&gt;&nbsp;Add LDAP sync template</strong>.</li>
+        <li>Name: <strong>Norway VMRs</strong>.</li>
+        <li><strong>LDAP user search DN:</strong> <span class="code">OU=NO,OU=DemoUsers</span></li>
+        <li>Choose your Sync source.</li>
+        <li>Sync VMRs.</li>
+        <li>VMR name pattern: <span class="code">VMR Norway {{givenName}} {{sn}} ({{mail}})</span></li>
+        <li>VMR description pattern:</li>
+        <span class="code">telephoneNumber: {{telephoneNumber}} - mobile: {{mobile}} - employeeID:
+            {{employeeID}} - sAMAccountName: {{sAMAccountName}}</span>
+
+        <li><strong>Save</strong>.</li>
+        <strong>NOTE:</strong> that we have not yet added VMR aliases, however, we have added some key data
+        points into the “VMR name” and “VMR description” field that will return information that
+        we can use to build these aliases later.
+    </ol>
+    <p></p>
+    <p>&nbsp;</p>
+    <p>Perform the initial sync of data:</p>
+    <ol>
+        <li>Re-edit the sync template just created.</li>
+        <li>Click the &ldquo;<strong>Sync Now</strong>&rdquo; button.</li>&nbsp;
+    </ol>
+    <p></p>
+    <p>Check all the Sync templates on the Sync Template page, Sync and review the data. Based on the data you see in
+        the description fields, choose a VMR scheme for alphanumeric and numeric aliases.</p>
+    <p>Add the VMR URI alias pattern (for the numeric alias, you are on your own 😉):</p>
+    <ol>
+        <li>Edit the sync template.</li>
+        <li>Add the alias pattern:</li>
+        <span
+            class="code">meet.{{mail|lower|replace(&quot;@pexip.net&quot;, &quot;@&lt;your_group&gt;.pexip.net&quot;)}}</span>
+
+        <p>Example: Prefix with <strong>meet</strong>, use variable <strong>mail</strong>, convert to lowercase, replace
+            original domain in email with your Pexip-domain (also see <a
+                href="https://docs.pexip.com/admin/sync_patterns.htm" target="_blank"
+                title="Pexip Docs">https://docs.pexip.com/admin/sync_patterns.htm</a>).
+        </p>
+        <li>Resync the template.</li><br>
+    </ol>
+
+    <script>
+        $('.openBtn').on('click', function () {
+            $('.modal-body').load(
+                '../Session_4_Administration_and_user_experience_Description/Extra_Credit-LDAP_VMR_Sync-import.html',
+                function () {
+                    $('#myModal').modal({
+                        show: true
+                    });
+                });
+        });
+    </script>
+</body>
+
+</html>
